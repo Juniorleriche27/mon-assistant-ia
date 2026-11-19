@@ -6,8 +6,14 @@
   <title>Mon premier assistant IA — KORYXA</title>
   <meta name="description" content="Créez votre premier assistant IA et apprenez à le livrer à un client. Guide pratique en français de 68 pages, projet complet FastAPI + Cohere + Next.js et modèles contractuels.">
   <link rel="stylesheet" href="/css/style.css">
+  
   <!-- Lucide icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP & ScrollTrigger (Motion Framework) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="/js/motion.js" defer></script>
 </head>
 <body>
 
@@ -32,9 +38,11 @@
   </header>
 
   <main>
-    <!-- Hero Section : Montrer le produit dès le premier écran -->
-    <section class="hero">
-      <div class="container">
+    <!-- ========================================================
+         SÉQUENCE 1 : L'OUVERTURE CINÉMATIQUE (HERO 3D IMMERSIF)
+         ======================================================== -->
+    <section class="hero hero-ambient-wrap">
+      <div class="container" style="position: relative; z-index: 1;">
         <div class="hero-grid">
           
           <!-- Colonne Gauche : Titre, Promesse, Prix et Action -->
@@ -69,7 +77,7 @@
             </div>
           </div>
 
-          <!-- Colonne Droite : Showcase Visuel du Produit (Livre 3D + Interface Réelle) -->
+          <!-- Colonne Droite : Showcase Visuel du Produit (Livre 3D avec Tilt interactif + Interface Réelle) -->
           <div class="hero-visual-card">
             <div class="visual-combo-stage">
               
@@ -143,15 +151,326 @@
       </div>
     </section>
 
-    <!-- Section : Ce qui se passe après l'achat -->
-    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <!-- ========================================================
+         SÉQUENCE 2 : LA TRANSFORMATION RAG EN DIRECT (SIMULATEUR INTERACTIF)
+         ======================================================== -->
+    <section class="motion-reveal-section" style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <h2 class="section-title">Comment des documents deviennent un assistant IA</h2>
+        <p class="section-sub">
+          Testez le moteur interactif ci-dessous : changez le document d'exemple et observez comment l'assistant met à jour sa réponse instantanément avec sa source exacte.
+        </p>
+
+        <!-- Avertissement explicite sur les montants du cas pratique (650€ / 700€) -->
+        <div class="case-study-disclaimer">
+          <i data-lucide="info" style="width: 22px; flex-shrink: 0; color: #D97706; margin-top: 2px;"></i>
+          <div>
+            <strong>Note importante sur les montants du cas pratique :</strong><br>
+            Les tarifs de <strong>650 €</strong> et <strong>700 €</strong> présentés dans ce simulateur correspondent exclusivement aux données d'exemple du centre de formation fictif <em>« Horizon Numérique »</em>, utilisées pour tester le remplacement documentaire à chaud sans modification de code. Le prix du pack complet de formation KORYXA est strictement de <strong>11 000 F CFA (XOF)</strong> en paiement unique.
+          </div>
+        </div>
+
+        <!-- Boîte du Simulateur RAG Interactif ("Live Engine") -->
+        <div class="rag-sim-box">
+          <div class="sim-control-bar">
+            <div class="sim-controls-group">
+              <span style="font-size: 0.8rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 8px;">
+                Fichier source actif :
+              </span>
+              <button id="simDocV1" class="sim-toggle-btn active" title="Activer la grille tarifaire initiale à 650 €">
+                <i data-lucide="file-text" style="width: 14px;"></i> Grille v1 (650 €)
+              </button>
+              <button id="simDocV2" class="sim-toggle-btn" title="Remplacer à chaud par la nouvelle grille à 700 €">
+                <i data-lucide="refresh-cw" style="width: 14px;"></i> Remplacement v2 (700 €)
+              </button>
+            </div>
+
+            <div class="sim-controls-group">
+              <span id="simDocActiveBadge" class="sim-doc-chip">
+                02_tarifs_et_financements_v1.pdf (650 €)
+              </span>
+            </div>
+          </div>
+
+          <div class="sim-terminal-body">
+            <div class="sim-query-box">
+              <span style="color: #60A5FA; font-weight: 700;">Question visiteur :</span>
+              <span style="color: #F8FAFC; margin-left: 6px;">« Quel est le tarif total du parcours Analyse de Données et les facilités de paiement ? »</span>
+            </div>
+
+            <div class="sim-response-box">
+              <div style="font-size: 0.78rem; font-weight: 700; color: #10B981; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="sparkles" style="width: 14px;"></i> Réponse générée par Cohere Command R (fondée sur la source) :
+              </div>
+              <div id="simAssistantResponse">
+                Le tarif total pour le parcours Analyse de Données est de <strong>650 euros</strong> (frais administratifs de 40 euros inclus), payable en trois tranches de 220 €, 220 € et 210 €.
+              </div>
+              <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid #1E293B; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <span id="simCitationBadge" class="citation-pill">
+                  <i data-lucide="paperclip" style="width: 12px; display: inline;"></i> 02_tarifs_et_financements.pdf (page 1, section 2.1)
+                </span>
+                <span id="simLatencyBadge" style="font-size: 0.75rem; color: #34D399; font-weight: 700;">
+                  Latence réelle : 1.2s
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sim-status-bar">
+            <div id="simStatusBar">
+              <span style="color: #10B981;"><i data-lucide="check-circle" style="width: 14px; display: inline;"></i> Document ingéré avec succès &middot; Index vectoriel synchronisé</span>
+            </div>
+            <div style="color: #64748B;">
+              Pipeline : Extraction PDF &rarr; Chunks 500 tokens &rarr; Embeddings Cohere v4 &rarr; Retrieval vectoriel
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SÉQUENCE 3 : LE DUEL — CHAOS WHATSAPP VS SYSTÈME KORYXA
+         ======================================================== -->
+    <section class="motion-reveal-section">
+      <div class="container">
+        <h2 class="section-title">Pourquoi automatiser avec un assistant IA ?</h2>
+        <p class="section-sub">
+          « On ne scale pas une conversation à l'échelle d'un système. » Découvrez pourquoi les entreprises ont besoin d'une architecture RAG automatisée plutôt que de réponses manuelles sur WhatsApp.
+        </p>
+
+        <div class="duel-grid">
+          
+          <!-- Duel Card : WhatsApp Manuel -->
+          <div class="duel-card-wa">
+            <span class="duel-badge-danger">
+              <i data-lucide="alert-octagon" style="width: 14px;"></i> Le Goulot d'Étranglement WhatsApp
+            </span>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #0F172A; margin-bottom: 12px;">
+              Traitement manuel &middot; Non scalable
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 20px; line-height: 1.55;">
+              Quand 50 ou 100 prospects arrivent chaque jour en posant exactement les mêmes questions sur vos tarifs ou règlements, votre équipe s'épuise à copier-coller des réponses à la main.
+            </p>
+
+            <div class="duel-msg-bubble stress">
+              <strong>Prospect #14 :</strong> « Allô ? C'est combien la formation ? Répondez svp » <em>(en attente depuis 3h)</em>
+            </div>
+            <div class="duel-msg-bubble stress">
+              <strong>Prospect #29 :</strong> « Est-ce qu'on peut payer en 3 fois ? » <em>(répété 40 fois par jour)</em>
+            </div>
+            <div class="duel-msg-bubble stress">
+              <strong>Prospect #42 :</strong> « Vous m'avez donné l'ancien tarif de 650€ ou le nouveau ? »
+            </div>
+
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #FEE2E2; font-size: 0.82rem; color: #991B1B; font-weight: 600;">
+              &times; Perte de ventes pendant la nuit &middot; Risque d'erreur humaine &middot; Fatigue opérationnelle
+            </div>
+          </div>
+
+          <!-- Duel Card : Système KORYXA RAG -->
+          <div class="duel-card-ai">
+            <span class="duel-badge-success">
+              <i data-lucide="check-circle-2" style="width: 14px;"></i> L'Architecture KORYXA RAG
+            </span>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #0F172A; margin-bottom: 12px;">
+              Automatisation 24h/24 &middot; Réponses sourcées
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 20px; line-height: 1.55;">
+              L'assistant documentaire répond en 1,2 s, cite la page exacte du document officiel et traite des centaines de requêtes simultanées sans aucune intervention humaine.
+            </p>
+
+            <div class="duel-msg-bubble ai-solution">
+              <i data-lucide="zap" style="width: 14px; display: inline; color: #16A34A;"></i> <strong>Réponse instantanée :</strong> Tarif délivré en 1.2s avec la page du règlement officiel.
+            </div>
+            <div class="duel-msg-bubble ai-solution">
+              <i data-lucide="shield-check" style="width: 14px; display: inline; color: #16A34A;"></i> <strong>Zéro hallucination :</strong> Aucune réponse n'est inventée si elle n'est pas dans le PDF.
+            </div>
+            <div class="duel-msg-bubble ai-solution">
+              <i data-lucide="shopping-cart" style="width: 14px; display: inline; color: #16A34A;"></i> <strong>Tunnel d'achat direct :</strong> Le prospect s'informe, est rassuré et commande en toute autonomie.
+            </div>
+
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #DCFCE7; font-size: 0.82rem; color: #166534; font-weight: 700;">
+              &check; WhatsApp reste réservé au SAV VIP &middot; Votre système de vente tourne en continu
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SÉQUENCE 4 : LA PREUVE (DÉMONSTRATION VIDÉO DE L'AUTEUR)
+         ======================================================== -->
+    <section class="motion-reveal-section" style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <h2 class="section-title">Démonstration en conditions réelles</h2>
+        <p class="section-sub">
+          Voyez le code en direct, le terminal d'exécution et le fonctionnement réel de l'assistant présenté par son auteur.
+        </p>
+
+        <!-- Lecteur Vidéo de Démonstration de l'Auteur -->
+        <div class="video-showcase-box">
+          <div class="video-frame-inner">
+            <button class="video-play-btn" onclick="alert('La vidéo de démonstration complète par Yayra LAMADOKOU est en cours de traitement pour le lecteur principal.')" title="Lire la démonstration">
+              <i data-lucide="play" style="width: 32px; height: 32px; margin-left: 4px;"></i>
+            </button>
+            <div style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">
+              Démonstration en direct sur PC &mdash; Par Yayra LAMADOKOU
+            </div>
+            <p style="font-size: 0.9rem; color: #94A3B8; max-width: 640px; margin: 0 auto;">
+              Démonstration complète avec caméra et écran : ingestion de documents PDF, configuration de Cohere Command R et Embed v4, test du moteur RAG et mise à jour de la grille tarifaire sans modification de code.
+            </p>
+          </div>
+          <div class="video-meta-bar">
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/images/yayra-lamadokou.jpg" alt="Yayra LAMADOKOU" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #64748B;">
+              Présenté par Yayra LAMADOKOU
+            </span>
+            <span><i data-lucide="cpu" style="width: 14px; display: inline;"></i> Cohere Command R + Embed v4</span>
+            <span style="color: #34D399; font-weight: 700;"><i data-lucide="activity" style="width: 14px; display: inline;"></i> Mesure réelle constatée : 1,2 s de latence moyenne</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SÉQUENCE 5 : LE PACK EN BENTO BOX INTERACTIVE (DÉBALLAGE 3D)
+         ======================================================== -->
+    <section class="motion-reveal-section">
+      <div class="container">
+        <h2 class="section-title">Le contenu exact du pack complet</h2>
+        <p class="section-sub">
+          Tout le matériel pédagogique, le code source prêt à l'emploi et les modèles contractuels pour concevoir et livrer votre propre assistant IA.
+        </p>
+
+        <!-- Bento Grid Haute Précision -->
+        <div class="bento-master-grid stagger-grid">
+          
+          <!-- Cell 1 : Livre 68 pages (Grande Cellule) -->
+          <div class="bento-cell bento-interactive-card span-2">
+            <div>
+              <div class="bento-icon-wrapper">
+                <i data-lucide="book-open"></i>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Livrable Majeur &middot; PDF 68 pages</span>
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin: 4px 0 8px 0;">Le livre de référence en 12 chapitres</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.55;">
+                De la compréhension du besoin jusqu'à la facture client. Découvrez pas à pas comment architecturer la recherche vectorielle, configurer FastAPI et Cohere, et tester la fidélité des réponses.
+              </p>
+            </div>
+            
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; gap: 12px; font-size: 0.8rem; color: #64748B; flex-wrap: wrap;">
+              <span>&bull; Cadrage client</span>
+              <span>&bull; Ingestion PDF</span>
+              <span>&bull; pgvector & Cohere</span>
+              <span>&bull; Benchmark 35 tests</span>
+              <span>&bull; Déploiement Docker</span>
+            </div>
+          </div>
+
+          <!-- Cell 2 : Code Source Horizon Numérique -->
+          <div class="bento-cell bento-interactive-card">
+            <div>
+              <div class="bento-icon-wrapper">
+                <i data-lucide="code-2"></i>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: #D97706; text-transform: uppercase; letter-spacing: 0.05em;">Code Source Complet &middot; ZIP 1.4 Mo</span>
+              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 4px 0 8px 0;">Projet complet prêt à démarrer</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5;">
+                Backend FastAPI, interface moderne, administration documentaire et scripts d'automatisation.
+              </p>
+            </div>
+
+            <div class="code-preview-block">
+              <span class="cmt"># Ingestion vectorielle</span><br>
+              <span class="kw">async def</span> <span class="fn">index_doc</span>(file):<br>
+              &nbsp;&nbsp;chunks = <span class="fn">chunk_pdf</span>(file)<br>
+              &nbsp;&nbsp;vecs = <span class="kw">await</span> cohere.<span class="fn">embed</span>(chunks)<br>
+              &nbsp;&nbsp;<span class="kw">return</span> db.<span class="fn">insert</span>(vecs)
+            </div>
+          </div>
+
+          <!-- Cell 3 : Corpus d'Exercice -->
+          <div class="bento-cell bento-interactive-card">
+            <div>
+              <div class="bento-icon-wrapper">
+                <i data-lucide="folder-check"></i>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: #16A34A; text-transform: uppercase; letter-spacing: 0.05em;">Données d'entraînement</span>
+              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 4px 0 8px 0;">Corpus d'exercice officiel</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5;">
+                4 PDF et 1 FAQ d'entreprise créés sur-mesure pour tester le remplacement documentaire sans toucher au code.
+              </p>
+            </div>
+            <div style="font-size: 0.78rem; color: #64748B; margin-top: 14px;">
+              Catalogue, grille tarifaire, règlement d'inscription et calendrier des sessions.
+            </div>
+          </div>
+
+          <!-- Cell 4 : Benchmark 35 Questions -->
+          <div class="bento-cell bento-interactive-card">
+            <div>
+              <div class="bento-icon-wrapper">
+                <i data-lucide="check-square"></i>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Validation Logicielle</span>
+              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 4px 0 8px 0;">35 questions d'évaluation</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5;">
+                Script de test automatisé pour distinguer une réponse convaincante d'une réponse rigoureusement sourcée.
+              </p>
+            </div>
+            <div style="font-size: 0.78rem; color: #64748B; margin-top: 14px;">
+              Mesure automatique de la fidélité documentaire et du taux de couverture.
+            </div>
+          </div>
+
+          <!-- Cell 5 : Modèles de Livraison Client (Grande Cellule) -->
+          <div class="bento-cell bento-interactive-card span-2">
+            <div>
+              <div class="bento-icon-wrapper">
+                <i data-lucide="file-spreadsheet"></i>
+              </div>
+              <span style="font-size: 0.72rem; font-weight: 800; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.05em;">Pratique Commerciale &middot; Modèles Prêts à Signer</span>
+              <h3 style="font-size: 1.25rem; font-weight: 800; margin: 4px 0 8px 0;">4 modèles contractuels de livraison client</h3>
+              <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.55;">
+                Ne partez pas d'une page blanche devant votre client. Utilisez les documents contractuels rédigés pour formaliser le cahier des charges, le devis d'installation, la fiche de recette et la maintenance mensuelle récurrente.
+              </p>
+            </div>
+
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; gap: 16px; font-size: 0.82rem; color: #0F172A; font-weight: 600; flex-wrap: wrap;">
+              <span><i data-lucide="check" style="width: 14px; display: inline; color: #16A34A;"></i> Cahier des charges RAG</span>
+              <span><i data-lucide="check" style="width: 14px; display: inline; color: #16A34A;"></i> Devis d'intégration</span>
+              <span><i data-lucide="check" style="width: 14px; display: inline; color: #16A34A;"></i> Fiche de réception</span>
+              <span><i data-lucide="check" style="width: 14px; display: inline; color: #16A34A;"></i> Contrat de maintenance</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Transparence technique -->
+        <div style="margin-top: 24px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
+          <i data-lucide="info" style="color: #D97706; width: 24px; flex-shrink: 0; margin-top: 2px;"></i>
+          <div style="font-size: 0.9rem; color: #92400E;">
+            <strong>Prérequis et transparence des coûts :</strong>
+            Ce parcours s'adresse aux développeurs et freelances connaissant les bases de Python. 
+            Le pack inclut tout le matériel pédagogique et le code source. Les éventuels frais d'utilisation de l'API Cohere (clé configurée côté serveur par l'apprenant) ou d'hébergement du projet final ne sont pas inclus dans le prix du pack de 11 000 F CFA.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SÉQUENCE 6 : LE PARCOURS POST-ACHAT
+         ======================================================== -->
+    <section class="motion-reveal-section" style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
       <div class="container">
         <h2 class="section-title">Ce qui se passe après votre achat</h2>
         <p class="section-sub">
           Un parcours transparent, guidé et immédiat. De votre paiement sécurisé jusqu'à la livraison de votre premier assistant IA.
         </p>
 
-        <div class="post-purchase-grid">
+        <div class="post-purchase-grid stagger-grid">
           
           <div class="post-step-card">
             <div class="post-step-badge">1</div>
@@ -212,217 +531,10 @@
       </div>
     </section>
 
-    <!-- Démonstration en conditions réelles (Vidéo & Cas Pratique) -->
-    <section>
-      <div class="container">
-        <h2 class="section-title">Démonstration en conditions réelles</h2>
-        <p class="section-sub">
-          Voyez comment un assistant documentaire KORYXA relie chaque réponse à son fichier source, et comment une mise à jour tarifaire est prise en compte instantanément.
-        </p>
-
-        <!-- Avertissement explicite sur les montants du cas pratique (650€ / 700€) -->
-        <div class="case-study-disclaimer">
-          <i data-lucide="info" style="width: 22px; flex-shrink: 0; color: #D97706; margin-top: 2px;"></i>
-          <div>
-            <strong>Note importante sur les montants du cas pratique :</strong><br>
-            Les tarifs de <strong>650 €</strong> et <strong>700 €</strong> présentés ci-dessous correspondent exclusivement aux données d'exemple du centre de formation fictif <em>« Horizon Numérique »</em>, utilisées pour tester le remplacement documentaire à chaud sans modification de code. Le prix du pack complet de formation KORYXA est strictement de <strong>11 000 F CFA (XOF)</strong> en paiement unique.
-          </div>
-        </div>
-
-        <!-- Lecteur Vidéo de Démonstration de l'Auteur -->
-        <div class="video-showcase-box">
-          <div class="video-frame-inner">
-            <button class="video-play-btn" onclick="alert('La vidéo de démonstration complète par Yayra LAMADOKOU est en cours d\'intégration sur le lecteur principal.')" title="Lire la démonstration">
-              <i data-lucide="play" style="width: 32px; height: 32px; margin-left: 4px;"></i>
-            </button>
-            <div style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">
-              Démonstration en direct sur PC &mdash; Par Yayra LAMADOKOU
-            </div>
-            <p style="font-size: 0.9rem; color: #94A3B8; max-width: 640px; margin: 0 auto;">
-              Démonstration complète avec caméra et écran : ingestion de documents PDF, configuration de Cohere Command R et Embed v4, test du moteur RAG et mise à jour de la grille tarifaire sans modification de code.
-            </p>
-          </div>
-          <div class="video-meta-bar">
-            <span style="display: flex; align-items: center; gap: 8px;">
-              <img src="/images/yayra-lamadokou.jpg" alt="Yayra LAMADOKOU" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #64748B;">
-              Présenté par Yayra LAMADOKOU
-            </span>
-            <span><i data-lucide="cpu" style="width: 14px; display: inline;"></i> Cohere Command R + Embed v4</span>
-            <span style="color: #34D399; font-weight: 700;"><i data-lucide="activity" style="width: 14px; display: inline;"></i> Mesure réelle constatée : 1,2 s de latence moyenne</span>
-          </div>
-        </div>
-
-        <!-- Cas Pratique et Remplacement Documentaire -->
-        <div class="demo-showcase" style="margin-top: 0;">
-          <div class="demo-grid">
-            <div>
-              <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Le cas pratique : Horizon Numérique</h3>
-              <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">
-                Un centre de formation possède ses tarifs dans un PDF, ses règlements dans un autre et sa FAQ ailleurs. Votre assistant retrouve le passage exact et affiche sa source.
-              </p>
-              
-              <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
-                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                  <i data-lucide="file-text" style="width: 16px; color: var(--color-primary);"></i> Étape 1 : Version initiale du tarif fictif (650 €)
-                </div>
-                <p style="font-size: 0.85rem; color: #64748B;">Question : « Quel est le tarif total d'Analyse de Données ? » &rarr; Réponse : 650 €, avec citation de la grille tarifaire source.</p>
-              </div>
-
-              <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
-                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                  <i data-lucide="refresh-cw" style="width: 16px; color: var(--color-accent);"></i> Étape 2 : Remplacement par la grille à 700 €
-                </div>
-                <p style="font-size: 0.85rem; color: #64748B;">L'administrateur remplace le fichier dans l'interface. L'assistant répond immédiatement 700 € sans modification de code.</p>
-              </div>
-            </div>
-
-            <!-- Interface interactive simulée -->
-            <div class="demo-screen">
-              <div class="screen-header">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-                <span style="font-size: 0.75rem; color: #94A3B8; margin-left: auto;">assistant-rag-horizon &middot; Cohere RAG</span>
-              </div>
-              <div class="chat-bubble user">
-                <strong>Visiteur :</strong> Quel est le tarif total d'Analyse de Données ?
-              </div>
-              <div class="chat-bubble assistant">
-                <strong>Assistant IA :</strong> Le tarif total pour le parcours Analyse de Données est de <strong>650 euros</strong> (frais administratifs de 40 euros inclus), payable en trois tranches de 220 €, 220 € et 210 €.
-                <br>
-                <span class="citation-pill"><i data-lucide="paperclip" style="width: 12px; display: inline;"></i> 02_tarifs_et_financements.pdf (page 1)</span>
-              </div>
-              <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #334155; font-size: 0.8rem; color: #94A3B8; display: flex; justify-content: space-between;">
-                <span>Modèle : Cohere Command R</span>
-                <span>Latence réelle : 1,2 s</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Ce que vous allez apprendre (Méthode en 6 étapes) -->
-    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
-      <div class="container">
-        <h2 class="section-title">Ce que vous allez apprendre</h2>
-        <p class="section-sub">La méthode KORYXA pour transformer une demande floue en un assistant IA d'entreprise testé, documenté et prêt à être facturé.</p>
-
-        <div class="steps-grid">
-          <div class="step-card">
-            <div class="step-badge">1</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Cadrer le projet</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Transformer la demande « Je veux un chatbot » en un cahier des charges avec comportements vérifiables et critères de réception.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-badge">2</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Préparer le corpus</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Nettoyer, découper et indexer des PDF et fichiers Markdown tout en conservant scrupuleusement la traçabilité des passages.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-badge">3</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Construire le RAG</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Connecter FastAPI et Cohere pour combiner recherche documentaire, génération contrôlée et injection des sources.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-badge">4</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Évaluer les réponses</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Exécuter un jeu de 35 questions d'évaluation pour distinguer une réponse convaincante d'une réponse réellement soutenue par la source.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-badge">5</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Mettre en ligne</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Déployer avec Docker, gérer les sauvegardes de la base SQLite/PostgreSQL et sécuriser les variables d'environnement.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-badge">6</div>
-            <h3 style="font-weight: 700; margin-bottom: 8px;">Livrer au client</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Utiliser les 4 modèles contractuels fournis pour faire signer la recette client et organiser la maintenance rémunérée.</p>
-          </div>
-        </div>
-
-        <!-- Encadré Stratégique : Système de vente vs WhatsApp manuel -->
-        <div style="margin-top: 36px; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; gap: 16px; align-items: flex-start;">
-          <div style="width: 44px; height: 44px; border-radius: 10px; background: #EFF6FF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <i data-lucide="layers" style="width: 24px;"></i>
-          </div>
-          <div>
-            <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;">Construire un vrai système, pas un goulot d'étranglement</h4>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted); line-height: 1.55;">
-              On ne scale pas une entreprise avec des conversations manuelles sur WhatsApp. Quand un prospect a besoin d'informations précises sur vos tarifs ou règlements, votre assistant documentaire les délivre instantanément avec la preuve de la source, 24h/24, sans mobilisation humaine.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Contenu exact du pack -->
-    <section>
-      <div class="container">
-        <h2 class="section-title">Le contenu exact du pack complet</h2>
-        <p class="section-sub">Tout ce dont vous avez besoin pour apprendre, coder et livrer votre propre assistant IA.</p>
-
-        <div class="pack-grid">
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="book"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">Livre complet (68 pages)</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">12 chapitres détaillant l'architecture, le code et les décisions d'ingénierie RAG.</p>
-            </div>
-          </div>
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="code-2"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">Code source Horizon Numérique</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Application complète : Backend FastAPI, Frontend Next.js, administration documentaire.</p>
-            </div>
-          </div>
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="folder-check"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">Corpus d'exercice</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">4 PDF et 1 FAQ d'entreprise pour tester et reproduire le remplacement de documents.</p>
-            </div>
-          </div>
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="check-square"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">35 questions d'évaluation</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Jeu de test automatisé avec script de benchmark pour mesurer la précision des réponses.</p>
-            </div>
-          </div>
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="file-spreadsheet"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">Modèles de livraison client</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Cahier des charges, devis & maintenance, fiche de réception et grille de coûts.</p>
-            </div>
-          </div>
-          <div class="pack-card">
-            <div class="pack-icon"><i data-lucide="terminal"></i></div>
-            <div>
-              <h4 style="font-weight: 700; margin-bottom: 4px;">Scripts d'exploitation</h4>
-              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Scripts de sauvegarde, restauration, estimation des coûts Cohere et setup d'environnement.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Transparence technique -->
-        <div style="margin-top: 36px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
-          <i data-lucide="info" style="color: #D97706; width: 24px; flex-shrink: 0; margin-top: 2px;"></i>
-          <div style="font-size: 0.9rem; color: #92400E;">
-            <strong>Prérequis et transparence des coûts :</strong>
-            Ce parcours s'adresse aux développeurs et freelances connaissant les bases de Python. 
-            Le pack inclut tout le matériel pédagogique et le code source. Les éventuels frais d'utilisation de l'API Cohere (clé configurée côté serveur par l'apprenant) ou d'hébergement du projet final ne sont pas inclus dans le prix du pack de 11 000 F CFA.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Présentation de l'Auteur : Yayra LAMADOKOU -->
-    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <!-- ========================================================
+         SÉQUENCE 7 : PRÉSENTATION DE L'AUTEUR (YAYRA LAMADOKOU)
+         ======================================================== -->
+    <section class="motion-reveal-section">
       <div class="container">
         <h2 class="section-title">Qui transmet cette méthode ?</h2>
         <p class="section-sub">Découvrez l'auteur et la démarche d'ingénierie concrète derrière KORYXA.</p>
@@ -455,8 +567,10 @@
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section>
+    <!-- ========================================================
+         SÉQUENCE 8 : FAQ & CONVERSION FINALE
+         ======================================================== -->
+    <section class="motion-reveal-section" style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
       <div class="container">
         <h2 class="section-title">Questions fréquentes</h2>
         <p class="section-sub">Des réponses claires et transparentes avant votre commande.</p>
@@ -489,13 +603,32 @@
         </div>
 
         <div style="text-align: center; margin-top: 48px;">
-          <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 32px;">
-            <i data-lucide="zap"></i> Obtenir le pack — 11 000 F CFA
+          <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.15rem; padding: 16px 36px;">
+            <i data-lucide="zap"></i> Obtenir le pack complet &mdash; 11 000 F CFA
           </button>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- ========================================================
+       STICKY CONVERSION DOCK (FLOATING DYNAMIC ISLAND)
+       ======================================================== -->
+  <div id="stickyConversionDock">
+    <div class="dock-brand-name">
+      <img src="/images/logo-koryxa.png" alt="KORYXA" style="height: 28px; width: auto;">
+      <span>Mon premier assistant IA</span>
+    </div>
+    <div class="dock-price-tag">
+      11 000 F CFA
+    </div>
+    <button onclick="openCheckoutModal()" class="btn btn-primary" style="min-height: 38px; padding: 6px 18px; font-size: 0.88rem;">
+      <i data-lucide="zap"></i> Obtenir le pack
+    </button>
+    <a href="/espace-client" class="btn btn-secondary btn-text-desktop" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #FFF;">
+      Mon espace
+    </a>
+  </div>
 
   <!-- Modal Commande / Checkout KORYXA Pay -->
   <div id="checkoutModal" class="modal-overlay">
