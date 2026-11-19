@@ -43,13 +43,16 @@ app.include_router(downloads_router)
 app.include_router(client_router)
 app.include_router(admin_router)
 
-# Montage des fichiers statiques CSS et JS
+# Montage des fichiers statiques CSS, JS et Images
 css_dir = FRONTEND_DIR / "css"
 js_dir = FRONTEND_DIR / "js"
+images_dir = FRONTEND_DIR / "images"
 if css_dir.exists():
     app.mount("/css", StaticFiles(directory=str(css_dir)), name="css")
 if js_dir.exists():
     app.mount("/js", StaticFiles(directory=str(js_dir)), name="js")
+if images_dir.exists():
+    app.mount("/images", StaticFiles(directory=str(images_dir)), name="images")
 
 # Pages HTML du tunnel de vente et de l'espace client
 @app.get("/")

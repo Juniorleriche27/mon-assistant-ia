@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Assistant KORYXA — Mon premier assistant IA</title>
-  <meta name="description" content="Découvrez, achetez et apprenez à livrer votre premier assistant IA d'entreprise avec l'assistant interactif KORYXA. Guide 68p, code source Cohere et modèles contractuels à 11 000 F CFA.">
+  <meta name="description" content="Découvrez et achetez le pack KORYXA Mon premier assistant IA. Guide pratique 68p, code source complet et modèles de livraison à 11 000 F CFA.">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -13,136 +13,179 @@
 </head>
 <body>
 
-  <div class="chat-app">
+  <div class="app-layout">
     
-    <!-- En-tête de la conversation -->
-    <header class="chat-header">
-      <div class="chat-header-identity">
-        <div class="chat-avatar-wrapper">
-          <div class="chat-avatar">
-            <i data-lucide="bot" style="width: 22px; height: 22px;"></i>
-          </div>
-          <span class="chat-status-dot" title="Assistant en ligne"></span>
-        </div>
-        <div class="chat-title-box">
-          <h1>
-            Assistant KORYXA
-          </h1>
-          <div class="chat-subtext">
-            <span>En ligne</span> &middot; <span class="chat-engine-pill">KNOWLIA AI</span>
-          </div>
-        </div>
-      </div>
+    <!-- BACKDROP POUR FERMETURE SUR MOBILE -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
 
-      <div class="chat-header-actions">
-        <button type="button" class="header-price-btn" onclick="triggerAction('acheter')" title="Acheter le pack">
-          <i data-lucide="zap" style="width: 14px;"></i> 11 000 F CFA
-        </button>
-        <button type="button" class="icon-btn" onclick="toggleDrawer()" title="Menu et informations du pack">
-          <i data-lucide="menu" style="width: 18px;"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- Fil de discussion principal -->
-    <main class="chat-messages" id="chatMessages" role="log" aria-live="polite">
-      <!-- Les messages sont injectés dynamiquement ici -->
-    </main>
-
-    <!-- Puces d'actions rapides contextuelles -->
-    <div class="quick-replies-wrap" id="quickRepliesWrap">
-      <!-- Puces injectées dynamiquement -->
-    </div>
-
-    <!-- Barre de saisie inférieure -->
-    <footer class="chat-input-bar">
-      <form id="chatForm" onsubmit="handleFormSubmit(event)">
-        <input 
-          type="text" 
-          id="chatInput" 
-          class="chat-text-input" 
-          placeholder="Écrivez un message ou posez une question..." 
-          autocomplete="off"
-          required
-        >
-        <button type="submit" id="chatSendBtn" class="chat-send-btn" title="Envoyer le message">
-          <i data-lucide="send" style="width: 18px; height: 18px; margin-left: 2px;"></i>
-        </button>
-      </form>
-    </footer>
-
-    <!-- Tiroir latéral d'informations et accès rapide -->
-    <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer()"></div>
-    <aside class="drawer-panel" id="drawerPanel">
-      <div class="drawer-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <img src="/images/logo-koryxa.png" alt="KORYXA" style="height: 32px; width: auto;">
-          <span style="font-weight: 800; font-size: 0.95rem;">Pack Assistant IA</span>
-        </div>
-        <button type="button" class="icon-btn" onclick="toggleDrawer()">
-          <i data-lucide="x" style="width: 18px;"></i>
+    <!-- 1. SIDEBAR GAUCHE (PERMANENTE SUR DESKTOP, TIROIR SUR MOBILE) -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <a href="/" style="display: flex; align-items: center;">
+          <img src="/images/logo-koryxa.png" alt="KORYXA" class="sidebar-logo">
+        </a>
+        <button type="button" class="sidebar-collapse-btn" onclick="toggleSidebar()" title="Masquer / Afficher le panneau">
+          <i data-lucide="chevron-left" style="width: 18px; height: 18px;"></i>
         </button>
       </div>
 
-      <div class="drawer-content">
-        <!-- Récapitulatif Produit -->
-        <div style="background: var(--color-surface-muted); padding: 14px; border-radius: var(--radius-md);">
-          <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-primary); margin-bottom: 4px;">
-            Offre officielle KORYXA
-          </div>
-          <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 4px;">
-            Créer et livrer son premier assistant IA
-          </div>
-          <div style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 12px;">
-            Auteur : <strong>Yayra LAMADOKOU</strong> &middot; Édition Cohere
-          </div>
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <span style="font-size: 1.15rem; font-weight: 800; color: var(--color-accent);">11 000 F CFA</span>
-            <span style="font-size: 0.72rem; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 9999px; font-weight: 700;">Paiement unique</span>
+      <div class="sidebar-section-title">
+        FORMATION &middot; ASSISTANT IA
+      </div>
+
+      <nav class="sidebar-modules-list">
+        <div class="sidebar-module-item active" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="layout" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Cadrage &amp; Prérequis</span>
+            <span class="module-sub">Bases de Python, besoins métier</span>
           </div>
         </div>
 
-        <!-- Contenu du Pack -->
-        <div>
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--color-text); margin-bottom: 8px;">
-            Ce que contient le pack :
+        <div class="sidebar-module-item" onclick="triggerAction('exemple')">
+          <div class="module-icon-wrap"><i data-lucide="git-branch" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Architecture RAG</span>
+            <span class="module-sub">Recherche vectorielle &amp; Cohere</span>
           </div>
-          <ul class="pack-features-list">
-            <li><i data-lucide="book"></i> Livre PDF complet de 68 pages (12 chapitres)</li>
-            <li><i data-lucide="code"></i> Code source complet (FastAPI + Next.js + Cohere)</li>
-            <li><i data-lucide="file-text"></i> Corpus fictif Horizon Numérique (4 PDF + 1 FAQ)</li>
-            <li><i data-lucide="check-circle-2"></i> 35 questions d'évaluation réelles</li>
-            <li><i data-lucide="shield-check"></i> 4 modèles de livraison client (devis, cahier des charges, PV)</li>
-          </ul>
         </div>
 
-        <!-- Actions Directes -->
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <button type="button" class="btn btn-primary btn-block" onclick="toggleDrawer(); triggerAction('acheter');">
-            <i data-lucide="zap"></i> Acheter le pack — 11 000 F CFA
-          </button>
-          <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary btn-block" download>
-            <i data-lucide="book-open"></i> Télécharger l'extrait gratuit (PDF)
-          </a>
-          <button type="button" class="btn btn-secondary btn-block" onclick="toggleDrawer(); triggerAction('retrouver');">
-            <i data-lucide="key"></i> Retrouver mon achat
-          </button>
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="file-text" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Circuit Documentaire</span>
+            <span class="module-sub">Découpage PDF &amp; Markdown</span>
+          </div>
         </div>
 
-        <!-- Affiliation & Partenaires -->
-        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 12px; border-radius: var(--radius-md); font-size: 0.8rem; color: #166534;">
-          <strong>Devenez partenaire KORYXA :</strong><br>
-          Gagnez 5 000 F CFA par recommandation sur <a href="https://partenaires.koryxa.fr" target="_blank" style="color: #15803D; font-weight: 700;">partenaires.koryxa.fr</a>.
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="layers" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Indexation Vectorielle</span>
+            <span class="module-sub">Embeddings 1024 dimensions</span>
+          </div>
         </div>
 
-        <!-- Réinitialiser la session -->
-        <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--color-border); text-align: center;">
-          <button type="button" onclick="resetChat()" style="background: none; border: none; color: var(--color-text-muted); font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-            <i data-lucide="refresh-cw" style="width: 12px;"></i> Recommencer la conversation
-          </button>
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="server" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Backend FastAPI</span>
+            <span class="module-sub">Endpoints &amp; recherche hybride</span>
+          </div>
         </div>
+
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="message-square" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Interface Next.js</span>
+            <span class="module-sub">Discussion et administration</span>
+          </div>
+        </div>
+
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="check-circle" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Évaluation &amp; Recette</span>
+            <span class="module-sub">35 questions de test réelles</span>
+          </div>
+        </div>
+
+        <div class="sidebar-module-item" onclick="triggerAction('presentation')">
+          <div class="module-icon-wrap"><i data-lucide="award" style="width: 15px; height: 15px;"></i></div>
+          <div class="module-texts">
+            <span class="module-title">Livraison Client</span>
+            <span class="module-sub">Devis, PV et déploiement</span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Carte Récapitulative Tarif & Durée (Style Capture 1) -->
+      <div class="sidebar-summary-card">
+        <div class="summary-row">
+          <span class="label">Durée</span>
+          <span class="value">2 à 4 semaines selon votre rythme</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">Accès plateforme</span>
+          <span class="value">Accès à vie</span>
+        </div>
+        <div class="summary-row old-price-row">
+          <span class="label">Prix habituel</span>
+          <span class="value old-price">55 000 FCFA</span>
+        </div>
+        <div class="summary-row main-price-row">
+          <span class="main-price-label">Prix lancement</span>
+          <span class="main-price-value">11 000 FCFA</span>
+        </div>
+      </div>
+
+      <div class="sidebar-bottom-link">
+        <a href="https://koryxa.fr" target="_blank">KORYXA &middot; koryxa.fr</a>
       </div>
     </aside>
+
+    <!-- 2. ZONE PRINCIPALE DE CONVERSATION (STYLE CAPTURE 1) -->
+    <main class="main-chat-area">
+      
+      <!-- En-tête conversationnel -->
+      <header class="main-chat-header">
+        <div class="header-left">
+          <button type="button" class="mobile-sidebar-toggle" onclick="toggleSidebar()" aria-label="Ouvrir le menu">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+          <img src="/images/logo-koryxa.png" alt="KORYXA" class="chat-brand-logo">
+          <div class="header-meta">
+            <div class="header-bot-name">Assistant KORYXA</div>
+            <div class="header-bot-role">L'assistant officiel de KORYXA</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span>En ligne</span>
+          </div>
+          <button type="button" class="header-cta-pill" onclick="triggerAction('acheter')">
+            11 000 F CFA
+          </button>
+        </div>
+      </header>
+
+      <!-- Fil des messages -->
+      <div class="chat-stream-container" id="chatStream">
+        <div class="chat-center-wrapper" id="chatMessages" role="log" aria-live="polite">
+          <!-- Messages injectés dynamiquement ici -->
+        </div>
+      </div>
+
+      <!-- Puces d'actions rapides -->
+      <div class="quick-replies-container" id="quickRepliesWrap">
+        <!-- Puces injectées dynamiquement -->
+      </div>
+
+      <!-- Barre de saisie inférieure (ancrée en bas) -->
+      <footer class="chat-dock-bar">
+        <div class="input-pill-wrapper">
+          <form id="chatForm" onsubmit="handleFormSubmit(event)" style="display: flex; width: 100%; align-items: center;">
+            <input 
+              type="text" 
+              id="chatInput" 
+              class="clean-input" 
+              placeholder="Écrire un message à l'assistant KORYXA..." 
+              autocomplete="off"
+              required
+            >
+            <button type="submit" id="chatSendBtn" class="clean-send-btn" title="Envoyer">
+              <i data-lucide="arrow-up" style="width: 18px; height: 18px;"></i>
+            </button>
+          </form>
+        </div>
+        <div class="dock-footer-text">
+          KORYXA Formation &middot; mon-assistant.koryxa.fr
+        </div>
+      </footer>
+
+    </main>
 
   </div>
 
@@ -160,29 +203,27 @@
       waitingAi: false,
     };
 
-    // Puces initiales pour visiteur
+    // Puces initiales (style épuré sans icônes IA)
     const PROSPECT_CHIPS = [
-      { id: 'presentation', label: '📘 Présente-moi le pack', icon: 'book' },
-      { id: 'exemple', label: '💡 Montre-moi un exemple', icon: 'sparkles' },
-      { id: 'acheter', label: '⚡ Acheter le pack (11 000 F CFA)', icon: 'zap', accent: true },
-      { id: 'retrouver', label: '🔑 Retrouver mon achat', icon: 'key' },
-      { id: 'extrait', label: '📄 Extrait gratuit', icon: 'file-text' }
+      { id: 'presentation', label: 'Présente-moi le pack', highlight: false },
+      { id: 'exemple', label: 'Montre-moi un exemple', highlight: false },
+      { id: 'acheter', label: 'Acheter le pack (11 000 F CFA)', highlight: true },
+      { id: 'retrouver', label: 'Retrouver mon achat', highlight: false },
+      { id: 'extrait', label: 'Extrait gratuit (PDF)', highlight: false }
     ];
 
-    // Puces pour acheteur vérifié
     const BUYER_CHIPS = [
-      { id: 'telecharger_livre', label: '📖 Télécharger mon livre', icon: 'book-open' },
-      { id: 'telecharger_code', label: '💻 Télécharger le projet', icon: 'code' },
-      { id: 'demarrer', label: '🚀 Aide-moi à démarrer', icon: 'play' },
-      { id: 'progression', label: '📊 Où en suis-je ?', icon: 'check-square' },
-      { id: 'probleme', label: '⚠️ J\'ai un problème technique', icon: 'alert-triangle' }
+      { id: 'telecharger_livre', label: 'Télécharger mon livre', highlight: true },
+      { id: 'telecharger_code', label: 'Télécharger le projet (Zip)', highlight: true },
+      { id: 'demarrer', label: 'Aide-moi à démarrer', highlight: false },
+      { id: 'progression', label: 'Où en suis-je ?', highlight: false },
+      { id: 'probleme', label: 'J\'ai un problème technique', highlight: false }
     ];
 
-    // Initialisation au chargement de la page
     window.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
 
-      // Vérifier si retour de paiement avec order_id dans l'URL
+      // Vérifier retour paiement
       const urlParams = new URLSearchParams(window.location.search);
       const urlOrderId = urlParams.get('order_id');
       const urlEmail = urlParams.get('email');
@@ -196,13 +237,11 @@
         localStorage.setItem('koryxa_client_email', urlEmail);
       }
 
-      // Si déjà un compte identifié
       if (STATE.email || STATE.orderId) {
-        await checkPurchasedAccess(false);
+        await checkPurchasedAccess(true);
       }
 
-      // Restaurer ou démarrer la conversation
-      const savedMessages = localStorage.getItem('koryxa_chat_log');
+      const savedMessages = localStorage.getItem('koryxa_chat_log_v2');
       if (savedMessages && !urlOrderId) {
         try {
           const parsed = JSON.parse(savedMessages);
@@ -212,29 +251,28 @@
             return;
           }
         } catch (e) {
-          localStorage.removeItem('koryxa_chat_log');
+          localStorage.removeItem('koryxa_chat_log_v2');
         }
       }
 
-      // Si retour de paiement avec order_id
       if (urlOrderId) {
         await handlePaymentReturn(urlOrderId);
       } else {
-        // Message d'accueil officiel
         showWelcomeMessage();
       }
     });
 
-    // Message d'accueil officiel (Section 3)
+    // Message d'accueil officiel (Style Capture 1)
     function showWelcomeMessage() {
-      const welcomeText = "Bonjour ! Je suis l’assistant KORYXA. Je peux vous présenter le pack “Mon premier assistant IA”, disponible à 11 000 F CFA, et vous accompagner jusqu’à son utilisation. Que souhaitez-vous découvrir ?";
+      const welcomeText = `Bonjour ! Je suis l’assistant KORYXA.\n\nJe suis là pour vous accompagner dans votre découverte et inscription au pack **« Mon premier assistant IA »**.\n\n---\n\n### 🎓 Le parcours complet — 8 modules pratiques\n\n- **Module 1** — Cadrage & Besoins : transformer une demande en projet livrable\n- **Module 2** — Architecture RAG : comprendre recherche et génération avec Cohere\n- **Module 3** — Environnement : préparer un environnement reproductible (FastAPI, virtualenv)\n- **Module 4** — Circuit Documentaire : découpage et indexation PDF & Markdown\n- **Module 5** — Vecteurs & Embeddings : modèles 1024 dimensions\n- **Module 6** — Backend & API : recherche hybride et ranking de pertinence\n- **Module 7** — Interface Next.js : discussion et administration documentaire\n- **Module 8** — Évaluation & Livraison : 35 questions réelles et modèles de devis client\n\n---\n\n### ✨ Ce qui est inclus\n\n- 📖 Livre complet de 68 pages en 12 chapitres\n- 💻 Code source complet du projet Horizon Numérique\n- 📄 4 PDF d'exercice et 1 FAQ\n- 🎯 35 questions d'évaluation réelles\n- 📁 Boîte à outils contractuelle (modèles de devis, cahier des charges, PV de recette)\n\nQue souhaitez-vous découvrir ?`;
+
       appendAssistantMessage(welcomeText);
       updateQuickReplies();
     }
 
     // Gestion du retour paiement
     async function handlePaymentReturn(orderId) {
-      appendAssistantMessage("Synchronisation en cours avec la passerelle KORYXA Pay pour la commande `" + orderId + "`...");
+      appendAssistantMessage("Vérification en cours auprès de la passerelle KORYXA Pay pour la commande `" + orderId + "`...");
       showTypingIndicator();
 
       try {
@@ -246,22 +284,21 @@
           STATE.email = orderStatus.customer_email || STATE.email;
           localStorage.setItem('koryxa_client_email', STATE.email);
 
-          const successMsg = `🎉 **Paiement confirmé avec succès !**\n\nVotre commande de **11 000 F CFA** a été validée par KORYXA Pay. Votre accès complet est activé à vie.\n\nVous pouvez télécharger immédiatement vos livrables ci-dessous et suivre votre parcours pas à pas.`;
-          appendAssistantMessage(successMsg, [createDownloadsCard(orderStatus.portal_access_token)]);
+          const successMsg = `🎉 **Paiement confirmé avec succès !**\n\nVotre commande de **11 000 F CFA** a été validée par KORYXA Pay. Votre accès est activé à vie.\n\nVous pouvez télécharger immédiatement vos livrables ci-dessous :`;
+          appendAssistantMessage(successMsg, [createDownloadsCard()]);
         } else {
-          const pendingMsg = `Votre paiement est actuellement **en attente de confirmation** auprès de KORYXA Pay.\n\nSi vous avez validé la transaction sur votre téléphone (Mobile Money), cliquez ci-dessous pour actualiser le statut.`;
+          const pendingMsg = `Votre paiement est actuellement **en attente de confirmation** auprès de KORYXA Pay.\n\nSi vous avez validé la transaction Mobile Money, cliquez ci-dessous pour actualiser :`;
           appendAssistantMessage(pendingMsg, [createPendingPaymentCard(orderId)]);
         }
       } catch (err) {
         hideTypingIndicator();
-        appendAssistantMessage("Impossible de vérifier le statut de votre commande automatiquement : " + err.message);
+        appendAssistantMessage("Impossible de vérifier le statut de la commande : " + err.message);
       }
       updateQuickReplies();
     }
 
-    // Vérification des droits d'acheteur
     async function checkPurchasedAccess(silent = true) {
-      if (!STATE.email && !STATE.orderId) return;
+      if (!STATE.email && !STATE.orderId) return null;
       try {
         const dashboard = await api.getClientDashboard(STATE.email, STATE.orderId);
         if (dashboard && dashboard.order && dashboard.order.is_paid) {
@@ -280,7 +317,6 @@
       return null;
     }
 
-    // Actions rapides
     window.triggerAction = async function(actionId) {
       if (STATE.waitingAi) return;
 
@@ -315,7 +351,7 @@
           break;
         case 'demarrer':
         case 'progression':
-          appendUserMessage("Où en suis-je ? Aide-moi à démarrer");
+          appendUserMessage("Où en suis-je ?");
           await showOnboardingFlow();
           break;
         case 'probleme':
@@ -325,137 +361,123 @@
       }
     };
 
-    // Flow 1 : Présentation du Pack
     function showPresentationFlow() {
       showTypingIndicator();
       setTimeout(() => {
         hideTypingIndicator();
-        const text = `Le pack **« Mon premier assistant IA »** est un parcours pratique complet pour les développeurs et freelances souhaitant créer, évaluer et livrer un assistant documentaire en entreprise.\n\n` +
-          `**Ce qui est inclus dans le pack :**\n` +
-          `1. **Livre de référence (68 pages, 12 chapitres)** : du cahier des charges client jusqu'au déploiement.\n` +
-          `2. **Projet complet avec code source** : application Python FastAPI + Next.js + Cohere RAG.\n` +
-          `3. **Corpus fictif Horizon Numérique** : 4 PDF et une FAQ pour s'entraîner sur des données maîtrisées.\n` +
-          `4. **35 questions d'évaluation réelles** : pour tester la fidélité des réponses et vérifier les sources.\n` +
-          `5. **Boîte à outils de livraison client** : modèles réutilisables de cadrage, devis, PV de recette et scripts de maintenance.\n\n` +
-          `> 💡 **Prix officiel : 11 000 F CFA (XOF)** en paiement unique (accès à vie). Les éventuels frais d'API Cohere ou d'hébergement restent à la charge du développeur.`;
+        const text = `Le pack **« Mon premier assistant IA »** vous apprend à concevoir et livrer un assistant documentaire en entreprise sans improvisation.\n\n` +
+          `**Ce que vous allez maîtriser :**\n` +
+          `- Cadrer un projet d'assistant documentaire pour une organisation\n` +
+          `- Découper et indexer des PDF sans perdre la provenance\n` +
+          `- Construire le moteur RAG avec Cohere et FastAPI\n` +
+          `- Évaluer rigoureusement les réponses avec 35 questions types\n` +
+          `- Préparer le devis, le procès-verbal de recette et la livraison client\n\n` +
+          `**Tarif officiel : 11 000 F CFA** en paiement unique (accès à vie). Les éventuels frais de clé API Cohere ou d'hébergement restent à la charge du développeur.`;
         
         appendAssistantMessage(text, [createPackCard()]);
         updateQuickReplies();
-      }, 500);
+      }, 400);
     }
 
-    // Flow 2 : Exemple interactif RAG (650€ -> 700€)
     function showExampleFlow() {
       showTypingIndicator();
       setTimeout(() => {
         hideTypingIndicator();
-        const text = `Dans le livre, vous suivez le cas pratique d'un centre de formation fictif nommé **Horizon Numérique**.\n\n` +
-          `L'objectif : permettre à l'entreprise de remplacer sa grille de tarifs **sans toucher au code Python ni réentraîner de modèle**.\n\n` +
-          `Testez la démonstration interactive ci-dessous : changez le document de référence et observez la réponse et la source s'adapter en direct.`;
+        const text = `Voici le cas pratique du centre fictif **Horizon Numérique** issu du livre :\n\n` +
+          `L'objectif est de mettre à jour la grille de tarifs dans les documents de l'entreprise **sans modifier aucune ligne de code Python**.\n\n` +
+          `Testez le basculement ci-dessous :`;
         
         appendAssistantMessage(text, [createInteractiveRagCard()]);
         updateQuickReplies();
-      }, 500);
+      }, 400);
     }
 
-    // Flow 3 : Extrait gratuit
     function showExtraitFlow() {
       showTypingIndicator();
       setTimeout(() => {
         hideTypingIndicator();
-        const text = `Vous pouvez feuilleter gratuitement le début du guide officiel avant de décider d'acheter le pack complet.\n\n` +
-          `L'extrait contient la couverture, le **Chapitre 1** *(Transformer une demande en projet livrable)* et le **Chapitre 2** *(Comprendre le RAG à partir d'une question)*.`;
-        
+        const text = `Vous pouvez consulter l'extrait gratuit officiel. Il contient les chapitres 1 et 2 pour découvrir la démarche :`;
         appendAssistantMessage(text, [createExtraitCard()]);
         updateQuickReplies();
       }, 400);
     }
 
-    // Flow 4 : Achat dans le Chat
     function showCheckoutFlow() {
       showTypingIndicator();
       setTimeout(() => {
         hideTypingIndicator();
-        const text = `Excellent choix ! Le pack complet **« Mon premier assistant IA »** est proposé au tarif unique de **11 000 F CFA**.\n\n` +
-          `Remplissez vos coordonnées ci-dessous pour déclencher le paiement sécurisé via **KORYXA Pay** (cartes bancaires et Mobile Money TMoney, Moov Money acceptés) :`;
-        
+        const text = `Pour commander le pack complet à **11 000 F CFA**, renseignez vos informations ci-dessous. Le paiement est géré par la passerelle sécurisée **KORYXA Pay** :`;
         appendAssistantMessage(text, [createCheckoutFormCard()]);
         updateQuickReplies();
       }, 400);
     }
 
-    // Flow 5 : Retrouver mon achat
     function showRecoveryFlow() {
       showTypingIndicator();
       setTimeout(() => {
         hideTypingIndicator();
-        const text = `Indiquez l'adresse e-mail avec laquelle vous avez commandé pour réactiver immédiatement vos téléchargements et votre espace :`;
+        const text = `Indiquez votre adresse e-mail d'achat pour restaurer immédiatement vos livrables :`;
         appendAssistantMessage(text, [createRecoveryCard()]);
         updateQuickReplies();
       }, 400);
     }
 
-    // Téléchargement Livre
     async function deliverLivreDownload() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess();
+      const dashboard = await checkPurchasedAccess(false);
       hideTypingIndicator();
 
       if (dashboard && dashboard.download_links) {
-        appendAssistantMessage("Voici le lien sécurisé pour télécharger votre livre :", [
-          createDownloadButtonCard("📖 Livre complet (PDF 68 pages)", dashboard.download_links.livre_pdf)
+        appendAssistantMessage("Voici votre lien sécurisé pour télécharger le livre :", [
+          createDownloadButtonCard("Livre complet (PDF 68 pages)", dashboard.download_links.livre_pdf)
         ]);
       } else {
-        appendAssistantMessage("Pour accéder au livre complet, vous devez avoir commandé le pack avec cette adresse e-mail. Que souhaitez-vous faire ?", [
+        appendAssistantMessage("Aucun achat validé n'a été trouvé. Souhaitez-vous commander le pack à 11 000 F CFA ?", [
           createSimpleActionCard("Acheter le pack — 11 000 F CFA", () => triggerAction('acheter'))
         ]);
       }
       updateQuickReplies();
     }
 
-    // Téléchargement Code
     async function deliverCodeDownload() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess();
+      const dashboard = await checkPurchasedAccess(false);
       hideTypingIndicator();
 
       if (dashboard && dashboard.download_links) {
-        appendAssistantMessage("Voici le lien sécurisé pour télécharger l'archive du projet :", [
-          createDownloadButtonCard("💻 Code source complet (Archive Zip)", dashboard.download_links.projet_zip)
+        appendAssistantMessage("Voici votre lien sécurisé pour télécharger le code source :", [
+          createDownloadButtonCard("Projet & Code source (Archive Zip)", dashboard.download_links.projet_zip)
         ]);
       } else {
-        appendAssistantMessage("Pour accéder au code source complet, veuillez valider votre achat à 11 000 F CFA.", [
+        appendAssistantMessage("Pour accéder au code source, vous pouvez valider votre commande :", [
           createSimpleActionCard("Acheter le pack — 11 000 F CFA", () => triggerAction('acheter'))
         ]);
       }
       updateQuickReplies();
     }
 
-    // Flow Onboarding 6 étapes
     async function showOnboardingFlow() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess();
+      const dashboard = await checkPurchasedAccess(false);
       hideTypingIndicator();
 
       if (dashboard && dashboard.steps) {
-        const completedCount = dashboard.steps.filter(s => s.is_completed).length;
-        const text = `Voici votre progression dans le parcours d'installation et de livraison (**${completedCount} / 6 étapes validées**) :\n\n` +
-          `Validez chaque étape au fur et à mesure de votre avancement sur votre machine.`;
+        const completed = dashboard.steps.filter(s => s.is_completed).length;
+        const text = `Votre progression : **${completed} / 6 étapes validées**.\n\nValidez chaque étape au fur et à mesure de votre réalisation :`;
         appendAssistantMessage(text, [createStepsCard(dashboard.steps)]);
       } else {
-        appendAssistantMessage("Le parcours d'installation et d'évaluation en 6 étapes est inclus avec le pack complet à 11 000 F CFA.");
+        appendAssistantMessage("Le parcours d'onboarding en 6 étapes est inclus avec le pack à 11 000 F CFA.");
       }
       updateQuickReplies();
     }
 
-    // Ticket d'aide
     function showTicketFlow() {
-      const text = `Vous rencontrez une difficulté technique sur votre machine ? Décrivez votre anomalie ci-dessous. Un formateur KORYXA examinera votre diagnostic.`;
+      const text = `Vous rencontrez une anomalie technique sur votre machine ? Décrivez le problème ci-dessous :`;
       appendAssistantMessage(text, [createTicketCard()]);
       updateQuickReplies();
     }
 
-    // Soumission question libre via formulaire ou saisie
+    // Gestion de la saisie utilisateur
     window.handleFormSubmit = async function(e) {
       e.preventDefault();
       const input = document.getElementById('chatInput');
@@ -465,17 +487,16 @@
       input.value = '';
       appendUserMessage(query);
 
-      // Détection d'intentions directes en langage naturel
       const lower = query.toLowerCase();
       if (lower.includes('acheter') || lower.includes('commander') || lower.includes('payer') || lower.includes('combien')) {
         showCheckoutFlow();
         return;
       }
-      if (lower.includes('présente') || lower.includes('contenu') || lower.includes('programme') || lower.includes('livre')) {
+      if (lower.includes('présente') || lower.includes('programme') || lower.includes('contenu')) {
         showPresentationFlow();
         return;
       }
-      if (lower.includes('exemple') || lower.includes('démo') || lower.includes('demonstration') || lower.includes('horizon')) {
+      if (lower.includes('exemple') || lower.includes('démo') || lower.includes('horizon')) {
         showExampleFlow();
         return;
       }
@@ -483,12 +504,12 @@
         showExtraitFlow();
         return;
       }
-      if (lower.includes('retrouver') || lower.includes('connexion') || lower.includes('connecter')) {
+      if (lower.includes('retrouver') || lower.includes('connexion')) {
         showRecoveryFlow();
         return;
       }
 
-      // Appel au moteur d'IA KNOWLIA (avec contexte manuscrit RAG)
+      // Appel au moteur d'IA
       STATE.waitingAi = true;
       showTypingIndicator();
 
@@ -500,7 +521,7 @@
         const citationsHtml = res.citations && res.citations.length
           ? `<div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: 4px;">
                <span style="font-size: 0.72rem; font-weight: 700; color: var(--color-text-muted);">Sources :</span>
-               ${res.citations.map(c => `<span class="citation-chip"><i data-lucide="book-open" style="width: 11px;"></i> ${escapeHtml(c)}</span>`).join('')}
+               ${res.citations.map(c => `<span class="citation-pill">${escapeHtml(c)}</span>`).join('')}
              </div>`
           : '';
 
@@ -520,7 +541,7 @@
       updateQuickReplies();
     };
 
-    // Soumission du formulaire d'achat
+    // Formulaire d'achat
     window.submitCheckout = async function(e) {
       e.preventDefault();
       const name = document.getElementById('chkName').value.trim();
@@ -532,8 +553,7 @@
       if (!name || !email) return;
 
       btn.disabled = true;
-      btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin" style="width: 16px;"></i> Initialisation KORYXA Pay...`;
-      lucide.createIcons();
+      btn.textContent = "Initialisation du paiement...";
       errBox.style.display = 'none';
 
       try {
@@ -552,21 +572,19 @@
         }
 
         if (res.checkout_url) {
-          btn.innerHTML = `Redirection sécurisée...`;
+          btn.textContent = "Redirection vers KORYXA Pay...";
           window.location.href = res.checkout_url;
         } else {
-          throw new Error("L'URL de paiement KORYXA Pay n'a pas été reçue.");
+          throw new Error("L'URL de paiement n'a pas été reçue.");
         }
       } catch (err) {
-        errBox.textContent = err.message || "Erreur lors de la création de la commande.";
+        errBox.textContent = err.message || "Erreur lors de la commande.";
         errBox.style.display = 'block';
         btn.disabled = false;
-        btn.innerHTML = `<i data-lucide="lock"></i> Payer 11 000 F CFA via KORYXA Pay`;
-        lucide.createIcons();
+        btn.textContent = "Payer 11 000 F CFA via KORYXA Pay";
       }
     };
 
-    // Soumission formulaire de récupération d'achat
     window.submitRecovery = async function(e) {
       e.preventDefault();
       const email = document.getElementById('recEmail').value.trim();
@@ -583,12 +601,12 @@
         const dashboard = await checkPurchasedAccess(false);
         if (dashboard) {
           btn.textContent = "Accès validé !";
-          appendAssistantMessage(`✅ **Bon retour parmi nous, ${dashboard.customer.full_name || 'Développeur'} !**\n\nVos accès et livrables sont réactivés. Que souhaitez-vous faire ?`, [
-            createDownloadsCard(dashboard.order.id)
+          appendAssistantMessage(`Bon retour parmi nous, **${dashboard.customer.full_name || 'Développeur'}** ! Vos accès sont débloqués.`, [
+            createDownloadsCard()
           ]);
         }
       } catch (err) {
-        errBox.textContent = err.message || "Aucun achat validé pour cette adresse e-mail.";
+        errBox.textContent = err.message || "Aucun achat validé pour cet e-mail.";
         errBox.style.display = 'block';
         btn.disabled = false;
         btn.textContent = "Rechercher mon compte";
@@ -596,18 +614,16 @@
       updateQuickReplies();
     };
 
-    // Validation d'une étape d'onboarding
     window.validateStepInChat = async function(stepNum) {
       try {
         await api.validateStep(stepNum, STATE.email, STATE.orderId);
-        appendAssistantMessage(`👏 **Étape ${stepNum} validée avec succès !**`);
+        appendAssistantMessage(`Étape ${stepNum} validée avec succès.`);
         await showOnboardingFlow();
       } catch (e) {
-        alert("Erreur lors de la validation : " + e.message);
+        alert("Erreur : " + e.message);
       }
     };
 
-    // Soumission d'un ticket de support
     window.submitTicketInChat = async function(e) {
       e.preventDefault();
       const subject = document.getElementById('tktSubject').value.trim();
@@ -615,56 +631,41 @@
       const btn = document.getElementById('tktBtn');
 
       btn.disabled = true;
-      btn.textContent = "Envoi en cours...";
+      btn.textContent = "Envoi...";
 
       try {
         const conversationText = STATE.history.map(h => `${h.role}: ${h.content}`).join("\n");
         const fullSubject = subject + " | " + details;
-        const res = await api.createTicket(fullSubject, conversationText, STATE.email || "visiteur@koryxa.fr", STATE.orderId || "visiteur");
-
-        appendAssistantMessage(`✅ **Ticket enregistré avec succès !** (Réf: \`${res.ticket_id}\`)\n\nNotre équipe formateur a bien reçu votre diagnostic et vous contactera si nécessaire.`);
+        const res = await api.createTicket(fullSubject, conversationText, STATE.email || "client@koryxa.fr", STATE.orderId || "client");
+        appendAssistantMessage(`Votre ticket a bien été enregistré (Réf: \`${res.ticket_id}\`). Notre équipe technique vous répondra par e-mail.`);
       } catch (err) {
-        alert("Impossible d'enregistrer le ticket : " + err.message);
+        alert("Erreur lors de l'enregistrement : " + err.message);
         btn.disabled = false;
         btn.textContent = "Transmettre le ticket";
       }
     };
 
     // ==========================================
-    // CRÉATEURS DE COMPOSANTS RICHES (CARDS)
+    // CRÉATEURS DE CARTES (STYLE CAPTURE 1)
     // ==========================================
 
     function createPackCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-header">
-          <div class="chat-card-title">
-            <i data-lucide="package" style="color: var(--color-primary);"></i> Pack « Mon premier assistant IA »
-          </div>
-          <div class="chat-card-price">11 000 F CFA</div>
+        <div class="card-title-row">
+          <span class="card-title-text">Pack « Mon premier assistant IA »</span>
+          <span class="card-price-badge">11 000 F CFA</span>
         </div>
         <p style="font-size: 0.85rem; color: var(--color-text-muted);">
-          Le guide pratique en français (68 pages) et son application complète (FastAPI + Cohere + Next.js).
+          Livre officiel de 68 pages + code source complet FastAPI &amp; Next.js + 4 modèles de devis et tests.
         </p>
-
-        <!-- Placeholder démonstration vidéo de l'auteur -->
-        <div class="chat-video-box">
-          <div class="chat-video-placeholder">
-            <button type="button" class="chat-play-btn" onclick="alert('La vidéo de démonstration sur PC par Yayra LAMADOKOU est en cours de montage pour le lecteur principal.')">
-              <i data-lucide="play" style="width: 22px; height: 22px; margin-left: 2px;"></i>
-            </button>
-            <div style="font-size: 0.85rem; font-weight: 700;">Démonstration en direct sur PC</div>
-            <div style="font-size: 0.75rem; color: #94A3B8;">Présentée par Yayra LAMADOKOU (1,2s de latence constatée)</div>
-          </div>
-        </div>
-
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button type="button" class="btn btn-primary btn-block" onclick="triggerAction('acheter')">
-            <i data-lucide="zap"></i> Obtenir le pack complet — 11 000 F CFA
+          <button type="button" class="btn btn-green btn-block" onclick="triggerAction('acheter')">
+            Acheter le pack — 11 000 F CFA
           </button>
           <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary btn-block" download>
-            <i data-lucide="book-open"></i> Télécharger l'extrait gratuit (PDF)
+            Télécharger l'extrait gratuit (PDF)
           </a>
         </div>
       `;
@@ -673,36 +674,25 @@
 
     function createInteractiveRagCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-header">
-          <div class="chat-card-title">
-            <i data-lucide="cpu" style="color: var(--color-ai);"></i> Moteur RAG : Remplacement à chaud
+        <div class="card-title-row">
+          <span class="card-title-text">Démo RAG : Mise à jour de document sans changer de code</span>
+        </div>
+        <div style="display: flex; gap: 6px; margin: 6px 0;">
+          <button type="button" class="action-pill highlight" id="btnSimV1" onclick="toggleSimDoc(1)">Grille v1 (650 €)</button>
+          <button type="button" class="action-pill" id="btnSimV2" onclick="toggleSimDoc(2)">Remplacement v2 (700 €)</button>
+        </div>
+        <div style="background: var(--color-surface-muted); border: 1px solid var(--color-border); border-radius: 8px; padding: 12px; font-size: 0.85rem;">
+          <div style="color: var(--color-brand-green-deep); font-weight: 700; margin-bottom: 4px;">Question : « Quel est le tarif total d'Analyse de Données ? »</div>
+          <div id="simText">Le tarif total est de <strong>650 euros</strong> (frais administratifs de 40 € inclus), payable en trois tranches de 220 €, 220 € et 210 €.</div>
+          <div style="margin-top: 8px; font-size: 0.72rem; color: var(--color-brand-green-dark); display: flex; justify-content: space-between;">
+            <span id="simSource">Source : 02_tarifs_et_financements_v1.pdf (p.1)</span>
+            <span>Latence : 1.2s</span>
           </div>
         </div>
-        <p style="font-size: 0.82rem; color: var(--color-text-muted);">
-          Cliquez sur les versions pour voir l'assistant recalculer le tarif instantanément avec sa source :
-        </p>
-        <div class="chat-sim-box">
-          <div class="chat-sim-bar">
-            <button type="button" class="sim-btn active" id="btnSimV1" onclick="toggleSimDoc(1)">
-              <i data-lucide="file-text" style="width: 12px;"></i> Grille v1 (650 €)
-            </button>
-            <button type="button" class="sim-btn" id="btnSimV2" onclick="toggleSimDoc(2)">
-              <i data-lucide="refresh-cw" style="width: 12px;"></i> Remplacement v2 (700 €)
-            </button>
-          </div>
-          <div class="chat-sim-answer" id="simAnswerBox">
-            <div style="color: #60A5FA; font-weight: 700; margin-bottom: 4px; font-size: 0.78rem;">Question visiteur : « Quel est le tarif d'Analyse de Données ? »</div>
-            <div id="simText">Le tarif total est de <strong>650 euros</strong> (frais inclus de 40 €), payable en trois tranches de 220 €, 220 € et 210 €.</div>
-            <div style="margin-top: 8px; font-size: 0.72rem; color: #34D399; display: flex; justify-content: space-between;">
-              <span id="simSource"><i data-lucide="paperclip" style="width: 10px; display: inline;"></i> 02_tarifs.pdf (p.1)</span>
-              <span>Latence : 1.2s</span>
-            </div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-primary btn-block" onclick="triggerAction('acheter')">
-          <i data-lucide="zap"></i> Apprendre à construire ce système (11 000 F CFA)
+        <button type="button" class="btn btn-green btn-block" onclick="triggerAction('acheter')">
+          Acheter le pack — 11 000 F CFA
         </button>
       `;
       return card;
@@ -715,34 +705,31 @@
       const source = document.getElementById('simSource');
 
       if (version === 1) {
-        b1.classList.add('active');
-        b2.classList.remove('active');
-        text.innerHTML = "Le tarif total est de <strong>650 euros</strong> (frais inclus de 40 €), payable en trois tranches de 220 €, 220 € et 210 €.";
-        source.innerHTML = `<i data-lucide="paperclip" style="width: 10px; display: inline;"></i> 02_tarifs_et_financements_v1.pdf (p.1)`;
+        b1.classList.add('highlight');
+        b2.classList.remove('highlight');
+        text.innerHTML = "Le tarif total est de <strong>650 euros</strong> (frais administratifs de 40 € inclus), payable en trois tranches de 220 €, 220 € et 210 €.";
+        source.textContent = "Source : 02_tarifs_et_financements_v1.pdf (p.1)";
       } else {
-        b2.classList.add('active');
-        b1.classList.remove('active');
+        b2.classList.add('highlight');
+        b1.classList.remove('highlight');
         text.innerHTML = "La nouvelle grille tarifaire fixe le total à <strong>700 euros</strong>, payable en tranches de 250 €, 250 € et 200 €.";
-        source.innerHTML = `<i data-lucide="paperclip" style="width: 10px; display: inline;"></i> 02_tarifs_et_financements_v2.pdf (p.1, màj)`;
+        source.textContent = "Source : 02_tarifs_et_financements_v2.pdf (p.1, màj)";
       }
-      lucide.createIcons();
     };
 
     function createExtraitCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-header">
-          <div class="chat-card-title">
-            <i data-lucide="file-text" style="color: var(--color-primary);"></i> Extrait gratuit KORYXA (PDF)
-          </div>
-          <span style="font-size: 0.75rem; background: #EFF6FF; color: var(--color-primary); padding: 2px 8px; border-radius: 9999px; font-weight: 700;">Gratuit</span>
+        <div class="card-title-row">
+          <span class="card-title-text">Extrait officiel (PDF)</span>
+          <span style="font-size: 0.75rem; color: var(--color-brand-green-dark); font-weight: 700;">Gratuit</span>
         </div>
         <p style="font-size: 0.85rem; color: var(--color-text-muted);">
-          Comprend les chapitres 1 et 2 pour découvrir la méthode de cadrage et le fonctionnement théorique du RAG.
+          Couverture + Chapitres 1 et 2 pour découvrir la méthode KORYXA.
         </p>
-        <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-blue btn-block" download>
-          <i data-lucide="download"></i> Télécharger l'extrait maintenant (PDF)
+        <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-green btn-block" download>
+          Télécharger l'extrait maintenant (PDF)
         </a>
       `;
       return card;
@@ -750,38 +737,31 @@
 
     function createCheckoutFormCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-header">
-          <div class="chat-card-title">
-            <i data-lucide="shopping-cart" style="color: var(--color-accent);"></i> Formulaire de commande
-          </div>
-          <div class="chat-card-price">11 000 F CFA</div>
+        <div class="card-title-row">
+          <span class="card-title-text">Formulaire d'inscription &middot; Pack Complet</span>
+          <span class="card-price-badge">11 000 F CFA</span>
         </div>
-
-        <form class="chat-form" onsubmit="submitCheckout(event)">
-          <div class="form-group">
-            <label for="chkName">Votre nom complet</label>
-            <input type="text" id="chkName" class="form-input" placeholder="ex. Alexandre Dupont" required>
+        <form style="display: flex; flex-direction: column; gap: 10px;" onsubmit="submitCheckout(event)">
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;">
+            <label style="font-size: 0.8rem; font-weight: 700;">Nom complet</label>
+            <input type="text" id="chkName" style="min-height: 42px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="ex. Alexandre Dupont" required>
           </div>
-          <div class="form-group">
-            <label for="chkEmail">Adresse e-mail (pour vos livrables)</label>
-            <input type="email" id="chkEmail" class="form-input" placeholder="votre.email@domaine.com" value="${escapeHtml(STATE.email)}" required>
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;">
+            <label style="font-size: 0.8rem; font-weight: 700;">Adresse e-mail (livraison de votre accès)</label>
+            <input type="email" id="chkEmail" style="min-height: 42px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="votre.email@domaine.com" value="${escapeHtml(STATE.email)}" required>
           </div>
-          <div class="form-group">
-            <label for="chkPhone">Numéro de téléphone (facultatif / Mobile Money)</label>
-            <input type="tel" id="chkPhone" class="form-input" placeholder="+228 / +225 / +221...">
+          <div style="display: flex; flex-direction: column; gap: 4px; text-align: left;">
+            <label style="font-size: 0.8rem; font-weight: 700;">Numéro WhatsApp / Mobile Money (facultatif)</label>
+            <input type="tel" id="chkPhone" style="min-height: 42px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="+228 / +225 / +221...">
           </div>
-
           <div id="chkErr" style="display: none; background: #FEF2F2; color: #DC2626; padding: 8px; border-radius: 6px; font-size: 0.8rem;"></div>
-
-          <button type="submit" id="chkBtn" class="btn btn-primary btn-block">
-            <i data-lucide="lock"></i> Payer 11 000 F CFA via KORYXA Pay
+          <button type="submit" id="chkBtn" class="btn btn-green btn-block">
+            Payer 11 000 F CFA via KORYXA Pay
           </button>
-
-          <div style="font-size: 0.74rem; color: var(--color-text-muted); text-align: center;">
-            <i data-lucide="shield-check" style="width: 12px; display: inline; color: #16A34A;"></i>
-            Paiement chiffré SSL &middot; TMoney, Moov Money, Carte bancaire &middot; Accès immédiat
+          <div style="font-size: 0.72rem; color: var(--color-text-muted); text-align: center;">
+            Paiement chiffré SSL &middot; TMoney, Moov Money, Cartes &middot; Accès immédiat
           </div>
         </form>
       `;
@@ -790,38 +770,35 @@
 
     function createPendingPaymentCard(orderId) {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
         <div style="text-align: center; padding: 10px;">
-          <i data-lucide="clock" style="width: 32px; height: 32px; color: #D97706; margin-bottom: 8px;"></i>
-          <div style="font-weight: 700; margin-bottom: 4px;">Paiement en attente</div>
+          <div style="font-weight: 700; margin-bottom: 4px;">Paiement en cours de confirmation</div>
           <div style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 12px;">Commande : <code>${escapeHtml(orderId)}</code></div>
           <button type="button" class="btn btn-secondary btn-block" onclick="handlePaymentReturn('${escapeHtml(orderId)}')">
-            <i data-lucide="refresh-cw"></i> Vérifier à nouveau la confirmation
+            Vérifier à nouveau le paiement
           </button>
         </div>
       `;
       return card;
     }
 
-    function createDownloadsCard(portalToken) {
+    function createDownloadsCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-header">
-          <div class="chat-card-title">
-            <i data-lucide="check-circle" style="color: #16A34A;"></i> Vos livrables complets débloqués
-          </div>
+        <div class="card-title-row">
+          <span class="card-title-text">Vos livrables officiels</span>
         </div>
         <div style="display: flex; flex-direction: column; gap: 8px;">
-          <a href="/api/v1/downloads/pack/livre?email=${encodeURIComponent(STATE.email)}&order_id=${encodeURIComponent(STATE.orderId)}" class="btn btn-blue btn-block" download>
-            <i data-lucide="book"></i> Télécharger le Livre complet (PDF 68 pages)
+          <a href="/api/v1/downloads/pack/livre?email=${encodeURIComponent(STATE.email)}&order_id=${encodeURIComponent(STATE.orderId)}" class="btn btn-green btn-block" download>
+            Télécharger le Livre (PDF 68 pages)
           </a>
           <a href="/api/v1/downloads/pack/code?email=${encodeURIComponent(STATE.email)}&order_id=${encodeURIComponent(STATE.orderId)}" class="btn btn-secondary btn-block" download>
-            <i data-lucide="download"></i> Télécharger le Pack Code (Zip)
+            Télécharger le Code source (Archive Zip)
           </a>
-          <button type="button" class="btn btn-primary btn-block" onclick="triggerAction('demarrer')">
-            <i data-lucide="play"></i> Démarrer l'onboarding en 6 étapes
+          <button type="button" class="btn btn-secondary btn-block" onclick="triggerAction('demarrer')">
+            Voir le parcours d'installation (6 étapes)
           </button>
         </div>
       `;
@@ -830,23 +807,18 @@
 
     function createStepsCard(steps) {
       const card = document.createElement('div');
-      card.className = 'chat-card';
-      let html = `<div class="chat-card-title"><i data-lucide="list-checks" style="color: var(--color-primary);"></i> Les 6 étapes d'installation</div>`;
-      html += `<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">`;
+      card.className = 'rich-card';
+      let html = `<div class="card-title-row"><span class="card-title-text">Les 6 étapes d'onboarding</span></div>`;
+      html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
 
       steps.forEach(s => {
         html += `
-          <div class="step-item ${s.is_completed ? 'completed' : ''}">
-            <div class="step-item-header">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="step-badge">${s.step_number}</span>
-                <span style="font-size: 0.88rem; font-weight: 700;">${escapeHtml(s.step_title)}</span>
-              </div>
-              ${s.is_completed 
-                ? '<span style="font-size: 0.72rem; color: #16A34A; font-weight: 700;">Terminé</span>'
-                : `<button type="button" class="btn btn-secondary" style="font-size: 0.75rem; padding: 4px 10px; min-height: 32px;" onclick="validateStepInChat(${s.step_number})">Valider</button>`
-              }
-            </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--color-surface-muted); border-radius: 6px; font-size: 0.82rem;">
+            <span><strong>Étape ${s.step_number} :</strong> ${escapeHtml(s.step_title)}</span>
+            ${s.is_completed 
+              ? '<span style="color: var(--color-brand-green-dark); font-weight: 700;">Validé</span>'
+              : `<button type="button" class="btn btn-secondary" style="font-size: 0.72rem; padding: 3px 8px; min-height: 28px;" onclick="validateStepInChat(${s.step_number})">Valider</button>`
+            }
           </div>
         `;
       });
@@ -857,18 +829,15 @@
 
     function createRecoveryCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-title">
-          <i data-lucide="key" style="color: var(--color-primary);"></i> Récupérer mes accès
+        <div class="card-title-row">
+          <span class="card-title-text">Retrouver mes accès</span>
         </div>
-        <form class="chat-form" onsubmit="submitRecovery(event)">
-          <div class="form-group">
-            <label for="recEmail">Votre adresse e-mail d'achat</label>
-            <input type="email" id="recEmail" class="form-input" placeholder="votre.email@domaine.com" required>
-          </div>
+        <form style="display: flex; flex-direction: column; gap: 8px;" onsubmit="submitRecovery(event)">
+          <input type="email" id="recEmail" style="min-height: 42px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="votre.email@domaine.com" required>
           <div id="recErr" style="display: none; background: #FEF2F2; color: #DC2626; padding: 8px; border-radius: 6px; font-size: 0.8rem;"></div>
-          <button type="submit" id="recBtn" class="btn btn-blue btn-block">
+          <button type="submit" id="recBtn" class="btn btn-green btn-block">
             Rechercher mon compte
           </button>
         </form>
@@ -878,22 +847,16 @@
 
     function createTicketCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div class="chat-card-title">
-          <i data-lucide="life-buoy" style="color: #EA580C;"></i> Diagnostic technique & Ticket
+        <div class="card-title-row">
+          <span class="card-title-text">Assistance technique KORYXA</span>
         </div>
-        <form class="chat-form" onsubmit="submitTicketInChat(event)">
-          <div class="form-group">
-            <label for="tktSubject">Objet de l'anomalie</label>
-            <input type="text" id="tktSubject" class="form-input" placeholder="ex: Erreur ModuleNotFoundError sur Cohere" required>
-          </div>
-          <div class="form-group">
-            <label for="tktDetails">Détails (OS, version Python, message d'erreur terminal)</label>
-            <textarea id="tktDetails" class="form-input" rows="3" placeholder="Windows 11, Python 3.11..."></textarea>
-          </div>
-          <button type="submit" id="tktBtn" class="btn btn-primary btn-block">
-            Transmettre le ticket formateur
+        <form style="display: flex; flex-direction: column; gap: 8px;" onsubmit="submitTicketInChat(event)">
+          <input type="text" id="tktSubject" style="min-height: 42px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="Objet du blocage" required>
+          <textarea id="tktDetails" rows="3" style="padding: 8px 12px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.9rem;" placeholder="Détails (OS, version Python, message d'erreur)..."></textarea>
+          <button type="submit" id="tktBtn" class="btn btn-green btn-block">
+            Transmettre le ticket
           </button>
         </form>
       `;
@@ -902,14 +865,13 @@
 
     function createTicketSuggestionCard() {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <div style="font-size: 0.85rem; color: #B91C1C; display: flex; align-items: center; gap: 8px;">
-          <i data-lucide="alert-triangle" style="width: 16px; color: #DC2626;"></i>
-          Cette question semble indiquer un blocage technique.
+        <div style="font-size: 0.85rem; color: #B91C1C;">
+          Un blocage technique persiste ? Vous pouvez contacter l'équipe :
         </div>
         <button type="button" class="btn btn-secondary btn-block" style="font-size: 0.82rem;" onclick="showTicketFlow()">
-          <i data-lucide="life-buoy"></i> Ouvrir un ticket d'aide formateur
+          Ouvrir un ticket d'aide formateur
         </button>
       `;
       return card;
@@ -917,10 +879,10 @@
 
     function createDownloadButtonCard(label, link) {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       card.innerHTML = `
-        <a href="${escapeHtml(link)}" class="btn btn-blue btn-block" download>
-          <i data-lucide="download"></i> ${escapeHtml(label)}
+        <a href="${escapeHtml(link)}" class="btn btn-green btn-block" download>
+          ${escapeHtml(label)}
         </a>
       `;
       return card;
@@ -928,32 +890,30 @@
 
     function createSimpleActionCard(btnLabel, callback) {
       const card = document.createElement('div');
-      card.className = 'chat-card';
+      card.className = 'rich-card';
       const btn = document.createElement('button');
-      btn.className = 'btn btn-primary btn-block';
-      btn.innerHTML = `<i data-lucide="zap"></i> ${escapeHtml(btnLabel)}`;
+      btn.className = 'btn btn-green btn-block';
+      btn.textContent = btnLabel;
       btn.onclick = callback;
       card.appendChild(btn);
       return card;
     }
 
     // ==========================================
-    // GESTION DU FLUX DE MESSAGES
+    // RENDU DES MESSAGES ET DÉFILEMENT
     // ==========================================
 
     function appendUserMessage(text) {
       const container = document.getElementById('chatMessages');
       const timeStr = getCurrentTime();
 
-      const row = document.createElement('div');
-      row.className = 'msg-row user';
-      row.innerHTML = `
-        <div class="msg-content">
-          <div class="bubble bubble-user">${escapeHtml(text)}</div>
-          <span class="bubble-time">${timeStr}</span>
-        </div>
+      const entry = document.createElement('div');
+      entry.className = 'message-entry user';
+      entry.innerHTML = `
+        <div class="bubble-box">${escapeHtml(text)}</div>
+        <span class="message-timestamp">${timeStr}</span>
       `;
-      container.appendChild(row);
+      container.appendChild(entry);
       scrollToBottom();
       saveMessageToStorage('user', text);
     }
@@ -963,34 +923,22 @@
       const timeStr = getCurrentTime();
       const formatted = renderMarkdown(text);
 
-      const row = document.createElement('div');
-      row.className = 'msg-row assistant';
-
-      const avatarHtml = `
-        <div class="msg-avatar">
-          <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
-        </div>
-      `;
-
-      const contentBox = document.createElement('div');
-      contentBox.className = 'msg-content';
+      const entry = document.createElement('div');
+      entry.className = 'message-entry assistant';
 
       const bubble = document.createElement('div');
-      bubble.className = 'bubble bubble-assistant';
+      bubble.className = 'bubble-box';
       bubble.innerHTML = formatted + (extraHtml || '');
-      contentBox.appendChild(bubble);
+      entry.appendChild(bubble);
 
-      cards.forEach(c => contentBox.appendChild(c));
+      cards.forEach(c => entry.appendChild(c));
 
       const timeEl = document.createElement('span');
-      timeEl.className = 'bubble-time';
+      timeEl.className = 'message-timestamp';
       timeEl.textContent = timeStr;
-      contentBox.appendChild(timeEl);
+      entry.appendChild(timeEl);
 
-      row.innerHTML = avatarHtml;
-      row.appendChild(contentBox);
-
-      container.appendChild(row);
+      container.appendChild(entry);
       scrollToBottom();
       lucide.createIcons();
 
@@ -999,32 +947,26 @@
 
     function showTypingIndicator() {
       const container = document.getElementById('chatMessages');
-      const id = 'typingIndicatorRow';
+      const id = 'typingIndicatorBox';
       if (document.getElementById(id)) return;
 
-      const row = document.createElement('div');
-      row.id = id;
-      row.className = 'msg-row assistant';
-      row.innerHTML = `
-        <div class="msg-avatar">
-          <i data-lucide="bot" style="width: 18px; height: 18px;"></i>
-        </div>
-        <div class="msg-content">
-          <div class="typing-bubble">
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span class="typing-dot"></span>
-            <span style="font-size: 0.75rem; color: #64748B; margin-left: 6px;">L'assistant KORYXA écrit...</span>
-          </div>
+      const entry = document.createElement('div');
+      entry.id = id;
+      entry.className = 'message-entry assistant';
+      entry.innerHTML = `
+        <div class="typing-box">
+          <span class="typing-dot-clean"></span>
+          <span class="typing-dot-clean"></span>
+          <span class="typing-dot-clean"></span>
+          <span style="font-size: 0.75rem; color: #64748B; margin-left: 6px;">L'assistant KORYXA écrit...</span>
         </div>
       `;
-      container.appendChild(row);
+      container.appendChild(entry);
       scrollToBottom();
-      lucide.createIcons();
     }
 
     function hideTypingIndicator() {
-      const el = document.getElementById('typingIndicatorRow');
+      const el = document.getElementById('typingIndicatorBox');
       if (el) el.remove();
     }
 
@@ -1037,17 +979,16 @@
       chips.forEach(c => {
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `action-chip ${c.accent ? 'accent' : ''}`;
-        btn.innerHTML = `<i data-lucide="${c.icon}" style="width: 13px;"></i> ${escapeHtml(c.label)}`;
+        btn.className = `action-pill ${c.highlight ? 'highlight' : ''}`;
+        btn.textContent = c.label;
         btn.onclick = () => triggerAction(c.id);
         wrap.appendChild(btn);
       });
-      lucide.createIcons();
     }
 
     function scrollToBottom() {
-      const container = document.getElementById('chatMessages');
-      container.scrollTop = container.scrollHeight;
+      const stream = document.getElementById('chatStream');
+      stream.scrollTop = stream.scrollHeight;
     }
 
     function getCurrentTime() {
@@ -1063,12 +1004,11 @@
 
     function saveMessageToStorage(role, text, extraHtml = '') {
       try {
-        const raw = localStorage.getItem('koryxa_chat_log');
+        const raw = localStorage.getItem('koryxa_chat_log_v2');
         const list = raw ? JSON.parse(raw) : [];
         list.push({ role, text, extraHtml, time: getCurrentTime() });
-        // Conserver les 20 derniers messages
         if (list.length > 20) list.shift();
-        localStorage.setItem('koryxa_chat_log', JSON.stringify(list));
+        localStorage.setItem('koryxa_chat_log_v2', JSON.stringify(list));
       } catch (e) {}
     }
 
@@ -1082,18 +1022,17 @@
       });
     }
 
-    window.toggleDrawer = function() {
-      const backdrop = document.getElementById('drawerBackdrop');
-      const panel = document.getElementById('drawerPanel');
-      backdrop.classList.toggle('open');
-      panel.classList.toggle('open');
-    };
+    window.toggleSidebar = function() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const isMobile = window.innerWidth <= 1024;
 
-    window.resetChat = function() {
-      localStorage.removeItem('koryxa_chat_log');
-      localStorage.removeItem('koryxa_client_email');
-      localStorage.removeItem('koryxa_client_order_id');
-      window.location.href = '/';
+      if (isMobile) {
+        sidebar.classList.toggle('open');
+        backdrop.classList.toggle('active');
+      } else {
+        sidebar.classList.toggle('collapsed');
+      }
     };
   </script>
 </body>
