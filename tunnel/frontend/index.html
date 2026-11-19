@@ -14,9 +14,8 @@
   <!-- En-tête -->
   <header class="site-header">
     <div class="container nav-wrap">
-      <a href="/" class="brand-badge">
-        <span style="letter-spacing: -0.03em;">KORYXA</span>
-        <span class="pill">Mon premier assistant IA</span>
+      <a href="/" class="brand-badge" title="KORYXA">
+        <img src="/images/logo-koryxa.png" alt="KORYXA" class="header-logo">
       </a>
       <div class="header-actions">
         <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary btn-text-desktop" download>
@@ -41,7 +40,7 @@
           <!-- Colonne Gauche : Titre, Promesse, Prix et Action -->
           <div>
             <div class="hero-tagline">
-              <i data-lucide="sparkles" style="width: 16px;"></i> Mon premier assistant IA &middot; Pack complet Cohere
+              Mon premier assistant IA &middot; Pack complet Cohere
             </div>
             
             <h1 class="hero-title">
@@ -244,7 +243,10 @@
             </p>
           </div>
           <div class="video-meta-bar">
-            <span><i data-lucide="user-check" style="width: 14px; display: inline;"></i> Présenté par Yayra LAMADOKOU</span>
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <img src="/images/yayra-lamadokou.jpg" alt="Yayra LAMADOKOU" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #64748B;">
+              Présenté par Yayra LAMADOKOU
+            </span>
             <span><i data-lucide="cpu" style="width: 14px; display: inline;"></i> Cohere Command R + Embed v4</span>
             <span style="color: #34D399; font-weight: 700;"><i data-lucide="activity" style="width: 14px; display: inline;"></i> Mesure réelle constatée : 1,2 s de latence moyenne</span>
           </div>
@@ -427,9 +429,7 @@
 
         <div class="author-card">
           <div class="author-avatar-wrap">
-            <div class="author-avatar" title="Yayra LAMADOKOU — Fondateur de KORYXA">
-              YL
-            </div>
+            <img src="/images/yayra-lamadokou.jpg" alt="Yayra LAMADOKOU" class="author-photo" title="Yayra LAMADOKOU — Fondateur de KORYXA">
             <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-align: center;">
               KORYXA INGÉNIERIE IA
             </div>
@@ -538,8 +538,9 @@
 
   <!-- Pied de page -->
   <footer class="site-footer">
-    <div class="container">
-      <p style="font-weight: 700; margin-bottom: 8px;">KORYXA &mdash; Apprendre à construire. Savoir livrer.</p>
+    <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+      <img src="/images/logo-koryxa.png" alt="KORYXA" style="height: 48px; width: auto; opacity: 0.95;">
+      <p style="font-weight: 700; margin-bottom: 2px;">KORYXA &mdash; Apprendre à construire. Savoir livrer.</p>
       <p style="font-size: 0.8rem; color: #94A3B8;">&copy; 2026 KORYXA. Passerelle officielle KORYXA Pay &middot; Tous droits réservés.</p>
     </div>
   </footer>
