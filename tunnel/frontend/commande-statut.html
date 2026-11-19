@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statut de commande — KORYXA Pay</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="brand-badge">
+        <span>KORYXA</span>
+        <span class="pill">Paiement & Activation</span>
+      </a>
+    </div>
+  </header>
+
+  <main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px;">
+    <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); max-width: 540px; width: 100%; padding: 40px; text-align: center; box-shadow: var(--shadow-card);">
+      
+      <!-- État : Vérification en cours -->
+      <div id="loadingState">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: #EFF6FF; color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+          <i data-lucide="loader-2" style="width: 32px; height: 32px; animation: spin 1s linear infinite;"></i>
+        </div>
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">Vérification du paiement...</h2>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem;">
+          Nous synchronisons la confirmation auprès de la passerelle KORYXA Pay. Veuillez patienter un instant.
+        </p>
+      </div>
+
+      <!-- État : Succès -->
+      <div id="successState" style="display: none;">
+        <div style="width: 64px; height: 64px; border-radius: 50%; background: #DCFCE7; color: var(--color-success); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+          <i data-lucide="check" style="width: 36px; height: 36px;"></i>
+        </div>
+        <h2 style="font-size: 1.6rem; font-weight: 800; color: #15803D; margin-bottom: 10px;">Paiement confirmé !</h2>
+        <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+          Votre commande a été validée avec succès. Vos accès au pack complet et vos livrables sont immédiatement disponibles.
+        </p>
+
+        <a id="portalLink" href="#" class="btn btn-primary" style="width: 100%; min-height: 48px; font-size: 1.05rem;">
+          <i data-lucide="arrow-right"></i> Accéder à mon Espace Client
+        </a>
+      </div>
+
+      <!-- Option de simulation locale -->
+      <div id="simBlock" style="display: none; margin-top: 32px; padding-top: 20px; border-top: 1px dashed var(--color-border);">
+        <p style="font-size: 0.8rem; color: #64748B; margin-bottom: 12px;">
+          Mode Test / Démonstration locale détecté :
+        </p>
+        <button id="simBtn" onclick="confirmSimulatedPayment()" class="btn btn-secondary" style="font-size: 0.85rem; width: 100%;">
+          <i data-lucide="zap"></i> Valider le paiement de test (11 000 FCFA)
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+
+  <script type="module">
+    import { api } from '/js/api.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    const paymentId = params.get('payment_id') || `pay_sim_${(orderId||'').slice(0,16)}`;
+    const isSimulated = params.get('simulated') === '1';
+
+    let pollInterval = null;
+
+    async function checkStatus() {
+      if (!orderId) {
+        document.getElementById('loadingState').innerHTML = '<p style="color: #DC2626;">Aucun identifiant de commande fourni.</p>';
+        return;
+      }
+
+      try {
+        const order = await api.getOrderStatus(orderId);
+        if (order.is_paid && order.portal_access_token) {
+          clearInterval(pollInterval);
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('simBlock').style.display = 'none';
+          document.getElementById('successState').style.display = 'block';
+          document.getElementById('portalLink').href = order.portal_access_token;
+          lucide.createIcons();
+        } else {
+          if (isSimulated) {
+            document.getElementById('simBlock').style.display = 'block';
+          }
+        }
+      } catch (err) {
+        console.error("Erreur polling:", err);
+      }
+    }
+
+    window.confirmSimulatedPayment = async function() {
+      const btn = document.getElementById('simBtn');
+      btn.disabled = true;
+      btn.textContent = 'Validation en cours...';
+
+      // Appel direct au webhook KORYXA Pay avec la charge utile attendue
+      const nowTs = Math.floor(Date.now() / 1000).toString();
+      const body = JSON.stringify({
+        event: "payment.status.changed",
+        payment_id: paymentId,
+        order_id: orderId,
+        status: "succeeded"
+      });
+
+      try {
+        const res = await fetch('/api/v1/webhook/koryxa', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-koryxa-timestamp': nowTs,
+            'x-koryxa-signature': 'sim_bypass_for_test',
+            'x-koryxa-event-id': `evt_${paymentId}`
+          },
+          body: body
+        });
+        if (res.ok) {
+          await checkStatus();
+        } else {
+          alert("Erreur lors de la confirmation simulée.");
+        }
+      } catch (e) {
+        alert("Erreur : " + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Valider le paiement de test (11 000 FCFA)';
+      }
+    };
+
+    checkStatus();
+    pollInterval = setInterval(checkStatus, 2500);
+    lucide.createIcons();
+  </script>
+</body>
+</html>

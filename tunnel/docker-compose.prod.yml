@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - KORYXA_PAY_BASE_URL=https://api-pay.koryxa.fr
+      - KORYXA_PAY_PROJECT_CODE=${KORYXA_PAY_PROJECT_CODE}
+      - KORYXA_PAY_PROJECT_KEY=${KORYXA_PAY_PROJECT_KEY}
+      - KORYXA_WEBHOOK_SECRET=${KORYXA_WEBHOOK_SECRET}
+      - COHERE_API_KEY=${COHERE_API_KEY}
+      - ADMIN_SECRET_TOKEN=${ADMIN_SECRET_TOKEN}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - DATABASE_URL=sqlite:////app/data/koryxa_tunnel.db
+    volumes:
+      - backend_data:/app/data
+      - ./backend/storage:/app/storage:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
+  caddy_data:
+  caddy_config:

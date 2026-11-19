@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Client — Créer et livrer son premier assistant IA</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background: #F8FAFC;">
+
+  <!-- En-tête Espace Client -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="brand-badge">
+        <span>KORYXA</span>
+        <span class="pill" style="background: #DCFCE7; color: #16A34A; border-color: #BBF7D0;">Espace Client &middot; Actif</span>
+      </a>
+      <div class="header-actions">
+        <span id="userBadge" style="font-size: 0.85rem; color: #475569; font-weight: 600;"></span>
+        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">Quitter</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 64px;">
+
+    <!-- Bannière de bienvenue -->
+    <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 32px; box-shadow: var(--shadow-subtle);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Formation & Déploiement</span>
+          <h1 id="welcomeTitle" style="font-size: 1.85rem; font-weight: 800; margin: 4px 0 8px 0;">Bienvenue dans votre Espace de Travail</h1>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 650px;">
+            Vous disposez du livre complet, de l'archive de code source du projet Horizon Numérique, et de votre parcours guidé d'installation en 6 étapes.
+          </p>
+        </div>
+        <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-md); padding: 12px 18px; text-align: right;">
+          <div style="font-size: 0.75rem; color: #64748B;">Commande validée</div>
+          <div style="font-weight: 800; color: var(--color-primary); font-size: 1.1rem;">11 000 F CFA</div>
+          <div style="font-size: 0.75rem; color: #16A34A; font-weight: 600;">Paiement unique &middot; À vie</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Zone de Téléchargement Sécurisée -->
+    <section style="padding: 0 0 40px 0;">
+      <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="download" style="color: var(--color-primary);"></i> Vos Livrables Complets à Télécharger
+      </h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+        <!-- Livrable 1 : Livre PDF -->
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <span style="background: #EFF6FF; color: var(--color-primary); font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">PDF &middot; 68 pages</span>
+              <i data-lucide="file-text" style="color: #64748B;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Livre : Créer et livrer son premier assistant IA</h3>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
+              Les 12 chapitres détaillant le cadrage, l'ingestion documentaire, la recherche vectorielle, Cohere, l'API FastAPI et les modèles clients.
+            </p>
+          </div>
+          <a id="btnDownloadBook" href="#" class="btn btn-secondary" style="width: 100%;" download>
+            <i data-lucide="download"></i> Télécharger le Livre PDF
+          </a>
+        </div>
+
+        <!-- Livrable 2 : Archive Code -->
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <span style="background: #FEF3C7; color: #D97706; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">Code Source &middot; Zip 1.4 Mo</span>
+              <i data-lucide="package" style="color: #64748B;"></i>
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Projet Complet : Horizon Numérique</h3>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
+              Backend FastAPI, Frontend Next.js, les 5 documents du corpus de test, le jeu de 35 questions d'évaluation, les 4 modèles de devis et tests.
+            </p>
+          </div>
+          <a id="btnDownloadCode" href="#" class="btn btn-secondary" style="width: 100%;" download>
+            <i data-lucide="download"></i> Télécharger le Pack Code (Zip)
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Parcours Guidé en 6 Étapes -->
+    <section style="padding: 0 0 48px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="check-circle-2" style="color: var(--color-success);"></i> Votre Parcours d'Installation et de Livraison
+        </h2>
+        <span id="progressScore" style="font-size: 0.9rem; font-weight: 700; color: var(--color-primary); background: #EFF6FF; padding: 4px 12px; border-radius: 9999px;">
+          0 / 6 validées
+        </span>
+      </div>
+
+      <div id="stepsList" style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Chargé dynamiquement -->
+      </div>
+    </section>
+
+    <!-- 3. Assistant Support Technique IA (Cohere RAG) -->
+    <section style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-card);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="bot" style="color: var(--color-primary);"></i> Assistant Support Technique IA (Cohere RAG)
+          </h2>
+          <p style="font-size: 0.85rem; color: var(--color-text-muted);">
+            Posez une question sur le code du projet, l'API Cohere, la vectorisation ou le déploiement. Réponses fondées sur le livre officiel.
+          </p>
+        </div>
+        <button onclick="openTicketModal()" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+          <i data-lucide="life-buoy"></i> Ouvrir un ticket formateur
+        </button>
+      </div>
+
+      <!-- Fenêtre de chat -->
+      <div id="chatMessages" style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; min-height: 220px; max-height: 380px; overflow-y: auto; margin-bottom: 16px;">
+        <div style="font-size: 0.85rem; color: #64748B; text-align: center; margin-top: 60px;">
+          L'assistant est prêt. Posez votre question technique ci-dessous.
+        </div>
+      </div>
+
+      <!-- Formulaire de question -->
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" style="display: flex; gap: 10px;">
+        <input type="text" id="chatInput" class="form-control" placeholder="ex. Comment lancer le script d'évaluation des 35 questions ?" required>
+        <button type="submit" id="chatBtn" class="btn btn-blue" style="flex-shrink: 0; padding: 10px 24px;">
+          <i data-lucide="send"></i> Envoyer
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Modal Ticket Support -->
+  <div id="ticketModal" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 1.2rem; font-weight: 700;">Ouvrir un ticket d'assistance formateur</h3>
+        <button onclick="closeTicketModal()" style="background: none; border: none; cursor: pointer; color: #64748B;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 16px;">
+        Si l'assistant IA n'a pas permis de résoudre votre anomalie, décrivez votre blocage. Nous n'assurons pas de permanence instantanée mais nous examinons chaque diagnostic.
+      </p>
+
+      <form id="ticketForm" onsubmit="handleTicketSubmit(event)">
+        <div class="form-group">
+          <label for="ticketSubject">Objet du blocage</label>
+          <input type="text" id="ticketSubject" class="form-control" placeholder="ex. Erreur ModuleNotFoundError sur Cohere" required>
+        </div>
+        <div class="form-group">
+          <label for="ticketDetails">Détails techniques (OS, version Python, message d'erreur terminal)</label>
+          <textarea id="ticketDetails" class="form-control" rows="4" placeholder="Windows 11, Python 3.11... Message d'erreur : ..." required></textarea>
+        </div>
+        <button type="submit" id="ticketSubmitBtn" class="btn btn-primary" style="width: 100%;">
+          Transmettre le ticket à KORYXA
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { api } from '/js/api.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email');
+    const orderId = params.get('order_id');
+
+    let currentDashboard = null;
+    let chatHistory = [];
+
+    async function loadDashboard() {
+      if (!email || !orderId) {
+        alert("Paramètres d'accès manquants. Veuillez vous reconnecter depuis votre e-mail de confirmation.");
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        currentDashboard = await api.getClientDashboard(email, orderId);
+        document.getElementById('userBadge').textContent = currentDashboard.customer.email;
+        document.getElementById('welcomeTitle').textContent = `Bienvenue, ${currentDashboard.customer.full_name || 'Développeur'}`;
+
+        // Liens de téléchargement
+        document.getElementById('btnDownloadBook').href = currentDashboard.download_links.livre_pdf;
+        document.getElementById('btnDownloadCode').href = currentDashboard.download_links.projet_zip;
+
+        // Rendu des étapes
+        renderSteps(currentDashboard.steps);
+      } catch (err) {
+        alert("Accès refusé : " + err.message);
+        window.location.href = '/';
+      }
+    }
+
+    function renderSteps(steps) {
+      const container = document.getElementById('stepsList');
+      container.innerHTML = '';
+      let completedCount = 0;
+
+      const stepDetails = [
+        "Créez votre environnement virtuel (`python -m venv .venv`), activez-le et installez les dépendances du backend (`pip install -r backend/requirements.txt`).",
+        "Obtenez votre clé sur le dashboard Cohere et renseignez `COHERE_API_KEY=...` dans le fichier `backend/.env`.",
+        "Démarrez le backend FastAPI sur le port 8000 (`uvicorn app.main:app`) et le frontend Next.js sur le port 3000 (`npm run dev`).",
+        "Téléversez les 4 PDF et la FAQ d'exemple dans l'administration ou lancez le script d'ingestion `python scripts/build_corpus.py`.",
+        "Exécutez `python eval/run_eval.py` pour valider les 35 questions de test et observer les citations de sources exactes.",
+        "Personnalisez `modeles_clients/02_modele_devis_et_maintenance.md` et présentez votre démonstration à votre premier client."
+      ];
+
+      steps.forEach((step, idx) => {
+        if (step.is_completed) completedCount++;
+
+        const div = document.createElement('div');
+        div.style.background = '#FFFFFF';
+        div.style.border = step.is_completed ? '1px solid #BBF7D0' : '1px solid var(--color-border)';
+        div.style.borderRadius = 'var(--radius-md)';
+        div.style.padding = '18px 22px';
+        div.style.display = 'flex';
+        div.style.alignItems = 'flex-start';
+        div.style.justifyContent = 'space-between';
+        div.style.gap = '16px';
+
+        div.innerHTML = `
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: ${step.is_completed ? '#DCFCE7' : '#EFF6FF'}; color: ${step.is_completed ? '#16A34A' : 'var(--color-primary)'}; font-weight: 700; font-size: 0.8rem;">
+                ${step.step_number}
+              </span>
+              <h4 style="font-weight: 700; font-size: 1rem; color: ${step.is_completed ? '#15803D' : '#0F172A'};">
+                ${step.step_title}
+              </h4>
+              ${step.is_completed ? '<span style="font-size: 0.75rem; background: #DCFCE7; color: #16A34A; padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Validé</span>' : ''}
+            </div>
+            <p style="font-size: 0.85rem; color: #64748B; margin-left: 36px;">
+              ${stepDetails[idx] || ''}
+            </p>
+          </div>
+          <div>
+            ${step.is_completed 
+              ? '<span style="color: #16A34A; font-size: 0.85rem; font-weight: 600;"><i data-lucide="check" style="display: inline; width: 18px;"></i> Étape terminée</span>' 
+              : `<button onclick="window.markStepValid(${step.step_number})" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+                   Valider cette étape
+                 </button>`
+            }
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      document.getElementById('progressScore').textContent = `${completedCount} / ${steps.length} validées`;
+      lucide.createIcons();
+    }
+
+    window.markStepValid = async function(stepNum) {
+      try {
+        await api.validateStep(stepNum, email, orderId);
+        await loadDashboard();
+      } catch (e) {
+        alert("Erreur lors de la validation : " + e.message);
+      }
+    };
+
+    // Chat Support IA
+    window.handleChatSubmit = async function(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const question = input.value.trim();
+      if (!question) return;
+
+      const chatBox = document.getElementById('chatMessages');
+      if (chatHistory.length === 0) chatBox.innerHTML = '';
+
+      // Message Utilisateur
+      chatBox.innerHTML += `
+        <div style="margin-bottom: 12px; text-align: right;">
+          <div style="display: inline-block; background: var(--color-primary); color: #FFF; padding: 10px 16px; border-radius: var(--radius-md); font-size: 0.9rem; max-width: 80%; text-align: left;">
+            ${escapeHtml(question)}
+          </div>
+        </div>
+      `;
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Message d'attente
+      const loadingId = 'load_' + Date.now();
+      chatBox.innerHTML += `
+        <div id="${loadingId}" style="margin-bottom: 12px;">
+          <div style="display: inline-block; background: #FFFFFF; border: 1px solid var(--color-border); padding: 10px 16px; border-radius: var(--radius-md); font-size: 0.85rem; color: #64748B;">
+            <i data-lucide="loader-2" class="animate-spin" style="width: 14px; display: inline;"></i> Recherche dans le manuscrit officiel...
+          </div>
+        </div>
+      `;
+      lucide.createIcons();
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const res = await api.askSupport(question, chatHistory);
+        document.getElementById(loadingId).remove();
+
+        const citationsHtml = res.citations && res.citations.length 
+          ? `<div style="margin-top: 8px; font-size: 0.75rem; color: #2563EB;"><strong>Sources citées :</strong> ${res.citations.join(' &middot; ')}</div>` 
+          : '';
+
+        chatBox.innerHTML += `
+          <div style="margin-bottom: 16px;">
+            <div style="display: inline-block; background: #FFFFFF; border: 1px solid var(--color-border); padding: 14px 18px; border-radius: var(--radius-md); font-size: 0.9rem; max-width: 85%;">
+              <div style="white-space: pre-wrap;">${escapeHtml(res.answer)}</div>
+              ${citationsHtml}
+            </div>
+          </div>
+        `;
+        chatHistory.push({ role: "user", content: question }, { role: "assistant", content: res.answer });
+      } catch (err) {
+        document.getElementById(loadingId).remove();
+        chatBox.innerHTML += `
+          <div style="color: #DC2626; font-size: 0.85rem;">Erreur : ${err.message}</div>
+        `;
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+      lucide.createIcons();
+    };
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    window.openTicketModal = function() {
+      document.getElementById('ticketModal').style.display = 'flex';
+    };
+    window.closeTicketModal = function() {
+      document.getElementById('ticketModal').style.display = 'none';
+    };
+
+    window.handleTicketSubmit = async function(e) {
+      e.preventDefault();
+      const subject = document.getElementById('ticketSubject').value;
+      const details = document.getElementById('ticketDetails').value;
+      const btn = document.getElementById('ticketSubmitBtn');
+      btn.disabled = true;
+
+      try {
+        const conv = [...chatHistory, { role: "diagnostic_notes", content: details }];
+        const res = await api.createTicket(subject, conv, email, orderId);
+        alert(res.message);
+        closeTicketModal();
+      } catch (e) {
+        alert("Erreur lors de l'enregistrement : " + e.message);
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    loadDashboard();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

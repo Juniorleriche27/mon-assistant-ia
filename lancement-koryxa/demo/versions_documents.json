@@ -1,0 +1,12 @@
+[
+  {
+    "file": "demo/avant/02_tarifs_et_financements.pdf",
+    "sha256": "3bed007d88d1534fb367e9a9442c3aa751b6fdd9c00202d6fede0509e357f48a",
+    "expected_total": "650 euros"
+  },
+  {
+    "file": "demo/apres/02_tarifs_et_financements.pdf",
+    "sha256": "333926e4397e025543412adee6176b4c019690d77774ac132bcc6b476e77ca1d",
+    "expected_total": "700 euros"
+  }
+]

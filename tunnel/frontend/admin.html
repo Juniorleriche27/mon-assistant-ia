@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KORYXA — Cockpit Administration Tunnel</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body style="background: #F8FAFC;">
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="brand-badge">
+        <span>KORYXA</span>
+        <span class="pill" style="background: #FEF3C7; color: #D97706; border-color: #FDE68A;">Cockpit Administrateur</span>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">Retour site</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 64px;">
+
+    <!-- Zone d'authentification Admin -->
+    <div id="authSection" style="max-width: 440px; margin: 40px auto; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-card);">
+      <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 12px;">Accès Réservé</h2>
+      <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
+        Veuillez saisir le jeton secret d'administration KORYXA pour accéder aux métriques et commandes.
+      </p>
+      <form onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+          <label for="adminToken">Jeton Secret Admin</label>
+          <input type="password" id="adminToken" class="form-control" placeholder="koryxa_admin_secret_token_..." required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Déverrouiller le Cockpit
+        </button>
+      </form>
+    </div>
+
+    <!-- Contenu du Dashboard (caché par défaut) -->
+    <div id="dashboardSection" style="display: none;">
+      
+      <!-- Cartes de métriques clés -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Commandes initiées</div>
+          <div id="statOrders" style="font-size: 1.8rem; font-weight: 800; color: #0F172A;">-</div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Paiements confirmés</div>
+          <div id="statPaid" style="font-size: 1.8rem; font-weight: 800; color: #16A34A;">-</div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Chiffre d'affaires</div>
+          <div id="statRevenue" style="font-size: 1.8rem; font-weight: 800; color: var(--color-accent);">-</div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Taux de conversion</div>
+          <div id="statConversion" style="font-size: 1.8rem; font-weight: 800; color: var(--color-primary);">-</div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Téléchargements</div>
+          <div id="statDownloads" style="font-size: 1.8rem; font-weight: 800; color: #0F172A;">-</div>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px;">
+          <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 4px;">Tickets formateur</div>
+          <div id="statTickets" style="font-size: 1.8rem; font-weight: 800; color: #D97706;">-</div>
+        </div>
+      </div>
+
+      <!-- Tableau des Commandes Récentes -->
+      <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; margin-bottom: 32px;">
+        <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 16px;">Commandes Récentes (KORYXA Pay)</h3>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--color-border); color: #64748B;">
+                <th style="padding: 10px 12px;">ID Commande</th>
+                <th style="padding: 10px 12px;">Client</th>
+                <th style="padding: 10px 12px;">Montant</th>
+                <th style="padding: 10px 12px;">Statut</th>
+                <th style="padding: 10px 12px;">Date</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <!-- Chargé dynamiquement -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script type="module">
+    import { api } from '/js/api.js';
+
+    let currentToken = localStorage.getItem('koryxa_admin_token') || '';
+
+    window.handleAdminLogin = async function(e) {
+      e.preventDefault();
+      const token = document.getElementById('adminToken').value.trim();
+      await tryLoadAdmin(token);
+    };
+
+    async function tryLoadAdmin(token) {
+      try {
+        const stats = await api.getAdminStats(token);
+        currentToken = token;
+        localStorage.setItem('koryxa_admin_token', token);
+
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+
+        // Affichage des chiffres
+        document.getElementById('statOrders').textContent = stats.total_orders;
+        document.getElementById('statPaid').textContent = stats.paid_orders;
+        document.getElementById('statRevenue').textContent = `${stats.total_revenue_xof.toLocaleString()} F`;
+        document.getElementById('statConversion').textContent = `${stats.conversion_rate}%`;
+        document.getElementById('statDownloads').textContent = stats.total_downloads;
+        document.getElementById('statTickets').textContent = stats.active_tickets;
+
+        // Charger commandes
+        const orders = await api.getAdminOrders(token);
+        const tbody = document.getElementById('ordersTableBody');
+        tbody.innerHTML = '';
+        orders.forEach(o => {
+          const tr = document.createElement('tr');
+          tr.style.borderBottom = '1px solid #F1F5F9';
+          
+          let statusBadge = '<span style="background: #FEF3C7; color: #D97706; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">EN ATTENTE</span>';
+          if (o.status === 'succeeded') {
+            statusBadge = '<span style="background: #DCFCE7; color: #16A34A; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PAYÉ</span>';
+          } else if (o.status === 'failed') {
+            statusBadge = '<span style="background: #FEE2E2; color: #DC2626; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">ÉCHEC</span>';
+          }
+
+          tr.innerHTML = `
+            <td style="padding: 12px; font-family: monospace; font-size: 0.8rem;">${o.order_id.slice(0, 12)}...</td>
+            <td style="padding: 12px;"><strong>${o.customer_name || 'Anonyme'}</strong><br><span style="font-size: 0.8rem; color: #64748B;">${o.customer_email}</span></td>
+            <td style="padding: 12px; font-weight: 600;">${(o.amount_minor).toLocaleString()} ${o.currency}</td>
+            <td style="padding: 12px;">${statusBadge}</td>
+            <td style="padding: 12px; color: #64748B; font-size: 0.8rem;">${new Date(o.created_at).toLocaleDateString()} ${new Date(o.created_at).toLocaleTimeString().slice(0,5)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+      } catch (err) {
+        alert("Accès refusé : jeton administrateur invalide.");
+      }
+    }
+
+    if (currentToken) {
+      tryLoadAdmin(currentToken);
+    }
+    lucide.createIcons();
+  </script>
+</body>
+</html>

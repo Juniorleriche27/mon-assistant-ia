@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer et livrer son premier assistant IA — KORYXA</title>
+  <meta name="description" content="Guide pratique en français, projet complet et code source pour passer des documents d'une entreprise à un assistant documentaire IA livré à un client.">
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Lucide icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="brand-badge">
+        <span style="letter-spacing: -0.03em; font-size: 1.25rem;">KORYXA</span>
+        <span class="pill">Assistants IA en entreprise</span>
+      </a>
+      <div class="header-actions">
+        <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary" download>
+          <i data-lucide="book-open"></i> Extrait gratuit (PDF)
+        </a>
+        <button onclick="openCheckoutModal()" class="btn btn-primary">
+          Obtenir le pack — 11 000 F CFA
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-tagline">Pack complet &middot; Édition Cohere &middot; Code source inclus</span>
+        <h1 class="hero-title">Créez un assistant IA que vous savez tester et livrer.</h1>
+        <p class="hero-subtitle">
+          Un guide pratique en français, un projet complet et son code pour passer des documents d’une entreprise à un assistant documentaire, puis préparer sa livraison à un client.
+        </p>
+
+        <div class="hero-cta-box">
+          <div class="price-callout">
+            <span>11 000 F CFA</span>
+            <span class="currency">(XOF) &middot; Paiement unique</span>
+          </div>
+          <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 32px;">
+            <i data-lucide="zap"></i> Obtenir le pack complet &mdash; 11 000 F CFA
+          </button>
+          <div class="guarantee-note">
+            <i data-lucide="shield-check" style="color: var(--color-success); width: 18px;"></i>
+            Paiement sécurisé via KORYXA Pay (Mobile Money & Carte) &middot; Accès immédiat
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Démonstration en 90 secondes (Remplacement documentaire) -->
+    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <h2 class="section-title">La démonstration de référence en 90 secondes</h2>
+        <p class="section-sub">
+          Voyez comment un assistant documentaire KORYXA relie chaque réponse à son fichier source, et comment une mise à jour tarifaire est prise en compte instantanément.
+        </p>
+
+        <div class="demo-showcase">
+          <div class="demo-grid">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Le cas pratique : Horizon Numérique</h3>
+              <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: 16px;">
+                Un centre de formation possède ses tarifs dans un PDF, ses règlements dans un autre et sa FAQ ailleurs. Votre assistant retrouve le passage exact et affiche sa source.
+              </p>
+              
+              <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="file-text" style="width: 16px; color: var(--color-primary);"></i> Étape 1 : Version initiale (650 €)
+                </div>
+                <p style="font-size: 0.85rem; color: #64748B;">Question : « Quel est le tarif total d'Analyse de Données ? » &rarr; Réponse : 650 €, avec citation de la grille tarifaire.</p>
+              </div>
+
+              <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="refresh-cw" style="width: 16px; color: var(--color-accent);"></i> Étape 2 : Remplacement par la grille à 700 €
+                </div>
+                <p style="font-size: 0.85rem; color: #64748B;">L'administrateur remplace le fichier. L'assistant répond immédiatement 700 € sans modification de code.</p>
+              </div>
+            </div>
+
+            <!-- Interface interactive simulée -->
+            <div class="demo-screen">
+              <div class="screen-header">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+                <span style="font-size: 0.75rem; color: #94A3B8; margin-left: auto;">assistant-rag-horizon &middot; Cohere RAG</span>
+              </div>
+              <div class="chat-bubble user">
+                <strong>Visiteur :</strong> Quel est le tarif total d'Analyse de Données ?
+              </div>
+              <div class="chat-bubble assistant">
+                <strong>Assistant IA :</strong> Le tarif total pour le parcours Analyse de Données est de <strong>650 euros</strong> (frais administratifs de 40 euros inclus), payable en trois tranches de 220 €, 220 € et 210 €.
+                <br>
+                <span class="citation-pill"><i data-lucide="paperclip" style="width: 12px; display: inline;"></i> 02_tarifs_et_financements.pdf (page 1)</span>
+              </div>
+              <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #334155; font-size: 0.8rem; color: #94A3B8; display: flex; justify-content: space-between;">
+                <span>Modèle : Cohere Command R</span>
+                <span>Latence : 1.2s</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ce que vous allez apprendre (Méthode en 6 étapes) -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Ce que vous allez apprendre</h2>
+        <p class="section-sub">La méthode KORYXA pour transformer une demande floue en un assistant IA d'entreprise testé, documenté et prêt à être facturé.</p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-badge">1</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Cadrer le projet</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Transformer la demande « Je veux un chatbot » en un cahier des charges avec comportements vérifiables et critères de réception.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">2</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Préparer le corpus</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Nettoyer, découper et indexer des PDF et fichiers Markdown tout en conservant scrupuleusement la traçabilité des passages.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">3</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Construire le RAG</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Connecter FastAPI et Cohere pour combiner recherche documentaire, génération contrôlée et injection des sources.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">4</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Évaluer les réponses</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Exécuter un jeu de 35 questions d'évaluation pour distinguer une réponse convaincante d'une réponse réellement soutenue par la source.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">5</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Mettre en ligne</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Déployer avec Docker, gérer les sauvegardes de la base SQLite/PostgreSQL et sécuriser les variables d'environnement.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-badge">6</div>
+            <h3 style="font-weight: 700; margin-bottom: 8px;">Livrer au client</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">Utiliser les 4 modèles contractuels fournis pour faire signer la recette client et organiser la maintenance rémunérée.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contenu exact du pack -->
+    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <h2 class="section-title">Le contenu exact du pack complet</h2>
+        <p class="section-sub">Tout ce dont vous avez besoin pour apprendre, coder et livrer votre propre assistant IA.</p>
+
+        <div class="pack-grid">
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="book"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">Livre complet (68 pages)</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">12 chapitres détaillant l'architecture, le code et les décisions d'ingénierie RAG.</p>
+            </div>
+          </div>
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="code-2"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">Code source Horizon Numérique</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Application complète : Backend FastAPI, Frontend Next.js, administration documentaire.</p>
+            </div>
+          </div>
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="folder-check"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">Corpus d'exercice</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">4 PDF et 1 FAQ d'entreprise pour tester et reproduire le remplacement de documents.</p>
+            </div>
+          </div>
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="check-square"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">35 questions d'évaluation</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Jeu de test automatisé avec script de benchmark pour mesurer la précision des réponses.</p>
+            </div>
+          </div>
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="file-spreadsheet"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">Modèles de livraison client</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Cahier des charges, devis & maintenance, fiche de réception et grille de coûts.</p>
+            </div>
+          </div>
+          <div class="pack-card">
+            <div class="pack-icon"><i data-lucide="terminal"></i></div>
+            <div>
+              <h4 style="font-weight: 700; margin-bottom: 4px;">Scripts d'exploitation</h4>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted);">Scripts de sauvegarde, restauration, estimation des coûts Cohere et setup d'environnement.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transparence technique -->
+        <div style="margin-top: 40px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
+          <i data-lucide="info" style="color: #D97706; width: 24px; flex-shrink: 0; margin-top: 2px;"></i>
+          <div style="font-size: 0.9rem; color: #92400E;">
+            <strong>Prérequis et transparence des coûts :</strong>
+            Ce parcours s'adresse aux développeurs et freelances connaissant les bases de Python. 
+            Le pack inclut tout le matériel pédagogique et le code source. Les éventuels frais d'utilisation de l'API Cohere (clé configurée côté serveur par l'apprenant) ou d'hébergement du projet final ne sont pas inclus dans le prix du pack de 11 000 F CFA.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Questions fréquentes</h2>
+        <p class="section-sub">Des réponses claires et transparentes avant votre commande.</p>
+
+        <div class="faq-wrap">
+          <div class="faq-item">
+            <div class="faq-question">Faut-il connaître Python ?</div>
+            <div class="faq-answer">Oui, les bases sont utiles : exécuter un script, installer des dépendances avec pip et comprendre des fonctions simples. Le parcours explique les notions spécifiques au fur et à mesure.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Le code est-il fourni ?</div>
+            <div class="faq-answer">Oui, l'intégralité du code source du projet Horizon Numérique est fournie dans l'archive du pack, avec les tests logiciels et les modèles de livraison.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Quel fournisseur IA est utilisé ?</div>
+            <div class="faq-answer">Cette édition utilise Cohere pour les embeddings et la génération de réponses. Vous configurez votre propre clé API côté serveur. Aucune dépendance OpenAI n'est requise.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Quel cas pratique suit-on ?</div>
+            <div class="faq-answer">L’assistant d’Horizon Numérique, un centre de formation fictif. Ses documents, tarifs et questions ont été créés pour reproduire fidèlement un projet client réel.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Puis-je adapter le projet à une autre organisation ?</div>
+            <div class="faq-answer">Absolument. Le livre explique précisément comment remplacer le corpus documentaire par les documents de votre propre client ou entreprise.</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 48px;">
+          <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 32px;">
+            Obtenir le pack — 11 000 F CFA
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Commande / Checkout -->
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 1.3rem; font-weight: 700;">Votre commande</h3>
+        <button onclick="closeCheckoutModal()" style="background: none; border: none; cursor: pointer; color: #64748B;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 20px;">
+        <div style="font-weight: 600; font-size: 0.95rem;">Créer et livrer son premier assistant IA</div>
+        <div style="font-size: 0.85rem; color: #64748B;">Pack complet (Livre 68p + Code source + Modèles)</div>
+        <div style="font-size: 1.15rem; font-weight: 800; color: var(--color-accent); margin-top: 6px;">11 000 F CFA (XOF)</div>
+      </div>
+
+      <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)">
+        <div class="form-group">
+          <label for="fullName">Nom complet</label>
+          <input type="text" id="fullName" class="form-control" placeholder="ex. Yayra LAMADOKOU" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Adresse e-mail (livraison de votre accès)</label>
+          <input type="email" id="email" class="form-control" placeholder="votre.email@domaine.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Numéro de téléphone (optionnel &middot; Mobile Money)</label>
+          <input type="tel" id="phone" class="form-control" placeholder="+228 / +225 / +221 ...">
+        </div>
+
+        <div id="checkoutError" style="display: none; color: #DC2626; font-size: 0.85rem; margin-bottom: 12px;"></div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; min-height: 48px; font-size: 1rem;">
+          <i data-lucide="lock"></i> Payer 11 000 F CFA via KORYXA Pay
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pied de page -->
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 600; margin-bottom: 8px;">KORYXA - Apprendre à construire. Savoir livrer.</p>
+      <p style="font-size: 0.8rem; color: #94A3B8;">&copy; 2026 KORYXA. Passerelle officielle KORYXA Pay &middot; Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { api } from '/js/api.js';
+
+    window.openCheckoutModal = function() {
+      document.getElementById('checkoutModal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeCheckoutModal = function() {
+      document.getElementById('checkoutModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    };
+
+    window.handleCheckoutSubmit = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errBox = document.getElementById('checkoutError');
+      errBox.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Initialisation KORYXA Pay...';
+      lucide.createIcons();
+
+      try {
+        const full_name = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+
+        const res = await api.initiateCheckout({ full_name, email, phone });
+        if (res.checkout_url) {
+          window.location.href = res.checkout_url;
+        } else {
+          throw new Error("L'URL de paiement n'a pas été retournée.");
+        }
+      } catch (err) {
+        errBox.textContent = err.message || "Erreur de connexion.";
+        errBox.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="lock"></i> Payer 11 000 F CFA via KORYXA Pay';
+        lucide.createIcons();
+      }
+    };
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
