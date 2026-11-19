@@ -112,6 +112,9 @@ export function renderMarkdown(rawText) {
   // Échappement du reste du texte pour la sécurité
   text = escapeHtml(text);
 
+  // Rétablissement des balises de saut de ligne sécurisées
+  text = text.replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+
   // Tableaux Markdown (| a | b |)
   text = text.replace(/((?:\|[^\n]+\|\r?\n)+)/g, (tableText) => {
     const rows = tableText.trim().split(/\r?\n/).filter(r => r.includes('|'));
