@@ -84,11 +84,8 @@
         if (order.is_paid && order.portal_access_token) {
           clearInterval(pollInterval);
           localStorage.setItem('koryxa_client_order_id', orderId);
-          document.getElementById('loadingState').style.display = 'none';
-          document.getElementById('simBlock').style.display = 'none';
-          document.getElementById('successState').style.display = 'block';
-          document.getElementById('portalLink').href = order.portal_access_token;
-          lucide.createIcons();
+          // Redirection directe vers le Chatbot pour l'accompagnement complet
+          window.location.href = `/?order_id=${encodeURIComponent(orderId)}&payment=success`;
         } else {
           if (isSimulated) {
             document.getElementById('simBlock').style.display = 'block';
