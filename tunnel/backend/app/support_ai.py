@@ -71,9 +71,13 @@ class ManuscriptIndex:
 manuscript_index = ManuscriptIndex(settings.MANUSCRIPT_PATH)
 
 async def ask_cohere_support(query: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
+    return await ask_ai_support(query, history)
+
+async def ask_ai_support(query: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
     """
-    Assistant Support IA Cohere fondé sur le manuscrit officiel.
-    Cite toujours ses sources et demande les informations de diagnostic.
+    Assistant Support IA KORYXA propulsé par KNOWLIA (avec fallback Cohere et local).
+    Fondé sur le manuscrit officiel du livre.
+    Cite toujours ses sources et demande les informations de diagnostic si anomalie.
     """
     relevant_sections = manuscript_index.search_relevant_sections(query, top_k=2)
     citations = [f"Chapitre {s['chapter_number']} : {s['clean_title']}" for s in relevant_sections]
@@ -85,10 +89,60 @@ async def ask_cohere_support(query: str, history: List[Dict[str, str]] = None) -
         re.IGNORECASE
     ))
 
-    # Si clé Cohere configurée, appel réel à l'API Cohere
+    context_text = "\n\n---\n\n".join([f"### {s['title']}\n{s['content']}" for s in relevant_sections])
+
+    # 1. Priorité au moteur IA KNOWLIA si configuré
+    if getattr(settings, "KNOWLIA_BASE_URL", "") and getattr(settings, "KNOWLIA_API_KEY", ""):
+        try:
+            system_prompt = (
+                "Tu es l'assistant de support technique officiel du livre « Créer et livrer son premier assistant IA » (KORYXA).\n"
+                "Tu t'adresses à un développeur ou freelance. Ton rôle est de l'aider à concevoir, tester, lancer et livrer le projet.\n\n"
+                "Consignes impératives :\n"
+                "1. Fonde ta réponse UNIQUEMENT sur le contexte officiel fourni ci-dessous issu du manuscrit du livre.\n"
+                "2. Cite explicitement le chapitre concerné (ex: « D'après le Chapitre X : ... »).\n"
+                "3. Si la question signale une erreur technique ou un bug, demande impérativement le système d'exploitation, la version de Python (`python --version`) et les logs d'erreur du terminal.\n"
+                "4. Ne promets jamais de réponse humaine instantanée.\n\n"
+                f"CONTEXTE OFFICIEL DU LIVRE :\n{context_text}"
+            )
+
+            messages = [{"role": "system", "content": system_prompt}]
+            if history:
+                for h in history[-4:]:
+                    role = h.get("role")
+                    content = h.get("content")
+                    if role in ("user", "assistant") and content:
+                        messages.append({"role": role, "content": content})
+            messages.append({"role": "user", "content": query})
+
+            async with httpx.AsyncClient(timeout=25.0) as client:
+                res = await client.post(
+                    f"{settings.KNOWLIA_BASE_URL}/public/v1/generate",
+                    headers={
+                        "Content-Type": "application/json",
+                        "X-Knowlia-Api-Key": settings.KNOWLIA_API_KEY
+                    },
+                    json={
+                        "messages": messages,
+                        "tenant_id": getattr(settings, "KNOWLIA_TENANT_ID", "mon-assistant-ia")
+                    }
+                )
+                if res.status_code == 200:
+                    resp_json = res.json()
+                    data = resp_json.get("data", {})
+                    ans_text = data.get("content", "").strip()
+                    if ans_text:
+                        return {
+                            "answer": ans_text,
+                            "citations": citations,
+                            "suggest_ticket": is_bug_report,
+                            "engine": "knowlia"
+                        }
+        except Exception as exc:
+            logger.warning("Erreur lors de l'appel au moteur KNOWLIA : %s - repli sur les fournisseurs secondaires", exc)
+
+    # 2. Si clé Cohere configurée et KNOWLIA non disponible
     if settings.COHERE_API_KEY and not settings.COHERE_API_KEY.startswith("sim_"):
         try:
-            context_text = "\n\n---\n\n".join([f"### {s['title']}\n{s['content']}" for s in relevant_sections])
             prompt = (
                 "Tu es l'assistant de support technique officiel du livre « Créer et livrer son premier assistant IA » (KORYXA).\n"
                 "Tu t'adresses à un développeur ou freelance. Ton rôle est de l'aider à concevoir, lancer et livrer le projet.\n\n"
@@ -119,7 +173,8 @@ async def ask_cohere_support(query: str, history: List[Dict[str, str]] = None) -
                     return {
                         "answer": ans_text,
                         "citations": citations,
-                        "suggest_ticket": is_bug_report
+                        "suggest_ticket": is_bug_report,
+                        "engine": "cohere"
                     }
         except Exception as exc:
             logger.error("Erreur lors de l'appel à Cohere API : %s", exc)

@@ -46,6 +46,11 @@ class Settings:
     # Cohere AI
     COHERE_API_KEY: str = os.getenv("COHERE_API_KEY", "")
     COHERE_MODEL: str = os.getenv("COHERE_MODEL", "command-r-08-2024")
+
+    # Moteur IA KNOWLIA (Moteur d'IA KORYXA)
+    KNOWLIA_BASE_URL: str = os.getenv("KNOWLIA_BASE_URL", "").rstrip("/")
+    KNOWLIA_API_KEY: str = os.getenv("KNOWLIA_API_KEY", "")
+    KNOWLIA_TENANT_ID: str = os.getenv("KNOWLIA_TENANT_ID", "mon-assistant-ia")
     
     # Base de données
     DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR}/koryxa_tunnel.db")
