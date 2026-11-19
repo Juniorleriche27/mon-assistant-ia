@@ -13,9 +13,6 @@
     }
   ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://api-mon-assistant.koryxa.fr/api/$1" },
-    { "source": "/commande/statut", "destination": "/commande-statut.html" },
-    { "source": "/espace-client", "destination": "/espace-client.html" },
-    { "source": "/admin", "destination": "/admin.html" }
+    { "source": "/api/(.*)", "destination": "https://api-mon-assistant.koryxa.fr/api/$1" }
   ]
 }
