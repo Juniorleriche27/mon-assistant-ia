@@ -27,11 +27,11 @@
         <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary btn-text-desktop" download>
           <i data-lucide="book-open"></i> Extrait gratuit (PDF)
         </a>
-        <a href="/espace-client" class="btn btn-portal">
-          <i data-lucide="user"></i> Mon espace
+        <a href="/espace-client" class="btn btn-portal" title="Accéder à votre espace client">
+          <i data-lucide="user"></i> <span class="hide-mobile">Mon </span><span>espace</span>
         </a>
-        <button onclick="openCheckoutModal()" class="btn btn-primary">
-          <i data-lucide="zap"></i> Obtenir le pack — 11 000 F CFA
+        <button onclick="openCheckoutModal()" class="btn btn-primary btn-header-cta" title="Commander le pack complet">
+          <i data-lucide="zap"></i> <span class="hide-mobile">Obtenir le pack — </span><span>11 000 F CFA</span>
         </button>
       </div>
     </div>
@@ -616,16 +616,16 @@
        ======================================================== -->
   <div id="stickyConversionDock">
     <div class="dock-brand-name">
-      <img src="/images/logo-koryxa.png" alt="KORYXA" style="height: 28px; width: auto;">
-      <span>Mon premier assistant IA</span>
+      <img src="/images/logo-koryxa.png" alt="KORYXA" class="dock-brand-logo">
+      <span class="dock-title-text">Mon premier assistant IA</span>
     </div>
     <div class="dock-price-tag">
       11 000 F CFA
     </div>
-    <button onclick="openCheckoutModal()" class="btn btn-primary" style="min-height: 38px; padding: 6px 18px; font-size: 0.88rem;">
-      <i data-lucide="zap"></i> Obtenir le pack
+    <button onclick="openCheckoutModal()" class="btn btn-primary dock-cta-btn">
+      <i data-lucide="zap"></i> <span>Obtenir le pack</span>
     </button>
-    <a href="/espace-client" class="btn btn-secondary btn-text-desktop" style="min-height: 38px; padding: 6px 14px; font-size: 0.85rem; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #FFF;">
+    <a href="/espace-client" class="btn btn-secondary btn-text-desktop dock-portal-btn">
       Mon espace
     </a>
   </div>

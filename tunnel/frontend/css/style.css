@@ -28,12 +28,25 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+img, svg, video {
+  max-width: 100%;
+  height: auto;
 }
 
 code, pre {
@@ -44,6 +57,13 @@ code, pre {
   max-width: 1140px;
   margin: 0 auto;
   padding: 0 24px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
 }
 
 /* Glassmorphism Header */
@@ -51,19 +71,20 @@ header.site-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
+  width: 100%;
 }
 
 .nav-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 72px;
+  min-height: 64px;
   padding: 8px 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 12px;
 }
 
@@ -72,12 +93,13 @@ header.site-header {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .header-logo {
-  height: 52px;
+  height: 48px;
   width: auto;
-  max-width: 180px;
+  max-width: 170px;
   object-fit: contain;
   display: block;
   transition: transform 0.2s ease;
@@ -89,7 +111,7 @@ header.site-header {
 
 @media (min-width: 768px) {
   .header-logo {
-    height: 58px;
+    height: 56px;
   }
 }
 
@@ -109,11 +131,40 @@ header.site-header {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
-  .header-actions .btn-text-desktop {
-    display: none;
+  .nav-wrap {
+    min-height: 54px;
+    padding: 6px 0;
+    gap: 8px;
+  }
+  .header-logo {
+    height: 36px;
+    max-width: 115px;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+  .header-actions .btn-text-desktop,
+  .hide-mobile {
+    display: none !important;
+  }
+  .header-actions .btn-portal {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+  }
+  .header-actions .btn-primary {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
   }
 }
 
@@ -214,8 +265,41 @@ h1.hero-title {
 }
 
 @media (max-width: 768px) {
+  section.hero {
+    padding: 24px 0 28px 0;
+  }
   h1.hero-title {
-    font-size: 1.95rem;
+    font-size: 1.65rem;
+    line-height: 1.22;
+    margin-bottom: 12px;
+  }
+  p.hero-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .hero-cta-box {
+    padding: 16px;
+  }
+  .price-callout {
+    font-size: 1.35rem;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .price-callout .single-badge {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 400px) {
+  h1.hero-title {
+    font-size: 1.48rem;
+  }
+  .price-callout {
+    font-size: 1.25rem;
   }
 }
 
@@ -385,22 +469,42 @@ p.hero-subtitle {
   color: #F8FAFC;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .hero-visual-card {
+    padding: 20px 14px;
+    width: 100%;
+    overflow: hidden;
+  }
   .visual-combo-stage {
     min-height: auto;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 16px;
-  }
-  .app-float-card {
-    position: relative;
-    right: 0;
-    bottom: 0;
     width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
   }
   .book-3d {
-    transform: none;
-    width: 100%;
-    max-width: 240px;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 230px !important;
+    height: auto !important;
+    min-height: 260px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .app-float-card {
+    position: relative !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 }
 
@@ -459,6 +563,24 @@ p.hero-subtitle {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+@media (max-width: 640px) {
+  .included-strip {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px 14px;
+    width: 100%;
+    max-width: 300px;
+    margin: 16px auto 0 auto;
+    box-sizing: border-box;
+  }
+  .included-item {
+    font-size: 0.8rem;
+    justify-content: flex-start;
+  }
 }
 
 /* ========================================================
@@ -689,6 +811,29 @@ p.hero-subtitle {
   gap: 8px;
 }
 
+@media (max-width: 768px) {
+  .video-frame-inner {
+    padding: 16px 12px;
+    min-height: 180px;
+  }
+  .video-play-btn {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 10px;
+  }
+  .video-play-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  .video-meta-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+  }
+}
+
 /* ========================================================
    Author Section (Yayra LAMADOKOU)
    ======================================================== */
@@ -707,9 +852,22 @@ p.hero-subtitle {
 @media (max-width: 768px) {
   .author-card {
     grid-template-columns: 1fr;
-    padding: 24px;
+    padding: 24px 16px;
     gap: 20px;
     text-align: center;
+  }
+  .author-photo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+  }
+  .author-avatar {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+  }
+  .author-tags {
+    justify-content: center;
   }
 }
 
@@ -798,12 +956,26 @@ section {
   padding: 56px 0;
 }
 
+@media (max-width: 768px) {
+  section {
+    padding: 36px 0;
+  }
+}
+
 h2.section-title {
   font-size: 2rem;
   font-weight: 800;
   text-align: center;
   margin-bottom: 12px;
   color: #0F172A;
+}
+
+@media (max-width: 768px) {
+  h2.section-title {
+    font-size: 1.45rem;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
 }
 
 p.section-sub {
@@ -814,10 +986,19 @@ p.section-sub {
   font-size: 1.05rem;
 }
 
+@media (max-width: 768px) {
+  p.section-sub {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    padding: 0 4px;
+  }
+}
+
 /* Steps Grid */
 .steps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
 }
 
@@ -919,6 +1100,19 @@ p.section-sub {
   padding: 32px;
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
   position: relative;
+}
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 12px;
+  }
+  .modal-box {
+    padding: 20px 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    width: 95%;
+  }
 }
 
 .form-group {
@@ -1094,6 +1288,54 @@ footer.site-footer {
   color: #94A3B8;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .rag-sim-box {
+    border-radius: 14px;
+    margin: 20px 0;
+  }
+  .sim-control-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .sim-controls-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+  .sim-toggle-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+  .sim-doc-chip {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    word-break: break-all;
+  }
+  .sim-terminal-body {
+    padding: 16px 14px;
+  }
+  .sim-query-box,
+  .sim-response-box {
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .sim-status-bar {
+    padding: 10px 14px;
+    font-size: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
 /* 2. Duel Component: WhatsApp Chaos vs KORYXA Scalable AI */
@@ -1288,7 +1530,7 @@ footer.site-footer {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
-  padding: 8px 12px 8px 18px;
+  padding: 8px 14px 8px 18px;
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
@@ -1298,6 +1540,7 @@ footer.site-footer {
   opacity: 0;
   pointer-events: none;
   max-width: 90vw;
+  box-sizing: border-box;
 }
 
 #stickyConversionDock.visible {
@@ -1313,12 +1556,85 @@ footer.site-footer {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dock-brand-logo {
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.dock-title-text {
+  white-space: nowrap;
 }
 
 .dock-price-tag {
   font-weight: 800;
   color: #F59E0B;
   font-size: 0.95rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dock-cta-btn {
+  min-height: 38px;
+  padding: 6px 18px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dock-portal-btn {
+  min-height: 38px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  #stickyConversionDock {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    width: calc(100% - 24px);
+    max-width: 440px;
+    transform: translateX(-50%) translateY(140%);
+    border-radius: 16px;
+    padding: 8px 12px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  #stickyConversionDock.visible {
+    transform: translateX(-50%) translateY(0);
+  }
+  #stickyConversionDock .dock-brand-name .dock-title-text {
+    display: none !important;
+  }
+  #stickyConversionDock .dock-brand-logo {
+    height: 22px;
+  }
+  #stickyConversionDock .dock-price-tag {
+    font-size: 0.88rem;
+  }
+  #stickyConversionDock .dock-cta-btn {
+    flex: 1;
+    min-height: 38px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap !important;
+    justify-content: center;
+    max-width: 170px;
+  }
+  #stickyConversionDock .dock-portal-btn,
+  #stickyConversionDock .btn-secondary {
+    display: none !important;
+  }
 }
 
 /* Accessibility: Prefers Reduced Motion */

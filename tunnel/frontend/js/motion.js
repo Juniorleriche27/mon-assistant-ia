@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * Animation d'introduction du Hero au chargement de page
  */
 function initHeroAnimations() {
+  const isMobile = window.innerWidth <= 768;
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
   tl.from(".hero-tagline", {
@@ -58,18 +59,29 @@ function initHeroAnimations() {
   }, "-=0.4")
   .from(".hero-visual-card", {
     opacity: 0,
-    x: 30,
+    x: isMobile ? 0 : 30,
+    y: isMobile ? 20 : 0,
     duration: 0.9,
     ease: "power2.out",
-  }, "-=0.6")
-  .from(".book-3d", {
-    rotationY: -25,
-    rotationX: 10,
-    opacity: 0,
-    duration: 1.2,
-    ease: "back.out(1.2)",
-  }, "-=0.6")
-  .from(".app-float-card", {
+  }, "-=0.6");
+
+  if (!isMobile) {
+    tl.from(".book-3d", {
+      rotationY: -25,
+      rotationX: 10,
+      opacity: 0,
+      duration: 1.2,
+      ease: "back.out(1.2)",
+    }, "-=0.6");
+  } else {
+    tl.from(".book-3d", {
+      opacity: 0,
+      y: 15,
+      duration: 0.8,
+    }, "-=0.6");
+  }
+
+  tl.from(".app-float-card", {
     opacity: 0,
     y: 25,
     scale: 0.94,
