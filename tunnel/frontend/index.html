@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer et livrer son premier assistant IA — KORYXA</title>
-  <meta name="description" content="Guide pratique en français, projet complet et code source pour passer des documents d'une entreprise à un assistant documentaire IA livré à un client.">
+  <title>Mon premier assistant IA — KORYXA</title>
+  <meta name="description" content="Créez votre premier assistant IA et apprenez à le livrer à un client. Guide pratique en français de 68 pages, projet complet FastAPI + Cohere + Next.js et modèles contractuels.">
   <link rel="stylesheet" href="/css/style.css">
   <!-- Lucide icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -15,55 +15,243 @@
   <header class="site-header">
     <div class="container nav-wrap">
       <a href="/" class="brand-badge">
-        <span style="letter-spacing: -0.03em; font-size: 1.25rem;">KORYXA</span>
-        <span class="pill">Assistants IA en entreprise</span>
+        <span style="letter-spacing: -0.03em;">KORYXA</span>
+        <span class="pill">Mon premier assistant IA</span>
       </a>
       <div class="header-actions">
-        <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary" download>
+        <a href="/api/v1/downloads/extrait-gratuit" class="btn btn-secondary btn-text-desktop" download>
           <i data-lucide="book-open"></i> Extrait gratuit (PDF)
         </a>
+        <a href="/espace-client" class="btn btn-portal">
+          <i data-lucide="user"></i> Mon espace
+        </a>
         <button onclick="openCheckoutModal()" class="btn btn-primary">
-          Obtenir le pack — 11 000 F CFA
+          <i data-lucide="zap"></i> Obtenir le pack — 11 000 F CFA
         </button>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section -->
+    <!-- Hero Section : Montrer le produit dès le premier écran -->
     <section class="hero">
       <div class="container">
-        <span class="hero-tagline">Pack complet &middot; Édition Cohere &middot; Code source inclus</span>
-        <h1 class="hero-title">Créez un assistant IA que vous savez tester et livrer.</h1>
-        <p class="hero-subtitle">
-          Un guide pratique en français, un projet complet et son code pour passer des documents d’une entreprise à un assistant documentaire, puis préparer sa livraison à un client.
-        </p>
+        <div class="hero-grid">
+          
+          <!-- Colonne Gauche : Titre, Promesse, Prix et Action -->
+          <div>
+            <div class="hero-tagline">
+              <i data-lucide="sparkles" style="width: 16px;"></i> Mon premier assistant IA &middot; Pack complet Cohere
+            </div>
+            
+            <h1 class="hero-title">
+              Créez votre premier assistant IA et apprenez à le livrer à un client.
+            </h1>
+            
+            <p class="hero-subtitle">
+              Le guide pratique en français (68 pages) et son application complète (FastAPI + Cohere + Next.js) pour passer des documents d’une entreprise à un assistant documentaire en production.
+            </p>
 
-        <div class="hero-cta-box">
-          <div class="price-callout">
-            <span>11 000 F CFA</span>
-            <span class="currency">(XOF) &middot; Paiement unique</span>
+            <div class="hero-cta-box">
+              <div class="price-callout">
+                <span>11 000 F CFA</span>
+                <span class="currency">(XOF)</span>
+                <span class="single-badge">Paiement unique &middot; Sans abonnement</span>
+              </div>
+              
+              <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.05rem; padding: 14px 28px; width: 100%;">
+                <i data-lucide="zap"></i> Obtenir le pack complet &mdash; 11 000 F CFA
+              </button>
+
+              <div class="guarantee-note">
+                <i data-lucide="shield-check" style="color: var(--color-success); width: 18px;"></i>
+                Paiement sécurisé via KORYXA Pay (Mobile Money & Carte) &middot; Accès immédiat
+              </div>
+            </div>
           </div>
-          <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 32px;">
-            <i data-lucide="zap"></i> Obtenir le pack complet &mdash; 11 000 F CFA
-          </button>
-          <div class="guarantee-note">
-            <i data-lucide="shield-check" style="color: var(--color-success); width: 18px;"></i>
-            Paiement sécurisé via KORYXA Pay (Mobile Money & Carte) &middot; Accès immédiat
+
+          <!-- Colonne Droite : Showcase Visuel du Produit (Livre 3D + Interface Réelle) -->
+          <div class="hero-visual-card">
+            <div class="visual-combo-stage">
+              
+              <!-- Mockup Réaliste du Livre 3D -->
+              <div class="book-3d" title="Livre : Mon premier assistant IA — 68 pages">
+                <div>
+                  <div class="book-top-badge">
+                    <i data-lucide="book" style="width: 12px;"></i> KORYXA &middot; Guide Pro
+                  </div>
+                  <div class="book-main-title">
+                    Mon premier assistant IA
+                  </div>
+                  <div class="book-sub-title">
+                    Le guide pratique du RAG pour les développeurs et freelances
+                  </div>
+                </div>
+
+                <div>
+                  <div style="font-size: 0.65rem; color: #F59E0B; font-weight: 700; margin-bottom: 6px;">
+                    ÉDITION COHERE &middot; PYTHON
+                  </div>
+                  <div class="book-footer-info">
+                    <span class="book-author-name">Yayra LAMADOKOU</span>
+                    <span class="book-pill-tag">68 pages</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mockup Flottant de l'Application en Fonctionnement Réel -->
+              <div class="app-float-card">
+                <div class="app-float-header">
+                  <div class="dot red"></div>
+                  <div class="dot yellow"></div>
+                  <div class="dot green"></div>
+                  <span style="font-size: 0.68rem; color: #94A3B8; margin-left: auto;">Horizon Numérique &middot; RAG</span>
+                </div>
+                <div style="font-size: 0.7rem; color: #94A3B8; margin-bottom: 6px;">
+                  <strong>Visiteur :</strong> Tarif Analyse de Données ?
+                </div>
+                <div class="app-float-bubble">
+                  <strong>Assistant IA :</strong> Le tarif total est de <strong>650 €</strong> (frais inclus), payable en 3 tranches.
+                  <div style="margin-top: 6px;">
+                    <span class="app-float-source">
+                      <i data-lucide="paperclip" style="width: 10px;"></i> 02_tarifs.pdf (p.1)
+                    </span>
+                  </div>
+                </div>
+                <div class="app-float-footer">
+                  <span>Cohere Command R</span>
+                  <span style="color: #34D399; font-weight: 700;">Latence : 1.2s</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bandeau Récapitulatif Immédiat -->
+            <div class="included-strip">
+              <div class="included-item">
+                <i data-lucide="file-text" style="width: 14px; color: var(--color-primary);"></i> Livre 68p PDF
+              </div>
+              <div class="included-item">
+                <i data-lucide="code" style="width: 14px; color: var(--color-primary);"></i> Code source complet
+              </div>
+              <div class="included-item">
+                <i data-lucide="file-check" style="width: 14px; color: var(--color-primary);"></i> 4 Modèles clients
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Démonstration en 90 secondes (Remplacement documentaire) -->
+    <!-- Section : Ce qui se passe après l'achat -->
     <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
       <div class="container">
-        <h2 class="section-title">La démonstration de référence en 90 secondes</h2>
+        <h2 class="section-title">Ce qui se passe après votre achat</h2>
+        <p class="section-sub">
+          Un parcours transparent, guidé et immédiat. De votre paiement sécurisé jusqu'à la livraison de votre premier assistant IA.
+        </p>
+
+        <div class="post-purchase-grid">
+          
+          <div class="post-step-card">
+            <div class="post-step-badge">1</div>
+            <h3 class="post-step-title">Paiement sécurisé</h3>
+            <p class="post-step-desc">
+              Réglez 11 000 F CFA par Mobile Money (T-Money, Flooz, Wave, Orange, MTN) ou Carte Bancaire via la passerelle officielle KORYXA Pay.
+            </p>
+          </div>
+
+          <div class="post-step-card">
+            <div class="post-step-badge">2</div>
+            <h3 class="post-step-title">Accès instantané</h3>
+            <p class="post-step-desc">
+              Dès validation bancaire, vous êtes automatiquement redirigé vers votre Espace Client privé et recevez votre jeton d'accès sécurisé par e-mail.
+            </p>
+          </div>
+
+          <div class="post-step-card">
+            <div class="post-step-badge">3</div>
+            <h3 class="post-step-title">Téléchargement</h3>
+            <p class="post-step-desc">
+              Téléchargez immédiatement le livre complet (68 pages PDF), l'archive ZIP du code source (FastAPI, Next.js, Docker) et vos modèles contractuels.
+            </p>
+          </div>
+
+          <div class="post-step-card">
+            <div class="post-step-badge">4</div>
+            <h3 class="post-step-title">Parcours guidé</h3>
+            <p class="post-step-desc">
+              Suivez les 6 étapes interactives de votre tableau de bord (installation, configuration Cohere, indexation, benchmark et déploiement).
+            </p>
+          </div>
+
+          <div class="post-step-card">
+            <div class="post-step-badge">5</div>
+            <h3 class="post-step-title">Assistance IA & Support</h3>
+            <p class="post-step-desc">
+              Posez vos questions à l'Assistant IA de support indexé sur tout le livre, ou ouvrez un ticket directement en cas de blocage technique.
+            </p>
+          </div>
+
+        </div>
+
+        <div class="portal-access-banner">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="check-circle" style="width: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #166534;">Déjà membre de la formation ?</div>
+              <div style="font-size: 0.85rem; color: #15803D;">Retrouvez vos téléchargements, votre progression et votre support à tout moment.</div>
+            </div>
+          </div>
+          <a href="/espace-client" class="btn btn-secondary" style="border-color: #86EFAC; color: #166534; font-weight: 700;">
+            <i data-lucide="arrow-right"></i> Accéder à Mon Espace Client
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Démonstration en conditions réelles (Vidéo & Cas Pratique) -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">Démonstration en conditions réelles</h2>
         <p class="section-sub">
           Voyez comment un assistant documentaire KORYXA relie chaque réponse à son fichier source, et comment une mise à jour tarifaire est prise en compte instantanément.
         </p>
 
-        <div class="demo-showcase">
+        <!-- Avertissement explicite sur les montants du cas pratique (650€ / 700€) -->
+        <div class="case-study-disclaimer">
+          <i data-lucide="info" style="width: 22px; flex-shrink: 0; color: #D97706; margin-top: 2px;"></i>
+          <div>
+            <strong>Note importante sur les montants du cas pratique :</strong><br>
+            Les tarifs de <strong>650 €</strong> et <strong>700 €</strong> présentés ci-dessous correspondent exclusivement aux données d'exemple du centre de formation fictif <em>« Horizon Numérique »</em>, utilisées pour tester le remplacement documentaire à chaud sans modification de code. Le prix du pack complet de formation KORYXA est strictement de <strong>11 000 F CFA (XOF)</strong> en paiement unique.
+          </div>
+        </div>
+
+        <!-- Lecteur Vidéo de Démonstration de l'Auteur -->
+        <div class="video-showcase-box">
+          <div class="video-frame-inner">
+            <button class="video-play-btn" onclick="alert('La vidéo de démonstration complète par Yayra LAMADOKOU est en cours d\'intégration sur le lecteur principal.')" title="Lire la démonstration">
+              <i data-lucide="play" style="width: 32px; height: 32px; margin-left: 4px;"></i>
+            </button>
+            <div style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">
+              Démonstration en direct sur PC &mdash; Par Yayra LAMADOKOU
+            </div>
+            <p style="font-size: 0.9rem; color: #94A3B8; max-width: 640px; margin: 0 auto;">
+              Démonstration complète avec caméra et écran : ingestion de documents PDF, configuration de Cohere Command R et Embed v4, test du moteur RAG et mise à jour de la grille tarifaire sans modification de code.
+            </p>
+          </div>
+          <div class="video-meta-bar">
+            <span><i data-lucide="user-check" style="width: 14px; display: inline;"></i> Présenté par Yayra LAMADOKOU</span>
+            <span><i data-lucide="cpu" style="width: 14px; display: inline;"></i> Cohere Command R + Embed v4</span>
+            <span style="color: #34D399; font-weight: 700;"><i data-lucide="activity" style="width: 14px; display: inline;"></i> Mesure réelle constatée : 1,2 s de latence moyenne</span>
+          </div>
+        </div>
+
+        <!-- Cas Pratique et Remplacement Documentaire -->
+        <div class="demo-showcase" style="margin-top: 0;">
           <div class="demo-grid">
             <div>
               <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">Le cas pratique : Horizon Numérique</h3>
@@ -73,16 +261,16 @@
               
               <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px;">
                 <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                  <i data-lucide="file-text" style="width: 16px; color: var(--color-primary);"></i> Étape 1 : Version initiale (650 €)
+                  <i data-lucide="file-text" style="width: 16px; color: var(--color-primary);"></i> Étape 1 : Version initiale du tarif fictif (650 €)
                 </div>
-                <p style="font-size: 0.85rem; color: #64748B;">Question : « Quel est le tarif total d'Analyse de Données ? » &rarr; Réponse : 650 €, avec citation de la grille tarifaire.</p>
+                <p style="font-size: 0.85rem; color: #64748B;">Question : « Quel est le tarif total d'Analyse de Données ? » &rarr; Réponse : 650 €, avec citation de la grille tarifaire source.</p>
               </div>
 
               <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px;">
                 <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
                   <i data-lucide="refresh-cw" style="width: 16px; color: var(--color-accent);"></i> Étape 2 : Remplacement par la grille à 700 €
                 </div>
-                <p style="font-size: 0.85rem; color: #64748B;">L'administrateur remplace le fichier. L'assistant répond immédiatement 700 € sans modification de code.</p>
+                <p style="font-size: 0.85rem; color: #64748B;">L'administrateur remplace le fichier dans l'interface. L'assistant répond immédiatement 700 € sans modification de code.</p>
               </div>
             </div>
 
@@ -104,16 +292,17 @@
               </div>
               <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #334155; font-size: 0.8rem; color: #94A3B8; display: flex; justify-content: space-between;">
                 <span>Modèle : Cohere Command R</span>
-                <span>Latence : 1.2s</span>
+                <span>Latence réelle : 1,2 s</span>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </section>
 
     <!-- Ce que vous allez apprendre (Méthode en 6 étapes) -->
-    <section>
+    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
       <div class="container">
         <h2 class="section-title">Ce que vous allez apprendre</h2>
         <p class="section-sub">La méthode KORYXA pour transformer une demande floue en un assistant IA d'entreprise testé, documenté et prêt à être facturé.</p>
@@ -150,11 +339,25 @@
             <p style="color: var(--color-text-muted); font-size: 0.9rem;">Utiliser les 4 modèles contractuels fournis pour faire signer la recette client et organiser la maintenance rémunérée.</p>
           </div>
         </div>
+
+        <!-- Encadré Stratégique : Système de vente vs WhatsApp manuel -->
+        <div style="margin-top: 36px; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; gap: 16px; align-items: flex-start;">
+          <div style="width: 44px; height: 44px; border-radius: 10px; background: #EFF6FF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="layers" style="width: 24px;"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;">Construire un vrai système, pas un goulot d'étranglement</h4>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted); line-height: 1.55;">
+              On ne scale pas une entreprise avec des conversations manuelles sur WhatsApp. Quand un prospect a besoin d'informations précises sur vos tarifs ou règlements, votre assistant documentaire les délivre instantanément avec la preuve de la source, 24h/24, sans mobilisation humaine.
+            </p>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- Contenu exact du pack -->
-    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <section>
       <div class="container">
         <h2 class="section-title">Le contenu exact du pack complet</h2>
         <p class="section-sub">Tout ce dont vous avez besoin pour apprendre, coder et livrer votre propre assistant IA.</p>
@@ -205,12 +408,48 @@
         </div>
 
         <!-- Transparence technique -->
-        <div style="margin-top: 40px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
+        <div style="margin-top: 36px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-md); padding: 20px; display: flex; gap: 16px; align-items: flex-start;">
           <i data-lucide="info" style="color: #D97706; width: 24px; flex-shrink: 0; margin-top: 2px;"></i>
           <div style="font-size: 0.9rem; color: #92400E;">
             <strong>Prérequis et transparence des coûts :</strong>
             Ce parcours s'adresse aux développeurs et freelances connaissant les bases de Python. 
             Le pack inclut tout le matériel pédagogique et le code source. Les éventuels frais d'utilisation de l'API Cohere (clé configurée côté serveur par l'apprenant) ou d'hébergement du projet final ne sont pas inclus dans le prix du pack de 11 000 F CFA.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Présentation de l'Auteur : Yayra LAMADOKOU -->
+    <section style="background: #FFFFFF; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <h2 class="section-title">Qui transmet cette méthode ?</h2>
+        <p class="section-sub">Découvrez l'auteur et la démarche d'ingénierie concrète derrière KORYXA.</p>
+
+        <div class="author-card">
+          <div class="author-avatar-wrap">
+            <div class="author-avatar" title="Yayra LAMADOKOU — Fondateur de KORYXA">
+              YL
+            </div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: #64748B; text-align: center;">
+              KORYXA INGÉNIERIE IA
+            </div>
+          </div>
+
+          <div class="author-bio">
+            <h3>Yayra LAMADOKOU</h3>
+            <div class="author-role">
+              Concepteur d'Assistants IA & Fondateur de KORYXA
+            </div>
+
+            <div class="author-quote">
+              « On ne scale pas une conversation à l'échelle d'un système. Répondre manuellement sur WhatsApp à des dizaines de prospects par jour pour répéter les mêmes tarifs ou règlements crée un goulot d'étranglement qui épuise les équipes. J'ai conçu <em>"Mon premier assistant IA"</em> pour transmettre une méthode d'ingénierie rigoureuse en français : comment transformer les documents d'une entreprise en un assistant RAG fiable, capable de prouver chaque réponse par sa source exacte, et comment formaliser une livraison client rémunérée. »
+            </div>
+
+            <div class="author-tags">
+              <span class="author-tag"><i data-lucide="cpu" style="width: 14px;"></i> Spécialiste RAG & Architectures IA</span>
+              <span class="author-tag"><i data-lucide="book-open" style="width: 14px;"></i> Auteur du livre de 68 pages</span>
+              <span class="author-tag"><i data-lucide="check-circle-2" style="width: 14px;"></i> Systèmes en production</span>
+            </div>
           </div>
         </div>
       </div>
@@ -243,18 +482,22 @@
             <div class="faq-question">Puis-je adapter le projet à une autre organisation ?</div>
             <div class="faq-answer">Absolument. Le livre explique précisément comment remplacer le corpus documentaire par les documents de votre propre client ou entreprise.</div>
           </div>
+          <div class="faq-item">
+            <div class="faq-question">Que se passe-t-il après le paiement ?</div>
+            <div class="faq-answer">Vous êtes instantanément redirigé vers votre Espace Client personnel et recevez un e-mail avec votre jeton d'accès sécurisé. Vous pouvez télécharger tous vos fichiers et accéder à l'assistance IA immédiatement.</div>
+          </div>
         </div>
 
         <div style="text-align: center; margin-top: 48px;">
           <button onclick="openCheckoutModal()" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 32px;">
-            Obtenir le pack — 11 000 F CFA
+            <i data-lucide="zap"></i> Obtenir le pack — 11 000 F CFA
           </button>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Modal Commande / Checkout -->
+  <!-- Modal Commande / Checkout KORYXA Pay -->
   <div id="checkoutModal" class="modal-overlay">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -265,9 +508,9 @@
       </div>
 
       <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 20px;">
-        <div style="font-weight: 600; font-size: 0.95rem;">Créer et livrer son premier assistant IA</div>
-        <div style="font-size: 0.85rem; color: #64748B;">Pack complet (Livre 68p + Code source + Modèles)</div>
-        <div style="font-size: 1.15rem; font-weight: 800; color: var(--color-accent); margin-top: 6px;">11 000 F CFA (XOF)</div>
+        <div style="font-weight: 700; font-size: 0.95rem;">Mon premier assistant IA</div>
+        <div style="font-size: 0.85rem; color: #64748B;">Pack complet (Livre 68p + Code source + Modèles contractuels)</div>
+        <div style="font-size: 1.2rem; font-weight: 800; color: var(--color-accent); margin-top: 6px;">11 000 F CFA (XOF)</div>
       </div>
 
       <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)">
@@ -296,7 +539,7 @@
   <!-- Pied de page -->
   <footer class="site-footer">
     <div class="container">
-      <p style="font-weight: 600; margin-bottom: 8px;">KORYXA - Apprendre à construire. Savoir livrer.</p>
+      <p style="font-weight: 700; margin-bottom: 8px;">KORYXA &mdash; Apprendre à construire. Savoir livrer.</p>
       <p style="font-size: 0.8rem; color: #94A3B8;">&copy; 2026 KORYXA. Passerelle officielle KORYXA Pay &middot; Tous droits réservés.</p>
     </div>
   </footer>
