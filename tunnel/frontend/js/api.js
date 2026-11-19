@@ -1,4 +1,6 @@
-const API_BASE = "";
+const API_BASE = (typeof window !== "undefined" && window.NEXT_PUBLIC_API_URL) 
+  ? window.NEXT_PUBLIC_API_URL.replace(/\/$/, "") 
+  : "";
 
 export const api = {
   async initiateCheckout({ full_name, email, phone }) {
