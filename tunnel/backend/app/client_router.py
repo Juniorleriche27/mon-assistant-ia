@@ -1,6 +1,6 @@
 import json
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from app.config import settings
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api/v1/client", tags=["Espace Client"])
 @router.get("/dashboard")
 def get_client_dashboard(
     email: str = Query(...),
-    order_id: str = Query(...),
+    order_id: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """
@@ -32,11 +32,14 @@ def get_client_dashboard(
     if not customer:
         raise HTTPException(status_code=403, detail="Compte introuvable")
 
-    order = db.query(Order).filter(
-        Order.id == order_id,
+    query = db.query(Order).filter(
         Order.customer_id == customer.id,
         Order.status == "succeeded"
-    ).first()
+    )
+    if order_id:
+        query = query.filter(Order.id == order_id)
+
+    order = query.order_by(Order.created_at.desc()).first()
 
     if not order:
         raise HTTPException(status_code=403, detail="Accès non autorisé : aucun paiement confirmé")
@@ -81,7 +84,7 @@ def get_client_dashboard(
 def validate_progress_step(
     payload: ValidateStepRequest,
     email: str = Query(...),
-    order_id: str = Query(...),
+    order_id: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """
@@ -93,7 +96,14 @@ def validate_progress_step(
         raise HTTPException(status_code=403, detail="Compte introuvable")
 
     # Vérification d'accès
-    order = db.query(Order).filter(Order.id == order_id, Order.customer_id == customer.id, Order.status == "succeeded").first()
+    query = db.query(Order).filter(
+        Order.customer_id == customer.id,
+        Order.status == "succeeded"
+    )
+    if order_id:
+        query = query.filter(Order.id == order_id)
+    order = query.first()
+
     if not order:
         raise HTTPException(status_code=403, detail="Accès réservé aux acheteurs confirmés")
 
@@ -132,7 +142,7 @@ async def ask_support_assistant(payload: SupportAskRequest):
 def create_support_ticket(
     payload: CreateTicketRequest,
     email: str = Query(...),
-    order_id: str = Query(...),
+    order_id: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """

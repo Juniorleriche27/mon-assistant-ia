@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -47,7 +48,7 @@ def download_protected_asset(
     asset_key: str,
     request: Request,
     email: str = Query(..., description="Email de l'acheteur"),
-    order_id: str = Query(..., description="ID de la commande"),
+    order_id: Optional[str] = Query(None, description="ID de la commande"),
     db: Session = Depends(get_db),
 ):
     """
@@ -63,11 +64,13 @@ def download_protected_asset(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Accès interdit : compte introuvable")
 
     # 2. Vérification des droits d'accès et du statut de paiement
-    order = db.query(Order).filter(
-        Order.id == order_id,
+    query = db.query(Order).filter(
         Order.customer_id == customer.id,
         Order.status == "succeeded"
-    ).first()
+    )
+    if order_id:
+        query = query.filter(Order.id == order_id)
+    order = query.order_by(Order.created_at.desc()).first()
 
     if not order:
         raise HTTPException(

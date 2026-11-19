@@ -22,8 +22,12 @@ export const api = {
     return res.json();
   },
 
-  async getClientDashboard(email, orderId) {
-    const res = await fetch(`${API_BASE}/api/v1/client/dashboard?email=${encodeURIComponent(email)}&order_id=${encodeURIComponent(orderId)}`);
+  async getClientDashboard(email, orderId = "") {
+    let url = `${API_BASE}/api/v1/client/dashboard?email=${encodeURIComponent(email)}`;
+    if (orderId) {
+      url += `&order_id=${encodeURIComponent(orderId)}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.detail || "Accès non autorisé à l'espace client");
@@ -31,8 +35,12 @@ export const api = {
     return res.json();
   },
 
-  async validateStep(stepNumber, email, orderId) {
-    const res = await fetch(`${API_BASE}/api/v1/client/progress/validate?email=${encodeURIComponent(email)}&order_id=${encodeURIComponent(orderId)}`, {
+  async validateStep(stepNumber, email, orderId = "") {
+    let url = `${API_BASE}/api/v1/client/progress/validate?email=${encodeURIComponent(email)}`;
+    if (orderId) {
+      url += `&order_id=${encodeURIComponent(orderId)}`;
+    }
+    const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ step_number: stepNumber }),

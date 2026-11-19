@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Espace Client — Créer et livrer son premier assistant IA</title>
+  <title>Espace Client — Mon premier assistant IA &middot; KORYXA</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body style="background: #F8FAFC;">
+<body style="background: #F8FAFC; min-height: 100vh; display: flex; flex-direction: column;">
 
   <!-- En-tête Espace Client -->
   <header class="site-header">
@@ -17,126 +17,182 @@
         <span class="pill" style="background: #DCFCE7; color: #16A34A; border-color: #BBF7D0;">Espace Client &middot; Actif</span>
       </a>
       <div class="header-actions">
-        <span id="userBadge" style="font-size: 0.85rem; color: #475569; font-weight: 600;"></span>
-        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">Quitter</a>
+        <div id="headerActionsAuth" style="display: none; align-items: center; gap: 12px;">
+          <span id="userBadge" style="font-size: 0.85rem; color: #475569; font-weight: 600;"></span>
+          <button onclick="handleLogout()" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+            <i data-lucide="log-out" style="width: 14px;"></i> Déconnexion
+          </button>
+        </div>
+        <a href="/" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
+          <i data-lucide="arrow-left" style="width: 14px;"></i> Retour site
+        </a>
       </div>
     </div>
   </header>
 
-  <main class="container" style="padding-top: 32px; padding-bottom: 64px;">
+  <main class="container" style="padding-top: 32px; padding-bottom: 64px; flex: 1;">
 
-    <!-- Bannière de bienvenue -->
-    <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 32px; box-shadow: var(--shadow-subtle);">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
-        <div>
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Formation & Déploiement</span>
-          <h1 id="welcomeTitle" style="font-size: 1.85rem; font-weight: 800; margin: 4px 0 8px 0;">Bienvenue dans votre Espace de Travail</h1>
-          <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 650px;">
-            Vous disposez du livre complet, de l'archive de code source du projet Horizon Numérique, et de votre parcours guidé d'installation en 6 étapes.
-          </p>
+    <!-- ========================================================
+         ÉCRAN DE CONNEXION (Si le client n'est pas encore identifié)
+         ======================================================== -->
+    <div id="loginSection" style="max-width: 480px; margin: 40px auto; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 36px 32px; box-shadow: var(--shadow-card); text-align: center;">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: #EFF6FF; color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+        <i data-lucide="lock" style="width: 28px; height: 28px;"></i>
+      </div>
+      
+      <h1 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 8px; color: #0F172A;">
+        Accéder à votre Espace Client
+      </h1>
+      
+      <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.55; margin-bottom: 24px;">
+        Saisissez l'adresse e-mail que vous avez indiquée lors de votre commande pour retrouver immédiatement vos livrables et votre espace de formation.
+      </p>
+
+      <form id="directLoginForm" onsubmit="handleDirectLoginSubmit(event)">
+        <div class="form-group" style="text-align: left;">
+          <label for="loginEmail" style="font-size: 0.88rem; font-weight: 700; color: #334155; margin-bottom: 6px; display: block;">
+            Votre adresse e-mail de commande
+          </label>
+          <input type="email" id="loginEmail" class="form-control" placeholder="votre.email@domaine.com" required style="min-height: 46px;">
         </div>
-        <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-md); padding: 12px 18px; text-align: right;">
-          <div style="font-size: 0.75rem; color: #64748B;">Commande validée</div>
-          <div style="font-weight: 800; color: var(--color-primary); font-size: 1.1rem;">11 000 F CFA</div>
-          <div style="font-size: 0.75rem; color: #16A34A; font-weight: 600;">Paiement unique &middot; À vie</div>
-        </div>
+
+        <div id="loginError" style="display: none; background: #FEF2F2; border: 1px solid #FCA5A5; color: #DC2626; border-radius: var(--radius-sm); padding: 12px; font-size: 0.85rem; margin-bottom: 16px; text-align: left;"></div>
+
+        <button type="submit" id="loginBtn" class="btn btn-primary" style="width: 100%; min-height: 48px; font-size: 1rem;">
+          <i data-lucide="log-in"></i> Accéder à mon Espace Client
+        </button>
+      </form>
+
+      <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--color-border); font-size: 0.85rem; color: #64748B;">
+        Vous n'avez pas encore acheté le pack ? <br>
+        <a href="/" style="color: var(--color-primary); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 4px;">
+          Obtenir le pack complet &mdash; 11 000 F CFA &rarr;
+        </a>
       </div>
     </div>
 
-    <!-- 1. Zone de Téléchargement Sécurisée -->
-    <section style="padding: 0 0 40px 0;">
-      <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-        <i data-lucide="download" style="color: var(--color-primary);"></i> Vos Livrables Complets à Télécharger
-      </h2>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-        <!-- Livrable 1 : Livre PDF -->
-        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+    <!-- ========================================================
+         TABLEAU DE BORD CLIENT (Visible dès que le paiement est validé)
+         ======================================================== -->
+    <div id="dashboardSection" style="display: none;">
+      
+      <!-- Bannière de bienvenue -->
+      <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px 32px; margin-bottom: 32px; box-shadow: var(--shadow-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
           <div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-              <span style="background: #EFF6FF; color: var(--color-primary); font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">PDF &middot; 68 pages</span>
-              <i data-lucide="file-text" style="color: #64748B;"></i>
-            </div>
-            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Livre : Créer et livrer son premier assistant IA</h3>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
-              Les 12 chapitres détaillant le cadrage, l'ingestion documentaire, la recherche vectorielle, Cohere, l'API FastAPI et les modèles clients.
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Formation & Déploiement</span>
+            <h1 id="welcomeTitle" style="font-size: 1.85rem; font-weight: 800; margin: 4px 0 8px 0;">Bienvenue dans votre Espace de Travail</h1>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 650px;">
+              Vous disposez du livre complet (68 pages), de l'archive de code source du projet Horizon Numérique, et de votre parcours guidé d'installation en 6 étapes.
             </p>
           </div>
-          <a id="btnDownloadBook" href="#" class="btn btn-secondary" style="width: 100%;" download>
-            <i data-lucide="download"></i> Télécharger le Livre PDF
-          </a>
-        </div>
-
-        <!-- Livrable 2 : Archive Code -->
-        <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
-          <div>
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-              <span style="background: #FEF3C7; color: #D97706; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">Code Source &middot; Zip 1.4 Mo</span>
-              <i data-lucide="package" style="color: #64748B;"></i>
-            </div>
-            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Projet Complet : Horizon Numérique</h3>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
-              Backend FastAPI, Frontend Next.js, les 5 documents du corpus de test, le jeu de 35 questions d'évaluation, les 4 modèles de devis et tests.
-            </p>
+          <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: var(--radius-md); padding: 12px 18px; text-align: right;">
+            <div style="font-size: 0.75rem; color: #64748B;">Commande validée</div>
+            <div style="font-weight: 800; color: var(--color-primary); font-size: 1.1rem;">11 000 F CFA</div>
+            <div style="font-size: 0.75rem; color: #16A34A; font-weight: 600;">Paiement unique &middot; Accès à vie</div>
           </div>
-          <a id="btnDownloadCode" href="#" class="btn btn-secondary" style="width: 100%;" download>
-            <i data-lucide="download"></i> Télécharger le Pack Code (Zip)
-          </a>
         </div>
       </div>
-    </section>
 
-    <!-- 2. Parcours Guidé en 6 Étapes -->
-    <section style="padding: 0 0 48px 0;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 style="font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-          <i data-lucide="check-circle-2" style="color: var(--color-success);"></i> Votre Parcours d'Installation et de Livraison
+      <!-- 1. Zone de Téléchargement Sécurisée -->
+      <section style="padding: 0 0 40px 0;">
+        <h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="download" style="color: var(--color-primary);"></i> Vos Livrables Complets à Télécharger
         </h2>
-        <span id="progressScore" style="font-size: 0.9rem; font-weight: 700; color: var(--color-primary); background: #EFF6FF; padding: 4px 12px; border-radius: 9999px;">
-          0 / 6 validées
-        </span>
-      </div>
 
-      <div id="stepsList" style="display: flex; flex-direction: column; gap: 14px;">
-        <!-- Chargé dynamiquement -->
-      </div>
-    </section>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+          <!-- Livrable 1 : Livre PDF -->
+          <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <span style="background: #EFF6FF; color: var(--color-primary); font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">PDF &middot; 68 pages</span>
+                <i data-lucide="file-text" style="color: #64748B;"></i>
+              </div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Livre : Créer et livrer son premier assistant IA</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
+                Les 12 chapitres détaillant le cadrage, l'ingestion documentaire, la recherche vectorielle, Cohere, l'API FastAPI et les modèles clients.
+              </p>
+            </div>
+            <a id="btnDownloadBook" href="#" class="btn btn-secondary" style="width: 100%;" download>
+              <i data-lucide="download"></i> Télécharger le Livre PDF (68p)
+            </a>
+          </div>
 
-    <!-- 3. Assistant Support Technique IA (Cohere RAG) -->
-    <section style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-card);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-        <div>
-          <h2 style="font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-            <i data-lucide="bot" style="color: var(--color-primary);"></i> Assistant Support Technique IA (Cohere RAG)
+          <!-- Livrable 2 : Archive Code -->
+          <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                <span style="background: #FEF3C7; color: #D97706; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 4px;">Code Source &middot; Zip 1.4 Mo</span>
+                <i data-lucide="package" style="color: #64748B;"></i>
+              </div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Projet Complet : Horizon Numérique</h3>
+              <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 20px;">
+                Backend FastAPI, Frontend Next.js, les 5 documents du corpus de test, le jeu de 35 questions d'évaluation, les 4 modèles de devis et tests.
+              </p>
+            </div>
+            <a id="btnDownloadCode" href="#" class="btn btn-secondary" style="width: 100%;" download>
+              <i data-lucide="download"></i> Télécharger le Pack Code (Zip)
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Parcours Guidé en 6 Étapes -->
+      <section style="padding: 0 0 48px 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <h2 style="font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="check-circle-2" style="color: var(--color-success);"></i> Votre Parcours d'Installation et de Livraison
           </h2>
-          <p style="font-size: 0.85rem; color: var(--color-text-muted);">
-            Posez une question sur le code du projet, l'API Cohere, la vectorisation ou le déploiement. Réponses fondées sur le livre officiel.
-          </p>
+          <span id="progressScore" style="font-size: 0.9rem; font-weight: 700; color: var(--color-primary); background: #EFF6FF; padding: 4px 12px; border-radius: 9999px;">
+            0 / 6 validées
+          </span>
         </div>
-        <button onclick="openTicketModal()" class="btn btn-secondary" style="font-size: 0.85rem; padding: 6px 14px;">
-          <i data-lucide="life-buoy"></i> Ouvrir un ticket formateur
-        </button>
-      </div>
 
-      <!-- Fenêtre de chat -->
-      <div id="chatMessages" style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 18px; min-height: 220px; max-height: 380px; overflow-y: auto; margin-bottom: 16px;">
-        <div style="font-size: 0.85rem; color: #64748B; text-align: center; margin-top: 60px;">
-          L'assistant est prêt. Posez votre question technique ci-dessous.
+        <div id="stepsList" style="display: flex; flex-direction: column; gap: 14px;"></div>
+      </section>
+
+      <!-- 3. Assistance IA Cohere et Support -->
+      <section style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h2 style="font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <i data-lucide="bot" style="color: var(--color-primary);"></i> Assistant Support IA KORYXA
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">
+              Indexé sur l'intégralité du manuscrit de 68 pages et la documentation technique du projet Horizon Numérique.
+            </p>
+          </div>
+          <button onclick="openTicketModal()" class="btn btn-secondary" style="font-size: 0.85rem;">
+            <i data-lucide="life-buoy"></i> Ouvrir un ticket d'aide formateur
+          </button>
         </div>
-      </div>
 
-      <!-- Formulaire de question -->
-      <form id="chatForm" onsubmit="handleChatSubmit(event)" style="display: flex; gap: 10px;">
-        <input type="text" id="chatInput" class="form-control" placeholder="ex. Comment lancer le script d'évaluation des 35 questions ?" required>
-        <button type="submit" id="chatBtn" class="btn btn-blue" style="flex-shrink: 0; padding: 10px 24px;">
-          <i data-lucide="send"></i> Envoyer
-        </button>
-      </form>
-    </section>
+        <!-- Boîte de dialogue Assistant -->
+        <div id="chatBox" style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px; min-height: 220px; max-height: 400px; overflow-y: auto; margin-bottom: 16px;">
+          <div id="chatMessages">
+            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #EFF6FF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <i data-lucide="bot" style="width: 18px;"></i>
+              </div>
+              <div style="background: #FFFFFF; border: 1px solid var(--color-border); padding: 12px 16px; border-radius: var(--radius-md); font-size: 0.9rem; max-width: 85%;">
+                Bonjour ! Je suis l'assistant de formation KORYXA. Posez-moi vos questions techniques sur l'installation de votre environnement, le fonctionnement du RAG Cohere, l'ingestion documentaire ou les modèles de livraison.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="chatForm" onsubmit="handleChatSubmit(event)" style="display: flex; gap: 12px;">
+          <input type="text" id="chatInput" class="form-control" placeholder="Posez une question sur le livre ou le code (ex: comment configurer la clé Cohere ?)" required>
+          <button type="submit" class="btn btn-primary" style="flex-shrink: 0;">
+            <i data-lucide="send"></i> Envoyer
+          </button>
+        </form>
+      </section>
+    </div>
 
   </main>
 
-  <!-- Modal Ticket Support -->
+  <!-- Modal Ticket d'aide formateur -->
   <div id="ticketModal" class="modal-overlay">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -147,7 +203,7 @@
       </div>
 
       <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 16px;">
-        Si l'assistant IA n'a pas permis de résoudre votre anomalie, décrivez votre blocage. Nous n'assurons pas de permanence instantanée mais nous examinons chaque diagnostic.
+        Si l'assistant IA n'a pas permis de résoudre votre anomalie, décrivez votre blocage. Nous examinons chaque diagnostic technique.
       </p>
 
       <form id="ticketForm" onsubmit="handleTicketSubmit(event)">
@@ -166,39 +222,99 @@
     </div>
   </div>
 
+  <!-- Pied de page -->
+  <footer class="site-footer">
+    <div class="container">
+      <p style="font-weight: 700; margin-bottom: 4px;">KORYXA &mdash; Apprendre à construire. Savoir livrer.</p>
+      <p style="font-size: 0.8rem; color: #94A3B8;">&copy; 2026 KORYXA. Passerelle officielle KORYXA Pay &middot; Tous droits réservés.</p>
+    </div>
+  </footer>
+
   <script type="module">
     import { api } from '/js/api.js';
 
     const params = new URLSearchParams(window.location.search);
-    const email = params.get('email');
-    const orderId = params.get('order_id');
+    let activeEmail = params.get('email') || localStorage.getItem('koryxa_client_email') || '';
+    let activeOrderId = params.get('order_id') || localStorage.getItem('koryxa_client_order_id') || '';
 
     let currentDashboard = null;
     let chatHistory = [];
 
-    async function loadDashboard() {
-      if (!email || !orderId) {
-        alert("Paramètres d'accès manquants. Veuillez vous reconnecter depuis votre e-mail de confirmation.");
-        window.location.href = '/';
-        return;
-      }
+    async function tryLoadDashboard(emailToUse, orderIdToUse = "") {
+      const errBox = document.getElementById('loginError');
+      const submitBtn = document.getElementById('loginBtn');
+      if (errBox) errBox.style.display = 'none';
 
       try {
-        currentDashboard = await api.getClientDashboard(email, orderId);
+        currentDashboard = await api.getClientDashboard(emailToUse, orderIdToUse);
+        activeEmail = emailToUse;
+        activeOrderId = orderIdToUse || (currentDashboard.order ? currentDashboard.order.id : '');
+
+        // Mémoriser la session dans le navigateur du client
+        localStorage.setItem('koryxa_client_email', activeEmail);
+        if (activeOrderId) {
+          localStorage.setItem('koryxa_client_order_id', activeOrderId);
+        }
+
+        // Afficher le dashboard et masquer la page de login
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+        document.getElementById('headerActionsAuth').style.display = 'flex';
+
         document.getElementById('userBadge').textContent = currentDashboard.customer.email;
         document.getElementById('welcomeTitle').textContent = `Bienvenue, ${currentDashboard.customer.full_name || 'Développeur'}`;
 
-        // Liens de téléchargement
+        // Liens de téléchargement sécurisés
         document.getElementById('btnDownloadBook').href = currentDashboard.download_links.livre_pdf;
         document.getElementById('btnDownloadCode').href = currentDashboard.download_links.projet_zip;
 
-        // Rendu des étapes
+        // Rendu des 6 étapes
         renderSteps(currentDashboard.steps);
       } catch (err) {
-        alert("Accès refusé : " + err.message);
-        window.location.href = '/';
+        // En cas d'erreur ou d'absence de commande payée
+        document.getElementById('dashboardSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('headerActionsAuth').style.display = 'none';
+
+        if (errBox && emailToUse) {
+          errBox.textContent = err.message || "Aucun achat validé trouvé pour cette adresse e-mail.";
+          errBox.style.display = 'block';
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i data-lucide="log-in"></i> Accéder à mon Espace Client';
+        }
+        lucide.createIcons();
       }
     }
+
+    window.handleDirectLoginSubmit = async function(e) {
+      e.preventDefault();
+      const emailInput = document.getElementById('loginEmail').value.trim();
+      if (!emailInput) return;
+
+      const submitBtn = document.getElementById('loginBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Vérification des droits d\'accès...';
+      lucide.createIcons();
+
+      await tryLoadDashboard(emailInput, activeOrderId);
+    };
+
+    window.handleLogout = function() {
+      localStorage.removeItem('koryxa_client_email');
+      localStorage.removeItem('koryxa_client_order_id');
+      activeEmail = '';
+      activeOrderId = '';
+      document.getElementById('dashboardSection').style.display = 'none';
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('headerActionsAuth').style.display = 'none';
+      document.getElementById('loginEmail').value = '';
+      const errBox = document.getElementById('loginError');
+      if (errBox) errBox.style.display = 'none';
+      lucide.createIcons();
+    };
 
     function renderSteps(steps) {
       const container = document.getElementById('stepsList');
@@ -260,14 +376,14 @@
 
     window.markStepValid = async function(stepNum) {
       try {
-        await api.validateStep(stepNum, email, orderId);
-        await loadDashboard();
+        await api.validateStep(stepNum, activeEmail, activeOrderId);
+        await tryLoadDashboard(activeEmail, activeOrderId);
       } catch (e) {
         alert("Erreur lors de la validation : " + e.message);
       }
     };
 
-    // Chat Support IA
+    // Chat Support IA Cohere
     window.handleChatSubmit = async function(e) {
       e.preventDefault();
       const input = document.getElementById('chatInput');
@@ -349,7 +465,7 @@
 
       try {
         const conv = [...chatHistory, { role: "diagnostic_notes", content: details }];
-        const res = await api.createTicket(subject, conv, email, orderId);
+        const res = await api.createTicket(subject, conv, activeEmail, activeOrderId);
         alert(res.message);
         closeTicketModal();
       } catch (e) {
@@ -359,8 +475,15 @@
       }
     };
 
-    loadDashboard();
-    lucide.createIcons();
+    // Initialisation automatique au chargement
+    if (activeEmail) {
+      tryLoadDashboard(activeEmail, activeOrderId);
+    } else {
+      document.getElementById('loginSection').style.display = 'block';
+      document.getElementById('dashboardSection').style.display = 'none';
+      document.getElementById('headerActionsAuth').style.display = 'none';
+      lucide.createIcons();
+    }
   </script>
 </body>
 </html>

@@ -83,6 +83,7 @@
         const order = await api.getOrderStatus(orderId);
         if (order.is_paid && order.portal_access_token) {
           clearInterval(pollInterval);
+          localStorage.setItem('koryxa_client_order_id', orderId);
           document.getElementById('loadingState').style.display = 'none';
           document.getElementById('simBlock').style.display = 'none';
           document.getElementById('successState').style.display = 'block';
