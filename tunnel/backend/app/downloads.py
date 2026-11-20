@@ -57,7 +57,7 @@ def download_free_sample():
 def download_protected_asset(
     asset_key: str,
     request: Request,
-    email: str = Query(..., description="Email de l'acheteur"),
+    email: Optional[str] = Query(None, description="Email de l'acheteur"),
     order_id: Optional[str] = Query(None, description="ID de la commande"),
     db: Session = Depends(get_db),
 ):
@@ -68,8 +68,16 @@ def download_protected_asset(
     if asset_key not in PROTECTED_ASSETS:
         raise HTTPException(status_code=404, detail="Livrable non reconnu")
 
-    # 1. Vérification du client
-    customer = db.query(Customer).filter(Customer.email == email.strip().lower()).first()
+    # 1. Vérification du client (par email ou par identifiant de commande)
+    customer = None
+    if email and email.strip() and email.strip().lower() != "undefined":
+        customer = db.query(Customer).filter(Customer.email == email.strip().lower()).first()
+
+    if not customer and order_id:
+        ord_rec = db.query(Order).filter(Order.id == order_id).first()
+        if ord_rec:
+            customer = db.query(Customer).filter(Customer.id == ord_rec.customer_id).first()
+
     if not customer:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Accès interdit : compte introuvable")
 

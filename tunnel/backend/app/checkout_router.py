@@ -102,6 +102,8 @@ def get_order_status(order_id: str, db: Session = Depends(get_db)):
         amount_minor=order.amount_minor,
         currency=order.currency,
         is_paid=(order.status == "succeeded"),
+        customer_email=customer.email if customer else None,
+        customer_name=customer.full_name if customer else None,
         portal_access_token=portal_access,
         created_at=order.created_at,
         paid_at=order.paid_at,

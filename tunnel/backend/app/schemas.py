@@ -31,6 +31,8 @@ class OrderStatusResponse(BaseModel):
     amount_minor: int
     currency: str
     is_paid: bool
+    customer_email: Optional[str] = None
+    customer_name: Optional[str] = None
     portal_access_token: Optional[str] = None
     created_at: datetime
     paid_at: Optional[datetime] = None

@@ -20,15 +20,23 @@ router = APIRouter(prefix="/api/v1/client", tags=["Espace Client"])
 
 @router.get("/dashboard")
 def get_client_dashboard(
-    email: str = Query(...),
+    email: Optional[str] = Query(None),
     order_id: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """
     Retourne les données du cockpit client et les 6 étapes d'onboarding.
     """
-    clean_email = email.strip().lower()
-    customer = db.query(Customer).filter(Customer.email == clean_email).first()
+    customer = None
+    if email and email.strip() and email.strip().lower() != "undefined":
+        clean_email = email.strip().lower()
+        customer = db.query(Customer).filter(Customer.email == clean_email).first()
+
+    if not customer and order_id:
+        ord_rec = db.query(Order).filter(Order.id == order_id).first()
+        if ord_rec:
+            customer = db.query(Customer).filter(Customer.id == ord_rec.customer_id).first()
+
     if not customer:
         raise HTTPException(status_code=403, detail="Compte introuvable")
 
@@ -83,15 +91,23 @@ def get_client_dashboard(
 @router.post("/progress/validate")
 def validate_progress_step(
     payload: ValidateStepRequest,
-    email: str = Query(...),
+    email: Optional[str] = Query(None),
     order_id: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
     """
     Valide une étape d'installation réelle dans le parcours guidé de l'apprenant.
     """
-    clean_email = email.strip().lower()
-    customer = db.query(Customer).filter(Customer.email == clean_email).first()
+    customer = None
+    if email and email.strip() and email.strip().lower() != "undefined":
+        clean_email = email.strip().lower()
+        customer = db.query(Customer).filter(Customer.email == clean_email).first()
+
+    if not customer and order_id:
+        ord_rec = db.query(Order).filter(Order.id == order_id).first()
+        if ord_rec:
+            customer = db.query(Customer).filter(Customer.id == ord_rec.customer_id).first()
+
     if not customer:
         raise HTTPException(status_code=403, detail="Compte introuvable")
 

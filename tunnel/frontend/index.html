@@ -297,8 +297,8 @@
 
         if (orderStatus.is_paid) {
           STATE.isBuyer = true;
-          STATE.email = orderStatus.customer_email || STATE.email;
-          localStorage.setItem('koryxa_client_email', STATE.email);
+          STATE.email = orderStatus.customer_email || STATE.email || localStorage.getItem('koryxa_client_email') || '';
+          if (STATE.email) localStorage.setItem('koryxa_client_email', STATE.email);
 
           const successMsg = `🎉 **Paiement confirmé avec succès !**\n\nVotre commande de **11 000 F CFA** a été validée par KORYXA Pay. Votre accès est activé à vie.\n\nVous pouvez télécharger immédiatement vos livrables ci-dessous :`;
           appendAssistantMessage(successMsg, [createDownloadsCard()]);
@@ -314,6 +314,15 @@
     }
 
     async function checkPurchasedAccess(silent = true) {
+      if (!STATE.email && STATE.orderId) {
+        try {
+          const st = await api.getOrderStatus(STATE.orderId);
+          if (st && st.customer_email) {
+            STATE.email = st.customer_email;
+            localStorage.setItem('koryxa_client_email', STATE.email);
+          }
+        } catch (e) {}
+      }
       if (!STATE.email && !STATE.orderId) return null;
       try {
         const dashboard = await api.getClientDashboard(STATE.email, STATE.orderId);
