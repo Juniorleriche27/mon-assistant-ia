@@ -20,6 +20,16 @@ PROTECTED_ASSETS = {
         "filename": "Assistant_IA_RAG_Cohere_Projet.zip",
         "media_type": "application/zip",
         "display_name": "Code et supports - Horizon Numerique.zip"
+    },
+    "code": {
+        "filename": "Assistant_IA_RAG_Cohere_Projet.zip",
+        "media_type": "application/zip",
+        "display_name": "Code et supports - Horizon Numerique.zip"
+    },
+    "kit": {
+        "filename": "Kit_lancement_KORYXA_Assistants_IA.zip",
+        "media_type": "application/zip",
+        "display_name": "Kit contractuel et modeles de livraison.zip"
     }
 }
 
@@ -81,6 +91,21 @@ def download_protected_asset(
     # 3. Récupération du fichier dans le répertoire protégé
     asset_info = PROTECTED_ASSETS[asset_key]
     file_path = settings.STORAGE_DIR / asset_info["filename"]
+
+    if not file_path.exists():
+        candidates = [
+            settings.STORAGE_DIR / asset_info["filename"],
+            settings.BASE_DIR / asset_info["filename"],
+            settings.WORKSPACE_ROOT / asset_info["filename"],
+            Path("/app") / asset_info["filename"],
+            Path("/app/storage") / asset_info["filename"],
+            Path("/opt/apps/mon-assistant-ia/storage") / asset_info["filename"],
+            Path("/opt/apps/mon-assistant-ia") / asset_info["filename"]
+        ]
+        for c in candidates:
+            if c.exists():
+                file_path = c
+                break
 
     if not file_path.exists():
         raise HTTPException(status_code=500, detail="Fichier introuvable sur le serveur de stockage")

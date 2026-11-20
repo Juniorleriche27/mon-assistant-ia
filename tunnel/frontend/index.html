@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Assistant KORYXA — Mon premier assistant IA</title>
   <meta name="description" content="Découvrez et achetez le pack KORYXA Mon premier assistant IA. Guide pratique 68p, code source complet et modèles de livraison à 11 000 F CFA.">
+  <meta name="theme-color" content="#10B981">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/logo-koryxa.png">
+
+  <!-- OpenGraph / Réseaux sociaux (WhatsApp, LinkedIn, Twitter/X, Facebook) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mon-assistant.koryxa.fr/">
+  <meta property="og:title" content="Pack « Mon premier assistant IA » — KORYXA">
+  <meta property="og:description" content="Créez et livrez votre premier assistant IA d'entreprise. Guide pratique 68p, code source complet Cohere et kit contractuel à 11 000 F CFA.">
+  <meta property="og:image" content="https://mon-assistant.koryxa.fr/images/logo-koryxa.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pack « Mon premier assistant IA » — KORYXA">
+  <meta name="twitter:description" content="Créez et livrez votre premier assistant IA d'entreprise. Pack complet pratique à 11 000 F CFA.">
+  <meta name="twitter:image" content="https://mon-assistant.koryxa.fr/images/logo-koryxa.png">
   
   <link rel="stylesheet" href="/css/style.css">
   
@@ -796,6 +812,9 @@
           </a>
           <a href="/api/v1/downloads/pack/code?email=${encodeURIComponent(STATE.email)}&order_id=${encodeURIComponent(STATE.orderId)}" class="btn btn-secondary btn-block" download>
             Télécharger le Code source (Archive Zip)
+          </a>
+          <a href="/api/v1/downloads/pack/kit?email=${encodeURIComponent(STATE.email)}&order_id=${encodeURIComponent(STATE.orderId)}" class="btn btn-secondary btn-block" download>
+            Télécharger le Kit contractuel (Devis, Cahier des charges, PV)
           </a>
           <button type="button" class="btn btn-secondary btn-block" onclick="triggerAction('demarrer')">
             Voir le parcours d'installation (6 étapes)

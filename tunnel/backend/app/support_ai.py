@@ -2,11 +2,113 @@ import json
 import logging
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 import httpx
 from app.config import settings
 
 logger = logging.getLogger(__name__)
+
+COMMERCIAL_FACTS = """
+### INFORMATIONS COMMERCIALES ET PRODUIT OFFICIELLES (KORYXA) :
+- **Marque** : KORYXA — Apprendre à construire. Savoir livrer.
+- **Produit** : Pack complet « Mon premier assistant IA ».
+- **Livre inclus** : « Créer et livrer son premier assistant IA » (68 pages, 12 chapitres pratiques en PDF).
+- **Auteur** : Yayra LAMADOKOU, fondateur de KORYXA et ingénieur praticien en IA d'entreprise.
+- **Prix officiel** : 11 000 F CFA (XOF), paiement unique sans aucun abonnement, accès garanti à vie.
+- **Moyens de paiement acceptés** : KORYXA Pay (sécurisé SSL) acceptant Mobile Money (TMoney, Moov Money) et Cartes bancaires (Visa, Mastercard).
+- **Contenu du pack** :
+  1. Livre complet de 68 pages en 12 chapitres (PDF).
+  2. Code source complet du projet Horizon Numérique (Cohere Command R + Embed v4, FastAPI, Next.js, SQLite/pgvector).
+  3. 4 documents d'exercices et FAQ.
+  4. 35 questions d'évaluation et de recette réelles.
+  5. Kit contractuel et modèles de livraison (modèles de devis, cahier des charges type, procès-verbal de recette).
+- **Prérequis réels** : Connaître les bases élémentaires de Python (variables, fonctions simples, exécuter un script, pip). Aucun prérequis en mathématiques ou ML complexe.
+- **Fournisseur IA & Frais annexes** : Cohere est utilisé pour la recherche vectorielle et la génération. Cohere offre des clés d'essai gratuites pour apprendre et tester. En production réelle chez un client, les requêtes API Cohere et l'hébergement serveur restent distincts et sont facturés directement par les prestataires au client final.
+- **Extrait gratuit** : Document PDF officiel de 15 pages (`KORYXA_Assistant_IA_Extrait.pdf`) téléchargeable immédiatement dans le chat.
+- **Accompagnement après-vente** : Le chatbot guide l'acheteur pas à pas à travers les 6 étapes d'onboarding, répond aux questions techniques et permet d'ouvrir un ticket technique si besoin.
+"""
+
+def detect_commercial_intent(query: str) -> Optional[Dict[str, Any]]:
+    """
+    Détecte si la question de l'utilisateur porte sur une information commerciale, tarifaire ou organisationnelle.
+    Retourne la réponse officielle validée pour éviter toute hallucination ou citation hors contexte.
+    """
+    q = query.lower()
+
+    # 1. Prix et tarif
+    if any(k in q for k in ["prix", "tarif", "combien", "coût", "cout", "payer combien", "valeur"]):
+        return {
+            "answer": (
+                "Le pack complet **« Mon premier assistant IA »** est proposé au tarif officiel de **11 000 F CFA (XOF)**.\n\n"
+                "Il s'agit d'un **paiement unique** (aucun abonnement récurrent), donnant droit à un **accès à vie** "
+                "au livre de 68 pages, au code source complet, aux 35 questions d'évaluation et à la boîte à outils contractuelle."
+            ),
+            "citations": ["Offre officielle KORYXA — 11 000 F CFA"],
+            "suggest_ticket": False
+        }
+
+    # 2. Moyens de paiement
+    if any(k in q for k in ["moyen de paiement", "moyens de paiement", "comment payer", "tmoney", "moov", "flooz", "carte", "visa", "mastercard", "mode de paiement"]):
+        return {
+            "answer": (
+                "Le règlement s'effectue en toute sécurité via la passerelle officielle **KORYXA Pay** (chiffrement SSL).\n\n"
+                "Sont acceptés :\n"
+                "- **Mobile Money** : TMoney et Moov Money\n"
+                "- **Cartes bancaires** : Visa et Mastercard\n\n"
+                "Dès la validation de votre paiement, l'accès à tous vos livrables est débloqué instantanément dans cette conversation."
+            ),
+            "citations": ["Passerelle KORYXA Pay"],
+            "suggest_ticket": False
+        }
+
+    # 3. Auteur
+    if any(k in q for k in ["auteur", "qui a écrit", "qui a ecrit", "qui est yayra", "lamadokou", "qui êtes-vous", "qui est l'auteur"]):
+        return {
+            "answer": (
+                "Le livre et la méthode sont créés par **Yayra LAMADOKOU**, fondateur de **KORYXA** et ingénieur praticien en intelligence artificielle.\n\n"
+                "Son approche privilégie le pragmatisme : concevoir des assistants documentaires robustes, maîtrisés, testés et réellement livrables à des entreprises clientes."
+            ),
+            "citations": ["Yayra LAMADOKOU — Fondateur de KORYXA"],
+            "suggest_ticket": False
+        }
+
+    # 4. Prérequis et niveau Python
+    if any(k in q for k in ["prérequis", "prerequis", "débutant", "debutant", "niveau", "faut-il connaître", "faut-il connaitre", "expert", "difficile"]):
+        return {
+            "answer": (
+                "**Non, vous n'avez pas besoin d'être un expert en IA.**\n\n"
+                "Seules les **bases de Python** sont utiles : savoir installer un package avec `pip`, lancer un script et comprendre des variables et fonctions simples.\n\n"
+                "Le guide vous accompagne pas à pas pour configurer votre environnement virtuel, préparer vos documents PDF et connecter les modèles Cohere sans complexité inutile."
+            ),
+            "citations": ["Présentation KORYXA — Prérequis & Public cible"],
+            "suggest_ticket": False
+        }
+
+    # 5. Frais annexes (Cohere / Hébergement)
+    if any(k in q for k in ["frais", "caché", "cache", "cohere payant", "hébergement", "hebergement", "frais supplémentaire", "frais supplementaire", "abonnement"]):
+        return {
+            "answer": (
+                "L'accès au pack KORYXA est à **paiement unique de 11 000 F CFA** sans aucun abonnement.\n\n"
+                "Concernant les technologies :\n"
+                "- **Cohere** offre des clés d'essai gratuites permettant de développer, tester et indexer vos documents sans frais.\n"
+                "- En **production chez un client**, les éventuels frais de requêtes API Cohere (quelques centimes) et d'hébergement serveur sont distincts et directement pris en charge par l'entreprise cliente finale."
+            ),
+            "citations": ["Conditions d'exploitation & Frais annexes"],
+            "suggest_ticket": False
+        }
+
+    # 6. Extrait gratuit
+    if any(k in q for k in ["extrait", "échantillon", "echantillon", "aperçu", "apercu", "gratuit", "lire un extrait"]):
+        return {
+            "answer": (
+                "Vous pouvez télécharger immédiatement et gratuitement l'**extrait officiel de 15 pages** "
+                "(couverture, introduction et chapitres 1 et 2) pour découvrir la méthode et le style pratique du guide avant de commander."
+            ),
+            "citations": ["Extrait gratuit — KORYXA_Assistant_IA_Extrait.pdf"],
+            "suggest_ticket": False
+        }
+
+    return None
 
 class ManuscriptIndex:
     def __init__(self, manuscript_path: Path):
@@ -76,9 +178,14 @@ async def ask_cohere_support(query: str, history: List[Dict[str, str]] = None) -
 async def ask_ai_support(query: str, history: List[Dict[str, str]] = None) -> Dict[str, Any]:
     """
     Assistant Support IA KORYXA propulsé par KNOWLIA (avec fallback Cohere et local).
-    Fondé sur le manuscrit officiel du livre.
+    Fondé sur le manuscrit officiel du livre et les informations commerciales validées.
     Cite toujours ses sources et demande les informations de diagnostic si anomalie.
     """
+    # 0. Vérification immédiate des intentions commerciales et produit officielles
+    commercial_ans = detect_commercial_intent(query)
+    if commercial_ans:
+        return commercial_ans
+
     relevant_sections = manuscript_index.search_relevant_sections(query, top_k=2)
     citations = [f"Chapitre {s['chapter_number']} : {s['clean_title']}" for s in relevant_sections]
     
@@ -95,14 +202,16 @@ async def ask_ai_support(query: str, history: List[Dict[str, str]] = None) -> Di
     if getattr(settings, "KNOWLIA_BASE_URL", "") and getattr(settings, "KNOWLIA_API_KEY", ""):
         try:
             system_prompt = (
-                "Tu es l'assistant de support technique officiel du livre « Créer et livrer son premier assistant IA » (KORYXA).\n"
-                "Tu t'adresses à un développeur ou freelance. Ton rôle est de l'aider à concevoir, tester, lancer et livrer le projet.\n\n"
+                "Tu es l'assistant officiel du pack « Mon premier assistant IA » (KORYXA).\n"
+                "Tu t'adresses à des apprenants, développeurs ou freelances avec bienveillance, clarté et professionnalisme.\n\n"
+                f"{COMMERCIAL_FACTS}\n\n"
                 "Consignes impératives :\n"
-                "1. Fonde ta réponse UNIQUEMENT sur le contexte officiel fourni ci-dessous issu du manuscrit du livre.\n"
-                "2. Cite explicitement le chapitre concerné (ex: « D'après le Chapitre X : ... »).\n"
-                "3. Si la question signale une erreur technique ou un bug, demande impérativement le système d'exploitation, la version de Python (`python --version`) et les logs d'erreur du terminal.\n"
-                "4. Ne promets jamais de réponse humaine instantanée.\n\n"
-                f"CONTEXTE OFFICIEL DU LIVRE :\n{context_text}"
+                "1. Fonde ta réponse sur les informations officielles fournies ci-dessus et le contexte du manuscrit ci-dessous.\n"
+                "2. Si la question est d'ordre technique, cite explicitement le chapitre concerné (ex: « D'après le Chapitre X : ... »).\n"
+                "3. Si la question porte sur le prix, rappelle impérativement le tarif officiel de 11 000 F CFA en paiement unique.\n"
+                "4. Si la question signale une erreur technique ou un bug, demande impérativement le système d'exploitation, la version de Python (`python --version`) et les logs d'erreur du terminal.\n"
+                "5. Ne promets jamais de réponse humaine instantanée.\n\n"
+                f"CONTEXTE TECHNIQUE DU LIVRE :\n{context_text}"
             )
 
             messages = [{"role": "system", "content": system_prompt}]
