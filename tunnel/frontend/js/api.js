@@ -23,11 +23,11 @@ export const api = {
   },
 
   async getClientDashboard(email, orderId = "") {
-    let url = `${API_BASE}/api/v1/client/dashboard?email=${encodeURIComponent(email)}`;
-    if (orderId) {
-      url += `&order_id=${encodeURIComponent(orderId)}`;
-    }
-    const res = await fetch(url);
+    const params = new URLSearchParams();
+    if (email && email !== "undefined") params.set("email", email);
+    if (orderId && orderId !== "undefined") params.set("order_id", orderId);
+
+    const res = await fetch(`${API_BASE}/api/v1/client/dashboard?${params.toString()}`);
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.detail || "Accès non autorisé à l'espace client");
@@ -36,11 +36,11 @@ export const api = {
   },
 
   async validateStep(stepNumber, email, orderId = "") {
-    let url = `${API_BASE}/api/v1/client/progress/validate?email=${encodeURIComponent(email)}`;
-    if (orderId) {
-      url += `&order_id=${encodeURIComponent(orderId)}`;
-    }
-    const res = await fetch(url, {
+    const params = new URLSearchParams();
+    if (email && email !== "undefined") params.set("email", email);
+    if (orderId && orderId !== "undefined") params.set("order_id", orderId);
+
+    const res = await fetch(`${API_BASE}/api/v1/client/progress/validate?${params.toString()}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ step_number: stepNumber }),

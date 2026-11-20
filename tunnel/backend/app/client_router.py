@@ -78,6 +78,7 @@ def get_client_dashboard(
         "order": {
             "id": order.id,
             "status": order.status,
+            "is_paid": (order.status == "succeeded"),
             "product_code": order.product_code,
             "paid_at": order.paid_at,
         },

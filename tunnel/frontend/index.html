@@ -326,7 +326,7 @@
       if (!STATE.email && !STATE.orderId) return null;
       try {
         const dashboard = await api.getClientDashboard(STATE.email, STATE.orderId);
-        if (dashboard && dashboard.order && dashboard.order.is_paid) {
+        if (dashboard && dashboard.order && (dashboard.order.is_paid || dashboard.order.status === 'succeeded')) {
           STATE.isBuyer = true;
           STATE.customerName = dashboard.customer.full_name || '';
           STATE.email = dashboard.customer.email;
@@ -449,7 +449,7 @@
 
     async function deliverLivreDownload() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess(false);
+      const dashboard = await checkPurchasedAccess(true);
       hideTypingIndicator();
 
       if (dashboard && dashboard.download_links) {
@@ -466,7 +466,7 @@
 
     async function deliverCodeDownload() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess(false);
+      const dashboard = await checkPurchasedAccess(true);
       hideTypingIndicator();
 
       if (dashboard && dashboard.download_links) {
@@ -483,7 +483,7 @@
 
     async function showOnboardingFlow() {
       showTypingIndicator();
-      const dashboard = await checkPurchasedAccess(false);
+      const dashboard = await checkPurchasedAccess(true);
       hideTypingIndicator();
 
       if (dashboard && dashboard.steps) {
