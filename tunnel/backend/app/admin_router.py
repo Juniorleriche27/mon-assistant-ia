@@ -63,6 +63,48 @@ def get_all_orders(
         })
     return results
 
+@router.post("/orders/{order_id}/simulate-payment")
+def simulate_order_payment(
+    order_id: str,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_admin_token)
+):
+    """
+    Simulation administrative d'un paiement réussi pour valider le parcours client
+    de bout en bout (téléchargements, onboarding, dashboard) sans frais bancaires réels.
+    """
+    from datetime import datetime
+    from app.models import CustomerProgress
+    from app.webhook import INITIAL_ONBOARDING_STEPS
+
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Commande introuvable")
+
+    order.status = "succeeded"
+    order.paid_at = datetime.utcnow()
+
+    # Initialisation des 6 étapes d'onboarding
+    for step_num, title in INITIAL_ONBOARDING_STEPS:
+        existing = db.query(CustomerProgress).filter(
+            CustomerProgress.customer_id == order.customer_id,
+            CustomerProgress.step_number == step_num
+        ).first()
+        if not existing:
+            db.add(CustomerProgress(
+                customer_id=order.customer_id,
+                step_number=step_num,
+                step_title=title,
+                is_completed=False
+            ))
+    db.commit()
+    return {
+        "success": True,
+        "order_id": order.id,
+        "status": order.status,
+        "message": "Paiement validé avec succès en mode test administratif (0 F CFA dépensé)"
+    }
+
 @router.get("/tickets")
 def get_all_tickets(
     db: Session = Depends(get_db),
