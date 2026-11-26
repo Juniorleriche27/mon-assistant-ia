@@ -135,6 +135,18 @@
         </div>
       </div>
 
+      <!-- Encart promo discret Écosystème KORYXA Formation -->
+      <div class="sidebar-promo-card">
+        <span class="promo-badge">Offert · 0 FCFA</span>
+        <div class="promo-title">Starter Pack Data &amp; Python (10 modules)</div>
+        <a href="https://formation.koryxa.fr/formation-gratuite" target="_blank" rel="noopener noreferrer" class="promo-cta-btn">
+          Commencer gratuitement →
+        </a>
+        <a href="https://formation.koryxa.fr" target="_blank" rel="noopener noreferrer" class="promo-secondary-link">
+          8 formations certifiantes dès 5 000 FCFA →
+        </a>
+      </div>
+
       <div class="sidebar-bottom-link">
         <a href="https://koryxa.fr" target="_blank">KORYXA &middot; koryxa.fr</a>
       </div>
@@ -225,7 +237,8 @@
       { id: 'exemple', label: 'Montre-moi un exemple', highlight: false },
       { id: 'acheter', label: 'Acheter le pack (11 000 F CFA)', highlight: true },
       { id: 'retrouver', label: 'Retrouver mon achat', highlight: false },
-      { id: 'extrait', label: 'Extrait gratuit (PDF)', highlight: false }
+      { id: 'extrait', label: 'Extrait gratuit (PDF)', highlight: false },
+      { id: 'formations_data', label: 'Formations Data & IA (dès 0 F)', highlight: false }
     ];
 
     const BUYER_CHIPS = [
@@ -233,7 +246,8 @@
       { id: 'telecharger_code', label: 'Télécharger le projet (Zip)', highlight: true },
       { id: 'demarrer', label: 'Aide-moi à démarrer', highlight: false },
       { id: 'progression', label: 'Où en suis-je ?', highlight: false },
-      { id: 'probleme', label: 'J\'ai un problème technique', highlight: false }
+      { id: 'probleme', label: 'J\'ai un problème technique', highlight: false },
+      { id: 'formations_data', label: 'Formations Data & IA (dès 0 F)', highlight: false }
     ];
 
     window.addEventListener('DOMContentLoaded', async () => {
@@ -383,6 +397,10 @@
           appendUserMessage("J'ai un problème technique");
           showTicketFlow();
           break;
+        case 'formations_data':
+          appendUserMessage("Voir les formations Data & IA");
+          showEcosystemFormationsFlow();
+          break;
       }
     };
 
@@ -502,6 +520,16 @@
       updateQuickReplies();
     }
 
+    function showEcosystemFormationsFlow() {
+      showTypingIndicator();
+      setTimeout(() => {
+        hideTypingIndicator();
+        const text = `En plus du pack **« Mon premier assistant IA » (11 000 F CFA)**, **KORYXA Formation** propose des parcours pratiques 100% en ligne dans le navigateur (avec projets réels d'entreprises et certificats vérifiables) :`;
+        appendAssistantMessage(text, [createEcosystemFormationsCard()]);
+        updateQuickReplies();
+      }, 350);
+    }
+
     // Gestion de la saisie utilisateur
     window.handleFormSubmit = async function(e) {
       e.preventDefault();
@@ -513,6 +541,22 @@
       appendUserMessage(query);
 
       const lower = query.toLowerCase();
+      if (
+        lower.includes('excel') ||
+        lower.includes('power bi') ||
+        lower.includes('sql') ||
+        lower.includes('data analyst') ||
+        lower.includes('data science') ||
+        lower.includes('machine learning') ||
+        lower.includes('data engineering') ||
+        lower.includes('starter pack') ||
+        lower.includes('formation gratuite') ||
+        lower.includes('autres formations') ||
+        lower.includes('formations data')
+      ) {
+        showEcosystemFormationsFlow();
+        return;
+      }
       if (lower.includes('acheter') || lower.includes('commander') || lower.includes('payer') || lower.includes('combien')) {
         showCheckoutFlow();
         return;
@@ -924,6 +968,87 @@
       btn.textContent = btnLabel;
       btn.onclick = callback;
       card.appendChild(btn);
+      return card;
+    }
+
+    function createEcosystemFormationsCard() {
+      const card = document.createElement('div');
+      card.className = 'rich-card';
+      card.innerHTML = `
+        <div class="card-title-row">
+          <span class="card-title-text">Écosystème KORYXA Formation</span>
+          <span class="card-price-badge">Dès 0 F CFA</span>
+        </div>
+
+        <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 10px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
+            <strong style="font-size: 0.88rem; color: #065F46;">Starter Pack Data &amp; Python (10 modules)</strong>
+            <span style="background: #065F46; color: #FFFFFF; font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 9999px;">OFFERT · 0 FCFA</span>
+          </div>
+          <p style="font-size: 0.78rem; color: #047857; margin-bottom: 8px;">
+            Variables, chaînes, tuples et DataFrames expliqués simplement avec code exécutable en direct.
+          </p>
+          <a href="https://formation.koryxa.fr/formation-gratuite" target="_blank" rel="noopener noreferrer" class="btn btn-green btn-block" style="min-height: 38px; font-size: 0.82rem;">
+            Commencer la formation gratuite →
+          </a>
+        </div>
+
+        <div class="promo-section-label">Les 8 Formations Certifiantes</div>
+        <div class="promo-courses-list">
+          <a href="https://formation.koryxa.fr/checkout?course=excel-data-analyst" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Excel Data Analyst (Power Query &amp; TCD)</span>
+            <span class="promo-course-price">5 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=sql-data-analyst" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>SQL Data Analyst (PostgreSQL)</span>
+            <span class="promo-course-price">5 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=python-data-analyst" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Python Data Analyst (Pandas &amp; NumPy)</span>
+            <span class="promo-course-price">8 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=power-bi-data-analyst" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Power BI Data Analyst (DAX &amp; KPIs)</span>
+            <span class="promo-course-price">8 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=statistics-data-science-python" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Statistiques &amp; Data Science</span>
+            <span class="promo-course-price">8 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=machine-learning-python" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Machine Learning avec Python</span>
+            <span class="promo-course-price">12 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=data-engineering-python-sql" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Data Engineering (Python &amp; SQL)</span>
+            <span class="promo-course-price">12 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?course=llm-rag" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>LLM RAG Developer (Qdrant &amp; Agents)</span>
+            <span class="promo-course-price">12 000 FCFA →</span>
+          </a>
+        </div>
+
+        <div class="promo-section-label">Les 3 Packs Carrière (jusqu'à -50%)</div>
+        <div class="promo-courses-list">
+          <a href="https://formation.koryxa.fr/checkout?pack=full-stack-data-analyst" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Pack Full-Stack Data Analyst (Excel + SQL + Power BI)</span>
+            <span class="promo-course-price">15 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?pack=data-scientist-ai-engineer" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Pack Data Scientist &amp; IA (Python, Stats, ML, RAG)</span>
+            <span class="promo-course-price">25 000 FCFA →</span>
+          </a>
+          <a href="https://formation.koryxa.fr/checkout?pack=data-ultimate-all-access" target="_blank" rel="noopener noreferrer" class="promo-course-item">
+            <span>Pack Ultime All-Access (Les 8 formations + 8 certificats)</span>
+            <span class="promo-course-price">35 000 FCFA →</span>
+          </a>
+        </div>
+
+        <a href="https://formation.koryxa.fr" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-block">
+          Ouvrir le catalogue complet (formation.koryxa.fr) →
+        </a>
+      `;
       return card;
     }
 

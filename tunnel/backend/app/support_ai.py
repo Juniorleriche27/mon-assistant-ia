@@ -26,6 +26,9 @@ COMMERCIAL_FACTS = """
 - **Fournisseur IA & Frais annexes** : Cohere est utilisé pour la recherche vectorielle et la génération. Cohere offre des clés d'essai gratuites pour apprendre et tester. En production réelle chez un client, les requêtes API Cohere et l'hébergement serveur restent distincts et sont facturés directement par les prestataires au client final.
 - **Extrait gratuit** : Document PDF officiel de 15 pages (`KORYXA_Assistant_IA_Extrait.pdf`) téléchargeable immédiatement dans le chat.
 - **Accompagnement après-vente** : Le chatbot guide l'acheteur pas à pas à travers les 6 étapes d'onboarding, répond aux questions techniques et permet d'ouvrir un ticket technique si besoin.
+- **Écosystème KORYXA Formation (formations complémentaires Data & IA)** :
+  - Formation Découverte Gratuite (0 FCFA) « Starter Pack Data & Architecture Python » (10 modules interactifs expliqués simplement) : https://formation.koryxa.fr/formation-gratuite
+  - 8 parcours certifiants dès 5 000 F CFA (Excel, SQL PostgreSQL, Python Data Analyst, Power BI, Statistiques, Machine Learning, Data Engineering, LLM RAG) et 3 Packs Carrière dès 15 000 F CFA : https://formation.koryxa.fr
 """
 
 def detect_commercial_intent(query: str) -> Optional[Dict[str, Any]]:
@@ -78,9 +81,26 @@ def detect_commercial_intent(query: str) -> Optional[Dict[str, Any]]:
             "answer": (
                 "**Non, vous n'avez pas besoin d'être un expert en IA.**\n\n"
                 "Seules les **bases de Python** sont utiles : savoir installer un package avec `pip`, lancer un script et comprendre des variables et fonctions simples.\n\n"
-                "Le guide vous accompagne pas à pas pour configurer votre environnement virtuel, préparer vos documents PDF et connecter les modèles Cohere sans complexité inutile."
+                "Le guide vous accompagne pas à pas pour configurer votre environnement virtuel, préparer vos documents PDF et connecter les modèles Cohere sans complexité inutile.\n\n"
+                "💡 *Si vous partez vraiment de zéro en Python, vous pouvez suivre gratuitement notre **Starter Pack Data & Python (10 modules)** sur [formation.koryxa.fr/formation-gratuite](https://formation.koryxa.fr/formation-gratuite) avant de démarrer.*"
             ),
             "citations": ["Présentation KORYXA — Prérequis & Public cible"],
+            "suggest_ticket": False
+        }
+
+    # 4b. Autres formations Data & IA (KORYXA Formation)
+    if any(k in q for k in ["excel", "power bi", "sql", "data analyst", "data science", "machine learning", "data engineering", "autres formations", "starter pack", "formation gratuite"]):
+        return {
+            "answer": (
+                "En complément du pack **« Mon premier assistant IA » (11 000 F CFA)**, **KORYXA Formation** propose un parcours complet de compétences pratiques Data & IA :\n\n"
+                "- 🎁 **Formation Gratuite (0 F CFA)** — *Starter Pack Data & Architecture Python (10 modules interactifs)* : https://formation.koryxa.fr/formation-gratuite\n"
+                "- **Fondamentaux (5 000 F CFA)** : Excel Data Analyst, SQL Data Analyst (PostgreSQL)\n"
+                "- **Analytics & Data (8 000 F CFA)** : Python Data Analyst, Power BI Data Analyst, Statistiques & Data Science\n"
+                "- **IA & Ingénierie (12 000 F CFA)** : Machine Learning avec Python, Data Engineering, LLM RAG Developer\n"
+                "- **Packs Carrière** : dès **15 000 F CFA** (jusqu'à -50%)\n\n"
+                "Découvrez tout le catalogue et inscrivez-vous en 1 clic sur : https://formation.koryxa.fr"
+            ),
+            "citations": ["Écosystème KORYXA Formation — formation.koryxa.fr"],
             "suggest_ticket": False
         }
 
@@ -210,7 +230,8 @@ async def ask_ai_support(query: str, history: List[Dict[str, str]] = None) -> Di
                 "2. Si la question est d'ordre technique, cite explicitement le chapitre concerné (ex: « D'après le Chapitre X : ... »).\n"
                 "3. Si la question porte sur le prix, rappelle impérativement le tarif officiel de 11 000 F CFA en paiement unique.\n"
                 "4. Si la question signale une erreur technique ou un bug, demande impérativement le système d'exploitation, la version de Python (`python --version`) et les logs d'erreur du terminal.\n"
-                "5. Ne promets jamais de réponse humaine instantanée.\n\n"
+                "5. Si l'utilisateur demande des bases en Python ou d'autres formations Data (Excel, SQL, Power BI, Data Science), recommande brièvement le Starter Pack gratuit sur https://formation.koryxa.fr/formation-gratuite ou le catalogue https://formation.koryxa.fr.\n"
+                "6. Ne promets jamais de réponse humaine instantanée.\n\n"
                 f"CONTEXTE TECHNIQUE DU LIVRE :\n{context_text}"
             )
 
